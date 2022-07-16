@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- This allows to change the color of the main navigation icons depending on whether the icon was clicked or not -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true" android:color="@color/black"/>
+    <item android:color="@android:color/darker_gray"/>
+</selector>

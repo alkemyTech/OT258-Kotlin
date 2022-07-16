@@ -6,6 +6,7 @@ plugins {
     id 'kotlin-android'
     id 'dagger.hilt.android.plugin'
     id 'androidx.navigation.safeargs.kotlin'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -55,8 +56,12 @@ dependencies {
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
+    //Firebase Android BoM (Bill of Materials)
+    implementation platform('com.google.firebase:firebase-bom:30.2.0')
+    //Firebase SDK for Google Analytics
+    implementation 'com.google.firebase:firebase-analytics'
     //Firebase Auth
-    //implementation 'com.google.firebase:firebase-auth-ktx' (Sera implementado por Santi)
+    implementation 'com.google.firebase:firebase-auth-ktx'
 
     //Activity and Fragments Libraries
     implementation "androidx.activity:activity-ktx:$activity_version"

@@ -14,7 +14,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ONGAndroid">
         <activity
-            android:name=".view.HomeActivity"
+            android:name=".view.SplashActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.LoginActivity"
             android:exported="false" />
         <activity
             android:name=".view.MainActivity"
