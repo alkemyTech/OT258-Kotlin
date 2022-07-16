@@ -37,7 +37,7 @@
 
             <TextView
                 android:id="@+id/textView"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="@string/testimonials"
@@ -48,13 +48,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="4dp"
-                android:gravity="center_horizontal"
                 android:paddingVertical="8dp">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvActivityTestimony"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
             </TableRow>
 
             <TableRow
