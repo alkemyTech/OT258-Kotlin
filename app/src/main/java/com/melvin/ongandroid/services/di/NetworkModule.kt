@@ -1,6 +1,6 @@
-package com.melvin.ongandroid.di
+package com.melvin.ongandroid.services.di
 
-import com.melvin.ongandroid.model.data.apiClient.ApiClient
+import com.melvin.ongandroid.services.ApiClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
