@@ -9,7 +9,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingStart="16dp"
         android:paddingTop="16dp"
@@ -34,14 +34,15 @@
                     android:gravity="center_horizontal"
                     android:paddingVertical="8dp">
 
-                    <TextView
-                        android:id="@+id/textView2"
-                        android:layout_width="match_parent"
+                    <!--                TODO: make width responsive (~90% of screen width)-->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/welcome_activities_recycler_view"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="Agregar aqui Hola bienvenidos"
-                        tools:layout_editor_absoluteX="16dp"
-                        tools:layout_editor_absoluteY="32dp" />
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/item_welcome_activities" />
                 </TableRow>
                 <!-- Our Staff Table Row -->
                 <TableRow
@@ -79,15 +80,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:gravity="center_horizontal"
                     android:paddingVertical="8dp">
 
-                    <!-- Testimonials RecyclerView -->
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvActivityTestimony"
-                        android:layout_width="match_parent"
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1" />
+                        android:descendantFocusability="blocksDescendants">
+
+                        <!-- Testimonials RecyclerView -->
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvActivityTestimony"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </RelativeLayout>
                 </TableRow>
 
                 <TableRow
