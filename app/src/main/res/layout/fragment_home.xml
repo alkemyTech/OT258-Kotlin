@@ -3,13 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".view.fragments.homeFragment.HomeFragment">
+
     <data>
         <!-- dataBinding (delete this after using this space) -->
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="16dp">
+
         <!-- MainActivity Scroll View Content -->
         <ScrollView
             android:layout_width="match_parent"
@@ -75,7 +80,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:gravity="center_horizontal"
-                    android:paddingTop="8dp">
+                    android:paddingVertical="8dp">
+
                     <!-- Testimonials RecyclerView -->
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvActivityTestimony"

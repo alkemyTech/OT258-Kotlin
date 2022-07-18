@@ -21,6 +21,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private val testimonialsViewModel: TestimonialsViewModel by viewModels()
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -36,7 +37,6 @@ class HomeFragment : Fragment() {
         getTestimonials()
         testimonialsArrowClick()
     }
-
     //This function start the testimonials query, an gives the response to the recyclerview
     private fun getTestimonials() {
         testimonialsViewModel.onCreate()
@@ -44,7 +44,6 @@ class HomeFragment : Fragment() {
             initTestimonialRecyclerView(it)
         })
     }
-
     //This function init the recyclerview with the query's response
     private fun initTestimonialRecyclerView(list: List<DataModel>) {
         binding.rvActivityTestimony.layoutManager = LinearLayoutManager(requireContext())
@@ -52,7 +51,7 @@ class HomeFragment : Fragment() {
     }
     private fun testimonialsArrowClick(){
         binding.btnTestimonials.setOnClickListener{
-
         }
     }
+
 }

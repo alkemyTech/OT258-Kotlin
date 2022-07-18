@@ -7,7 +7,9 @@ import com.melvin.ongandroid.R
 import com.melvin.ongandroid.databinding.ItemTestimonyBinding
 import com.melvin.ongandroid.model.testimonials.DataModel
 
+
 class TestimonialsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
     private val binding = ItemTestimonyBinding.bind(view)
     fun render(testimony: DataModel) {
         binding.tvName.text = testimony.name.toString()

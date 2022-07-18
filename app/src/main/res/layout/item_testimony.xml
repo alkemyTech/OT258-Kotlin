@@ -15,7 +15,6 @@
         android:background="#fdffa4"
         android:padding="8dp">
 
-
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivTestimony"
             android:layout_width="80dp"

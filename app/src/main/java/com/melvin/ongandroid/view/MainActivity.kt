@@ -11,6 +11,7 @@ import com.melvin.ongandroid.R
 import com.melvin.ongandroid.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
+
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
