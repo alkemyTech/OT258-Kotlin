@@ -3,6 +3,7 @@ package com.melvin.ongandroid.view.adapters.testimonials
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.melvin.ongandroid.R
 import com.melvin.ongandroid.databinding.ItemTestimonyBinding
 import com.melvin.ongandroid.model.testimonials.DataModel
 
@@ -13,6 +14,8 @@ class TestimonialsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         binding.tvTestimony.text = testimony.description.toString()
         Glide.with(binding.ivTestimony.context)
             .load(testimony.image.toString())
+            .placeholder(R.drawable.progress_animation)
+            .error(R.drawable.progress_animation)
             .into(binding.ivTestimony)
     }
 }

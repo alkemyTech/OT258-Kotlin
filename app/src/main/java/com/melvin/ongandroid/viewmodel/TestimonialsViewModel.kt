@@ -10,17 +10,18 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TestimonialsViewModel @Inject constructor(private val testimonialRepository: TestimonialRepository): ViewModel() {
+class TestimonialsViewModel @Inject constructor(private val testimonialRepository: TestimonialRepository) :
+    ViewModel() {
     val testimonialModel = MutableLiveData<List<DataModel>>()
     val isLoading = MutableLiveData<Boolean>()
 
     //This function refresh the testimonials livedata value with the apis response.
     //The "isLoading" value is waiting the query completion, can be use in a future for the implementation of the loading spinner
-    fun onCreate(){
+    fun onCreate() {
         viewModelScope.launch {
             isLoading.postValue(true)
             val result = testimonialRepository.getAllTestimonials()
-            if (result.isNotEmpty()){
+            if (result.isNotEmpty()) {
                 testimonialModel.postValue(result)
                 isLoading.postValue(false)
             }

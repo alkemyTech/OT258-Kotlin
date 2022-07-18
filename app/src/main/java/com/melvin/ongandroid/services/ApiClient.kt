@@ -5,15 +5,15 @@ import retrofit2.Response
 import retrofit2.http.GET
 
 interface ApiClient {
-  /*  //GET request slides from API
-    @GET("slides")
-    suspend fun getSliderList(): Response<SlideResponse>*/
+    /*  //GET request slides from API
+      @GET("slides")
+      suspend fun getSliderList(): Response<SlideResponse>*/
 
     //GET request testimonials from API
     @GET("testimonials")
     suspend fun getTestimonyList(): Response<TestimonialsModel>
 
-   /*  //GET request news from API
-    @GET("news")
-    suspend fun getNewsList(): Response<NewsResponse>*/
+    /*  //GET request news from API
+     @GET("news")
+     suspend fun getNewsList(): Response<NewsResponse>*/
 }
