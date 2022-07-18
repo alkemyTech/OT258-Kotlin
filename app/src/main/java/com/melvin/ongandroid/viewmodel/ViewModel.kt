@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TestimonialsViewModel @Inject constructor(private val getTestimonialsUseCase: GetTestimonialsUseCase) :
+class ViewModel @Inject constructor(private val getTestimonialsUseCase: GetTestimonialsUseCase) :
     ViewModel() {
     val testimonialModel = MutableLiveData<List<DataModel>>()
     val isLoading = MutableLiveData<Boolean>()

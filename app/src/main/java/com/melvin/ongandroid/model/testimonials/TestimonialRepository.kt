@@ -1,7 +1,5 @@
 package com.melvin.ongandroid.model.testimonials
 
-import android.provider.ContactsContract
-import com.melvin.ongandroid.services.ApiClient
 import com.melvin.ongandroid.services.TestimonialsService
 import javax.inject.Inject
 
