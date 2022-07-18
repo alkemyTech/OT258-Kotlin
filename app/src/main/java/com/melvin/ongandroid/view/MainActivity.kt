@@ -4,28 +4,36 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.melvin.ongandroid.R
 import com.melvin.ongandroid.databinding.ActivityMainBinding
-import com.melvin.ongandroid.view.adapters.testimonials.TestimonialsAdapter
+
 
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        initTestimonialRecyclerView()
+
+        // Retrieve NavController from the NavHostFragment
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHostFragment.navController
+
         binding.bnvMainNavigation.setOnNavigationItemSelectedListener(this)
     }
 
     // This function show us the funcionality of the main navigation. MainActivity had to inherit BottomNavigationView class to be able to use this function.
     // This function will be removed after deploying the fragments.
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when (item.itemId){
+        when (item.itemId) {
             R.id.nav_Inicio -> {
                 Toast.makeText(this, "Inicio", Toast.LENGTH_SHORT).show()
                 return true
@@ -48,9 +56,5 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             }
         }
         return false
-    }
-    private fun initTestimonialRecyclerView(){
-        binding.rvActivityTestimony.layoutManager = LinearLayoutManager(this)
-        binding.rvActivityTestimony.adapter = TestimonialsAdapter()
     }
 }

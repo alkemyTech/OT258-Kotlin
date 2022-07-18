@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.melvin.ongandroid.view.fragments.homeFragment.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_staffFragment"
+            app:destination="@id/staffFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_newsFragment"
+            app:destination="@id/newsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_contactFragment"
+            app:destination="@id/contactFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_testimonyFragment"
+            app:destination="@id/testimonyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/staffFragment"
+        android:name="com.melvin.ongandroid.view.fragments.staffFragment.StaffFragment"
+        android:label="fragment_staff"
+        tools:layout="@layout/fragment_staff" >
+        <action
+            android:id="@+id/action_staffFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:launchSingleTop="false"
+            app:popUpTo="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newsFragment"
+        android:name="com.melvin.ongandroid.view.fragments.newsFragment.NewsFragment"
+        android:label="fragment_news"
+        tools:layout="@layout/fragment_news" >
+        <action
+            android:id="@+id/action_newsFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:launchSingleTop="false"
+            app:popUpTo="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/testimonyFragment"
+        android:name="com.melvin.ongandroid.view.fragments.testimonyFragment.TestimonyFragment"
+        android:label="fragment_testimony"
+        tools:layout="@layout/fragment_testimony" >
+        <action
+            android:id="@+id/action_testimonyFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:launchSingleTop="false"
+            app:popUpTo="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/contactFragment"
+        android:name="com.melvin.ongandroid.view.fragments.contactFragment.ContactFragment"
+        android:label="fragment_contact"
+        tools:layout="@layout/fragment_contact" >
+        <action
+            android:id="@+id/action_contactFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:launchSingleTop="false"
+            app:popUpTo="@id/homeFragment" />
+    </fragment>
+</navigation>
