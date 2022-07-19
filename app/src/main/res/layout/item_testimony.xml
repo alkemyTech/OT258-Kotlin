@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--Testimonials Container -->
+
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:layout_margin="8dp">
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="#fdffa4"
         android:padding="8dp">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/ivTestimony1"
+            android:id="@+id/ivTestimony"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginTop="8dp"
@@ -36,12 +39,11 @@
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/ivTestimony1"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintStart_toEndOf="@id/ivTestimony"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/tv1Testimony1"
+                android:id="@+id/tvName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:shadowColor="@color/black"
@@ -50,10 +52,9 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tv2Testimony1"
+                android:id="@+id/tvTestimony"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="3"
                 android:shadowColor="@color/black"
                 android:text="@string/testimony"
                 android:textSize="14sp" />

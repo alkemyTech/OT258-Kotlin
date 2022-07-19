@@ -1,4 +1,4 @@
-package com.melvin.ongandroid.model.data.appController
+package com.melvin.ongandroid
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
