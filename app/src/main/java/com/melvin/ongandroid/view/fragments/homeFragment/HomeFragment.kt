@@ -17,7 +17,7 @@ import com.melvin.ongandroid.view.adapters.testimonials.TestimonialsAdapter
 import com.melvin.ongandroid.viewmodel.ViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import com.melvin.ongandroid.view.adapters.welcome.WelcomeActivitiesAdapter
-import com.melvin.ongandroid.viewmodel.TestimonialStatus
+import com.melvin.ongandroid.viewmodel.Status
 
 
 @AndroidEntryPoint
@@ -43,6 +43,7 @@ class HomeFragment : Fragment() {
         getTestimonials()
         testimonialsArrowClick()
         initWelcomeRecyclerView()
+        validateErrors()
     }
 
     //This function start the testimonials query, an gives the response to the recyclerview
@@ -53,9 +54,9 @@ class HomeFragment : Fragment() {
         })
         viewModel.testimonialStatus.observe(viewLifecycleOwner) {
             when (it) {
-                TestimonialStatus.LOADING -> {}
-                TestimonialStatus.SUCCESS -> {}
-                TestimonialStatus.ERROR -> onLoadError(resources.getString(R.string.on_testimonials_loading_error)) {
+                Status.LOADING -> {}
+                Status.SUCCESS -> {}
+                Status.ERROR -> onLoadError(resources.getString(R.string.on_testimonials_loading_error)) {
                     viewModel.onLoadTestimonials()
                 }
             }
@@ -85,5 +86,10 @@ class HomeFragment : Fragment() {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_INDEFINITE)
             .setAction(resources.getString(R.string.retry)) { retryCB() }
             .show()
+    }
+
+    private fun validateErrors() {
+        if (viewModel.validateError())
+            onLoadError(resources.getString(R.string.generalError)) { viewModel.refresh() }
     }
 }
