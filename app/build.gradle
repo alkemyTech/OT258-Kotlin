@@ -59,7 +59,7 @@ dependencies {
     //Firebase Android BoM (Bill of Materials)
     implementation platform('com.google.firebase:firebase-bom:30.2.0')
     //Firebase SDK for Google Analytics
-    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-analytics-ktx:21.1.0'
     //Firebase Auth
     implementation 'com.google.firebase:firebase-auth-ktx'
 
