@@ -6,8 +6,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.melvin.ongandroid.R
 import com.melvin.ongandroid.model.data.WelcomeActivity
+import com.melvin.ongandroid.model.slides.SlidesDataModel
 
-class WelcomeActivitiesAdapter : RecyclerView.Adapter<WelcomeActivitiesViewHolder>() {
+class WelcomeActivitiesAdapter (var list: List<SlidesDataModel>) : RecyclerView.Adapter<WelcomeActivitiesViewHolder>() {
     companion object DiffCallback : DiffUtil.ItemCallback<WelcomeActivity>() {
         override fun areItemsTheSame(oldItem: WelcomeActivity, newItem: WelcomeActivity): Boolean {
             return oldItem.id == newItem.id
@@ -32,9 +33,9 @@ class WelcomeActivitiesAdapter : RecyclerView.Adapter<WelcomeActivitiesViewHolde
     }
 
     override fun onBindViewHolder(holder: WelcomeActivitiesViewHolder, position: Int) {
-        holder.bind()
+        val item = list[position]
+        holder.bind(item)
     }
 
-    //TODO: fix, hardcoded until API service is implemented
-    override fun getItemCount(): Int = 4
+    override fun getItemCount(): Int = if (list.size<4) list.size-1 else 4
 }

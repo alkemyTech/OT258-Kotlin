@@ -28,15 +28,15 @@
                 android:layout_height="wrap_content">
                 <!-- Welcome Table Row -->
                 <TableRow
+                    android:id="@+id/tlRowBienvenidx"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="4dp"
                     android:gravity="center_horizontal"
                     android:paddingVertical="8dp">
 
-                    <!--                TODO: make width responsive (~90% of screen width)-->
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/welcome_activities_recycler_view"
+                        android:id="@+id/rvWelcomeActivityView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
