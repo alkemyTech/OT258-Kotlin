@@ -20,7 +20,6 @@ class ViewModel @Inject constructor(private val getTestimonialsUseCase: GetTesti
     private val _testimonialStatus = MutableLiveData(TestimonialStatus.SUCCESS)
     val testimonialStatus: LiveData<TestimonialStatus> = _testimonialStatus
 
-
     //This function refresh the testimonials livedata value with the use case response.
     //In case of an API exception the list does not update and the status becomes ERROR
     fun onLoadTestimonials() {
@@ -35,4 +34,15 @@ class ViewModel @Inject constructor(private val getTestimonialsUseCase: GetTesti
             }
         }
     }
+
+   /* //fun to validate the list of requested models from the API
+    fun validate() = (testimonialModel.value.isNullOrEmpty() && slideModel.value.isNullOrEmpty() && newsModel.value.isNullOrEmpty())
+
+    //fun to refresh view if all models empty
+    fun refreshButton(){
+        onCreate()
+        //onCreateSlideModel()
+        //onCreateNewsModel()
+    }
+*/
 }
