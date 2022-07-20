@@ -7,10 +7,10 @@ import javax.inject.Inject
 class SlidesRepository @Inject constructor(private val slidesService: SlidesService) {
     suspend fun getAllSlides(): List<SlidesDataModel>{
         return if (slidesService.getSlides().success){
-            val list = slidesService.getSlides().data
-            list.filter{it.id != null}
-            } else {
-                emptyList()
-            }
+                   val list = slidesService.getSlides().data
+                   list.filter{it.id != null}
+               } else {
+                   emptyList()
+               }
     }
 }

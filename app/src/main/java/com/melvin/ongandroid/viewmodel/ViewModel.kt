@@ -18,6 +18,7 @@ class ViewModel @Inject constructor(private val getTestimonialsUseCase: GetTesti
     val testimonialModel = MutableLiveData<List<DataModel>>()
     val slidesModel = MutableLiveData<List<SlidesDataModel>>()
     val isLoading = MutableLiveData<Boolean>()
+    val slidesCallFailed = MutableLiveData<Boolean>()
 
     //This function refresh the testimonials livedata value with the use case response.
     //The "isLoading" value is waiting the query completion, can be use in a future for the implementation of the loading spinner
@@ -38,6 +39,9 @@ class ViewModel @Inject constructor(private val getTestimonialsUseCase: GetTesti
             var result = getSlidesUseCase()
             if (result.isNotEmpty()){
                 slidesModel.postValue(result)
+                slidesCallFailed.postValue(false)
+            } else {
+                slidesCallFailed.postValue(true)
             }
         }
     }

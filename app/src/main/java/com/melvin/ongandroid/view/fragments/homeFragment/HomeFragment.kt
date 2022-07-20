@@ -62,8 +62,15 @@ class HomeFragment : Fragment() {
     // Start and request the slides list to be used with the recycler view
     private fun getSlides() {
         viewModel.onCreateSlides()
-        viewModel.slidesModel.observe(viewLifecycleOwner, Observer {
-            initWelcomeRecyclerView(it)
+        viewModel.slidesCallFailed.observe(viewLifecycleOwner, Observer { failed ->
+            if (failed){
+                binding.tlRowBienvenidx.visibility = View.GONE
+            } else {
+                binding.tlRowBienvenidx.visibility = View.VISIBLE
+                viewModel.slidesModel.observe(viewLifecycleOwner, Observer {
+                    initWelcomeRecyclerView(it)
+                })
+            }
         })
     }
 
@@ -74,8 +81,6 @@ class HomeFragment : Fragment() {
         if (list.isNotEmpty()){
             binding.rvWelcomeActivityView.adapter = WelcomeActivitiesAdapter(list)
             snapHelper.attachToRecyclerView(binding.rvWelcomeActivityView)
-        } else {
-            binding.tlRowBienvenidx.visibility = View.GONE
         }
     }
 }
