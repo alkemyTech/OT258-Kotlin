@@ -44,6 +44,7 @@
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/item_welcome_activities"/>
 
+                    <!-- This layout comes up when the slides apis call failed -->
                     <LinearLayout
                         android:id="@+id/llErrorSlidesCall"
                         android:layout_width="match_parent"

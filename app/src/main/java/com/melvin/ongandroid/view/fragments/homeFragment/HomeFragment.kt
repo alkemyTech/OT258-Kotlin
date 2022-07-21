@@ -61,6 +61,7 @@ class HomeFragment : Fragment() {
     }
 
     // Start and request the slides list to be used with the recycler view
+    // Also, hide views depending on the state of the call
     private fun getSlides() {
         viewModel.onCreateSlides()
         viewModel.slidesCallFailed.observe(viewLifecycleOwner, Observer { failed ->
