@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import com.google.android.material.snackbar.Snackbar
 import com.melvin.ongandroid.R
 import com.melvin.ongandroid.databinding.FragmentHomeBinding
+import com.melvin.ongandroid.model.slides.SlidesDataModel
 import com.melvin.ongandroid.model.testimonials.DataModel
 import com.melvin.ongandroid.view.adapters.testimonials.TestimonialsAdapter
 import com.melvin.ongandroid.viewmodel.ViewModel
@@ -27,7 +28,6 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: ViewModel by viewModels()
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -42,12 +42,13 @@ class HomeFragment : Fragment() {
         }
         getTestimonials()
         testimonialsArrowClick()
-        initWelcomeRecyclerView()
+        getSlides()
         validateErrors()
     }
 
     //This function start the testimonials query, an gives the response to the recyclerview
     private fun getTestimonials() {
+
         viewModel.onLoadTestimonials()
         viewModel.testimonials.observe(viewLifecycleOwner, Observer {
             initTestimonialRecyclerView(it)
@@ -56,7 +57,7 @@ class HomeFragment : Fragment() {
             when (it) {
                 Status.LOADING -> {}
                 Status.SUCCESS -> {}
-                Status.ERROR -> onLoadError(resources.getString(R.string.on_testimonials_loading_error)) {
+                Status.ERROR -> if (!viewModel.validateError()) onLoadError(resources.getString(R.string.on_testimonials_loading_error)) {
                     viewModel.onLoadTestimonials()
                 }
             }
@@ -74,12 +75,29 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun initWelcomeRecyclerView() {
-        val adapter = WelcomeActivitiesAdapter()
+    // Start and request the slides list to be used with the recycler view
+    private fun getSlides() {
+        viewModel.onCreateSlides()
+        viewModel.slidesCallFailed.observe(viewLifecycleOwner, Observer { failed ->
+            if (failed) {
+                binding.tlRowBienvenidx.visibility = View.GONE
+            } else {
+                binding.tlRowBienvenidx.visibility = View.VISIBLE
+                viewModel.slidesModel.observe(viewLifecycleOwner, Observer {
+                    initWelcomeRecyclerView(it)
+                })
+            }
+        })
+    }
+
+    // Init the recyclerview with the query's response
+    private fun initWelcomeRecyclerView(list: List<SlidesDataModel>) {
         //helper to snap cards in the center of the screen
         val snapHelper = LinearSnapHelper()
-        binding.welcomeActivitiesRecyclerView.adapter = adapter
-        snapHelper.attachToRecyclerView(binding.welcomeActivitiesRecyclerView)
+        if (list.isNotEmpty()) {
+            binding.rvWelcomeActivityView.adapter = WelcomeActivitiesAdapter(list)
+            snapHelper.attachToRecyclerView(binding.rvWelcomeActivityView)
+        }
     }
 
     private fun onLoadError(message: String, retryCB: () -> Unit) {
@@ -89,7 +107,13 @@ class HomeFragment : Fragment() {
     }
 
     private fun validateErrors() {
-        if (viewModel.validateError())
-            onLoadError(resources.getString(R.string.generalError)) { viewModel.refresh() }
+        viewModel.setValidateStatus()
+        viewModel.validateStatus.observe(viewLifecycleOwner, Observer {
+            if (it == true) {
+                onLoadError(resources.getString(R.string.generalError)) { viewModel.refresh() }
+            }
+        }
+        )
     }
 }
+
