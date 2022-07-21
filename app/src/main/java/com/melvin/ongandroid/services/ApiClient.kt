@@ -10,9 +10,9 @@ interface ApiClient {
       @GET("slides")
       suspend fun getSliderList(): Response<SlidesModel>
 
-    //GET request testimonials from API
-    @GET("testimonials")
-    suspend fun getTestimonyList(): Response<TestimonialsModel>
+      //GET request testimonials from API
+      @GET("testimonials")
+      suspend fun getTestimonyList(): Response<TestimonialsModel>
 
     /*  //GET request news from API
      @GET("news")

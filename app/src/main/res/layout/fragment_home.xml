@@ -42,7 +42,33 @@
                         android:gravity="center_horizontal"
                         android:orientation="horizontal"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/item_welcome_activities" />
+                        tools:listitem="@layout/item_welcome_activities"/>
+
+                    <!-- This layout comes up when the slides apis call failed -->
+                    <LinearLayout
+                        android:id="@+id/llErrorSlidesCall"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="@string/informationError"
+                            android:layout_margin="10dp"/>
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btnRetrySlidesCall"
+                            android:layout_width="120dp"
+                            android:layout_height="40dp"
+                            android:text="@string/retryCall"
+                            android:paddingStart="4dp"
+                            android:paddingEnd="4dp"
+                            android:layout_gravity="center"
+                            android:drawableStart="@drawable/ic_baseline_retry"
+                            android:background="@drawable/bg_retry"/>
+                    </LinearLayout>
+
                 </TableRow>
                 <!-- Our Staff Table Row -->
                 <TableRow
