@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +19,7 @@ import com.melvin.ongandroid.view.adapters.testimonials.TestimonialsAdapter
 import com.melvin.ongandroid.viewmodel.ViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import com.melvin.ongandroid.view.adapters.welcome.WelcomeActivitiesAdapter
+import com.melvin.ongandroid.viewmodel.Errors
 import com.melvin.ongandroid.viewmodel.Status
 
 
@@ -40,11 +42,19 @@ class HomeFragment : Fragment() {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
         }
+        initComponent()
+    }
+
+    private fun initComponent() {
         getTestimonials()
         testimonialsArrowClick()
         getSlides()
-      //  validateErrors()
         setUpListeners()
+        viewModel.apiStatus.observe(viewLifecycleOwner, Observer {
+            if (it == Errors.ALL) {
+                onLoadError(resources.getString(R.string.generalError)) { viewModel.refresh() }
+            }
+        })
     }
 
     //This function start the testimonials query, an gives the response to the recyclerview
@@ -57,8 +67,10 @@ class HomeFragment : Fragment() {
             when (it) {
                 Status.LOADING -> {}
                 Status.SUCCESS -> {}
-                Status.ERROR -> if (!viewModel.validateError()) onLoadError(resources.getString(R.string.on_testimonials_loading_error)) {
-                    viewModel.onLoadTestimonials()
+                Status.ERROR -> if (!viewModel.validateError()) {
+                    onLoadError(resources.getString(R.string.on_testimonials_loading_error)) {
+                        viewModel.onLoadTestimonials()
+                    }
                 }
             }
         }
@@ -90,7 +102,8 @@ class HomeFragment : Fragment() {
                     initWelcomeRecyclerView(it)
                 })
             }
-        })
+        }
+        )
     }
 
     // Init the recyclerview with the query's response
@@ -109,16 +122,6 @@ class HomeFragment : Fragment() {
             .show()
     }
 
-    private fun validateErrors() {
-        viewModel.setValidateStatus()
-        viewModel.validateStatus.observe(viewLifecycleOwner, Observer {
-            if (it == true) {
-                onLoadError(resources.getString(R.string.generalError)) { viewModel.refresh() }
-            }
-        }
-        )
-    }
-
     // This function allows us to set up listeners
     private fun setUpListeners() {
         binding.btnRetrySlidesCall.setOnClickListener {
@@ -126,3 +129,4 @@ class HomeFragment : Fragment() {
         }
     }
 }
+
