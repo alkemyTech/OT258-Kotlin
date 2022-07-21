@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import com.google.android.material.snackbar.Snackbar
 import com.melvin.ongandroid.R
 import com.melvin.ongandroid.databinding.FragmentHomeBinding
+import com.melvin.ongandroid.model.slides.SlidesDataModel
 import com.melvin.ongandroid.model.testimonials.DataModel
 import com.melvin.ongandroid.view.adapters.testimonials.TestimonialsAdapter
 import com.melvin.ongandroid.viewmodel.ViewModel
@@ -27,7 +28,6 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: ViewModel by viewModels()
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -42,7 +42,8 @@ class HomeFragment : Fragment() {
         }
         getTestimonials()
         testimonialsArrowClick()
-        initWelcomeRecyclerView()
+        getSlides()
+        setUpListeners()
     }
 
     //This function start the testimonials query, an gives the response to the recyclerview
@@ -68,22 +69,49 @@ class HomeFragment : Fragment() {
         binding.rvActivityTestimony.adapter = TestimonialsAdapter(list)
     }
 
-    private fun testimonialsArrowClick() {
-        binding.btnTestimonials.setOnClickListener {
+
+    private fun testimonialsArrowClick(){
+        binding.btnTestimonials.setOnClickListener{
         }
     }
 
-    private fun initWelcomeRecyclerView() {
-        val adapter = WelcomeActivitiesAdapter()
+    // Start and request the slides list to be used with the recycler view
+    // Also, hide views depending on the state of the call
+    private fun getSlides() {
+        viewModel.onCreateSlides()
+        viewModel.slidesCallFailed.observe(viewLifecycleOwner, Observer { failed ->
+            if (failed){
+                binding.rvWelcomeActivityView.visibility = View.GONE
+                binding.llErrorSlidesCall.visibility = View.VISIBLE
+            } else {
+                binding.rvWelcomeActivityView.visibility = View.VISIBLE
+                binding.llErrorSlidesCall.visibility = View.GONE
+                viewModel.slidesModel.observe(viewLifecycleOwner, Observer {
+                    initWelcomeRecyclerView(it)
+                })
+            }
+        })
+    }
+
+    // Init the recyclerview with the query's response
+    private fun initWelcomeRecyclerView(list: List<SlidesDataModel>){
         //helper to snap cards in the center of the screen
         val snapHelper = LinearSnapHelper()
-        binding.welcomeActivitiesRecyclerView.adapter = adapter
-        snapHelper.attachToRecyclerView(binding.welcomeActivitiesRecyclerView)
+        if (list.isNotEmpty()){
+            binding.rvWelcomeActivityView.adapter = WelcomeActivitiesAdapter(list)
+            snapHelper.attachToRecyclerView(binding.rvWelcomeActivityView)
+        }
     }
 
     private fun onLoadError(message: String, retryCB: () -> Unit) {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_INDEFINITE)
             .setAction(resources.getString(R.string.retry)) { retryCB() }
             .show()
+    }
+    // This function allows us to set up listeners
+    private fun setUpListeners(){
+        binding.btnRetrySlidesCall.setOnClickListener {
+            viewModel.onCreateSlides()
+        }
     }
 }
