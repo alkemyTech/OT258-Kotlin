@@ -71,6 +71,7 @@ class HomeFragment : Fragment() {
                     onLoadError(resources.getString(R.string.on_testimonials_loading_error)) {
                         viewModel.onLoadTestimonials()
                     }
+
                 }
             }
         }
@@ -82,8 +83,8 @@ class HomeFragment : Fragment() {
         binding.rvActivityTestimony.adapter = TestimonialsAdapter(list)
     }
 
-    private fun testimonialsArrowClick() {
-        binding.btnTestimonials.setOnClickListener {
+    private fun testimonialsArrowClick(){
+        binding.btnTestimonials.setOnClickListener{
         }
     }
 
@@ -122,7 +123,7 @@ class HomeFragment : Fragment() {
             .show()
     }
 
-    // This function allows us to set up listeners
+// This function allows us to set up listeners
     private fun setUpListeners() {
         binding.btnRetrySlidesCall.setOnClickListener {
             viewModel.onCreateSlides()
