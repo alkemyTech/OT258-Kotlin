@@ -11,4 +11,6 @@
     <!-- HOME FRAGMENT -->
     <string name="retryCall">Reintentar</string>
     <string name="informationError">A ocurrido un error obteniendo la información</string>
+    <string name="news_view_title">Novedades</string>
 </resources>
+
