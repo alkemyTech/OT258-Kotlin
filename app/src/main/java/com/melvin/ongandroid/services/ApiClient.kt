@@ -7,7 +7,7 @@ import retrofit2.http.GET
 
 interface ApiClient {
       //GET request slides from API
-      @GET("slidess")
+      @GET("slides")
       suspend fun getSliderList(): Response<SlidesModel>
 
       //GET request testimonials from API
