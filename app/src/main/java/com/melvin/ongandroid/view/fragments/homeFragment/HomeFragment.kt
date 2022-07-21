@@ -9,6 +9,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
+import com.google.android.material.snackbar.Snackbar
+import com.melvin.ongandroid.R
 import com.melvin.ongandroid.databinding.FragmentHomeBinding
 import com.melvin.ongandroid.model.slides.SlidesDataModel
 import com.melvin.ongandroid.model.testimonials.DataModel
@@ -16,6 +18,7 @@ import com.melvin.ongandroid.view.adapters.testimonials.TestimonialsAdapter
 import com.melvin.ongandroid.viewmodel.ViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import com.melvin.ongandroid.view.adapters.welcome.WelcomeActivitiesAdapter
+import com.melvin.ongandroid.viewmodel.TestimonialStatus
 
 
 @AndroidEntryPoint
@@ -42,18 +45,30 @@ class HomeFragment : Fragment() {
         getSlides()
         setUpListeners()
     }
+
     //This function start the testimonials query, an gives the response to the recyclerview
     private fun getTestimonials() {
-        viewModel.onCreate()
-        viewModel.testimonialModel.observe(viewLifecycleOwner, Observer {
+        viewModel.onLoadTestimonials()
+        viewModel.testimonials.observe(viewLifecycleOwner, Observer {
             initTestimonialRecyclerView(it)
         })
+        viewModel.testimonialStatus.observe(viewLifecycleOwner) {
+            when (it) {
+                TestimonialStatus.LOADING -> {}
+                TestimonialStatus.SUCCESS -> {}
+                TestimonialStatus.ERROR -> onLoadError(resources.getString(R.string.on_testimonials_loading_error)) {
+                    viewModel.onLoadTestimonials()
+                }
+            }
+        }
     }
+
     //This function init the recyclerview with the query's response
     private fun initTestimonialRecyclerView(list: List<DataModel>) {
         binding.rvActivityTestimony.layoutManager = LinearLayoutManager(requireContext())
         binding.rvActivityTestimony.adapter = TestimonialsAdapter(list)
     }
+
 
     private fun testimonialsArrowClick(){
         binding.btnTestimonials.setOnClickListener{
@@ -88,6 +103,11 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun onLoadError(message: String, retryCB: () -> Unit) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_INDEFINITE)
+            .setAction(resources.getString(R.string.retry)) { retryCB() }
+            .show()
+    }
     // This function allows us to set up listeners
     private fun setUpListeners(){
         binding.btnRetrySlidesCall.setOnClickListener {
