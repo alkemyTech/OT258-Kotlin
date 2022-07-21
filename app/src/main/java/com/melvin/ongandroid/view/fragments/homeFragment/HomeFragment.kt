@@ -43,12 +43,12 @@ class HomeFragment : Fragment() {
         getTestimonials()
         testimonialsArrowClick()
         getSlides()
-        validateErrors()
+      //  validateErrors()
+        setUpListeners()
     }
 
     //This function start the testimonials query, an gives the response to the recyclerview
     private fun getTestimonials() {
-
         viewModel.onLoadTestimonials()
         viewModel.testimonials.observe(viewLifecycleOwner, Observer {
             initTestimonialRecyclerView(it)
@@ -76,13 +76,16 @@ class HomeFragment : Fragment() {
     }
 
     // Start and request the slides list to be used with the recycler view
+    // Also, hide views depending on the state of the call
     private fun getSlides() {
         viewModel.onCreateSlides()
         viewModel.slidesCallFailed.observe(viewLifecycleOwner, Observer { failed ->
             if (failed) {
-                binding.tlRowBienvenidx.visibility = View.GONE
+                binding.rvWelcomeActivityView.visibility = View.GONE
+                binding.llErrorSlidesCall.visibility = View.VISIBLE
             } else {
-                binding.tlRowBienvenidx.visibility = View.VISIBLE
+                binding.rvWelcomeActivityView.visibility = View.VISIBLE
+                binding.llErrorSlidesCall.visibility = View.GONE
                 viewModel.slidesModel.observe(viewLifecycleOwner, Observer {
                     initWelcomeRecyclerView(it)
                 })
@@ -115,5 +118,11 @@ class HomeFragment : Fragment() {
         }
         )
     }
-}
 
+    // This function allows us to set up listeners
+    private fun setUpListeners() {
+        binding.btnRetrySlidesCall.setOnClickListener {
+            viewModel.onCreateSlides()
+        }
+    }
+}

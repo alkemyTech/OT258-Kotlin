@@ -9,4 +9,6 @@
     <string name="retry">Reintentar</string>
     <string name="generalError">Inicio - Error general</string>
     <string name="on_testimonials_loading_error">Something went wrong, couldn\'t load testimonials</string>
+    <string name="retryCall">Reintentar</string>
+    <string name="informationError">A ocurrido un error obteniendo la información</string>
 </resources>

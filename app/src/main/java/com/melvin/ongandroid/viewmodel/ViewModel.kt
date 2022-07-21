@@ -11,7 +11,6 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 enum class Status { LOADING, SUCCESS, ERROR }
-data class ModelStatus(var testimonialsModel: DataModel, var slideModel: SlidesDataModel)
 
 @HiltViewModel
 class ViewModel @Inject constructor(
@@ -25,7 +24,7 @@ class ViewModel @Inject constructor(
     private val _testimonialStatus = MutableLiveData(Status.SUCCESS)
     val testimonialStatus: LiveData<Status> = _testimonialStatus
 
-    private val _slideStatus = MutableLiveData(Status.ERROR)
+    private val _slideStatus = MutableLiveData(Status.SUCCESS)
     val slideStatus: LiveData<Status> = _slideStatus
 
     private val _newsStatus = MutableLiveData(Status.ERROR)
