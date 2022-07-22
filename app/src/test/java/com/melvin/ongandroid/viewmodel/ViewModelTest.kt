@@ -71,7 +71,6 @@ class ViewModelTest {
         assert(viewModel.testimonialStatus.value == Status.ERROR)
     }
 
-
     @Test
     fun `when onCreateSlides is called get list of slidesDataModel `() = runTest {
         //GIVEN
@@ -102,65 +101,66 @@ class ViewModelTest {
 
     }
 
+    @Test
+    fun `is refresh() call when onLoadTestimonials() and onCreateSlides() successfully`() =
+        runTest {
+            //GIVEN
+            val listOfDataModel = LIST_DATA_MODEL
+            coEvery { getTestimonialsUseCase() } returns listOfDataModel
+
+            val listOfSlidesDataModel = LIST__SLIDE_DATA_MODEL
+            coEvery { getSlidesUseCase() } returns listOfSlidesDataModel
+
+            //WHEN
+            viewModel.refresh()
+
+            //THEN
+            assert(viewModel.testimonials.value == listOfDataModel)
+            assert(viewModel.testimonialStatus.value == Status.SUCCESS)
+            assert(viewModel.slidesModel.value == listOfSlidesDataModel)
+            assert(viewModel.slideStatus.value == Status.SUCCESS)
+            assert(viewModel.slidesCallFailed.value == false)
+        }
 
     @Test
-    fun `is refresh() call when onLoadTestimonials() and onCreateSlides() successfully`() = runTest {
-        //GIVEN
-        val listOfDataModel = LIST_DATA_MODEL
-        coEvery { getTestimonialsUseCase() } returns listOfDataModel
+    fun `is refresh() call when onLoadTestimonials() successfully and onCreateSlides() failed`() =
+        runTest {
+            //GIVEN
+            val listOfDataModel = LIST_DATA_MODEL
+            coEvery { getTestimonialsUseCase() } returns listOfDataModel
 
-        val listOfSlidesDataModel = LIST__SLIDE_DATA_MODEL
-        coEvery { getSlidesUseCase() } returns listOfSlidesDataModel
+            val listOfSlidesDataModel = emptyList<SlidesDataModel>()
+            coEvery { getSlidesUseCase() } returns listOfSlidesDataModel
 
-        //WHEN
-        viewModel.refresh()
+            //WHEN
+            viewModel.refresh()
 
-        //THEN
-        assert(viewModel.testimonials.value == listOfDataModel)
-        assert(viewModel.testimonialStatus.value == Status.SUCCESS)
-        assert(viewModel.slidesModel.value == listOfSlidesDataModel)
-        assert(viewModel.slideStatus.value == Status.SUCCESS)
-        assert(viewModel.slidesCallFailed.value == false)
-    }
-
-    @Test
-    fun `is refresh() call when onLoadTestimonials() successfully and onCreateSlides() failed`() = runTest {
-        //GIVEN
-        val listOfDataModel = LIST_DATA_MODEL
-        coEvery { getTestimonialsUseCase() } returns listOfDataModel
-
-        val listOfSlidesDataModel = emptyList<SlidesDataModel>()
-        coEvery { getSlidesUseCase() } returns listOfSlidesDataModel
-
-        //WHEN
-        viewModel.refresh()
-
-        //THEN
-        assert(viewModel.testimonials.value == listOfDataModel)
-        assert(viewModel.testimonialStatus.value == Status.SUCCESS)
-        assert(viewModel.slideStatus.value == Status.ERROR)
-        assert(viewModel.slidesCallFailed.value == true)
-    }
-
+            //THEN
+            assert(viewModel.testimonials.value == listOfDataModel)
+            assert(viewModel.testimonialStatus.value == Status.SUCCESS)
+            assert(viewModel.slideStatus.value == Status.ERROR)
+            assert(viewModel.slidesCallFailed.value == true)
+        }
 
     @Test
-    fun `is refresh() call when onLoadTestimonials() failed and onCreateSlides() successfully`() = runTest {
-        //GIVEN
-        val listOfDataModel = emptyList<DataModel>()
-        coEvery { getTestimonialsUseCase() } returns listOfDataModel
+    fun `is refresh() call when onLoadTestimonials() failed and onCreateSlides() successfully`() =
+        runTest {
+            //GIVEN
+            val listOfDataModel = emptyList<DataModel>()
+            coEvery { getTestimonialsUseCase() } returns listOfDataModel
 
-        val listOfSlidesDataModel = LIST__SLIDE_DATA_MODEL
-        coEvery { getSlidesUseCase() } returns listOfSlidesDataModel
+            val listOfSlidesDataModel = LIST__SLIDE_DATA_MODEL
+            coEvery { getSlidesUseCase() } returns listOfSlidesDataModel
 
-        //WHEN
-        viewModel.refresh()
+            //WHEN
+            viewModel.refresh()
 
-        //THEN
-        assert(viewModel.testimonialStatus.value == Status.ERROR)
-        assert(viewModel.slidesModel.value == listOfSlidesDataModel)
-        assert(viewModel.slideStatus.value == Status.SUCCESS)
-        assert(viewModel.slidesCallFailed.value == false)
-    }
+            //THEN
+            assert(viewModel.testimonialStatus.value == Status.ERROR)
+            assert(viewModel.slidesModel.value == listOfSlidesDataModel)
+            assert(viewModel.slideStatus.value == Status.SUCCESS)
+            assert(viewModel.slidesCallFailed.value == false)
+        }
 
     @Test
     fun `is refresh() call when onLoadTestimonials() and onCreateSlides() failed`() = runTest {
