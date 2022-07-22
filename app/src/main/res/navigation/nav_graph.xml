@@ -47,9 +47,9 @@
     </fragment>
     <fragment
         android:id="@+id/testimonyFragment"
-        android:name="com.melvin.ongandroid.view.fragments.testimonyFragment.TestimonyFragment"
+        android:name="com.melvin.ongandroid.view.fragments.activitiesFragment.ActivitiesFragment"
         android:label="fragment_testimony"
-        tools:layout="@layout/fragment_testimony" >
+        tools:layout="@layout/fragment_activities" >
         <action
             android:id="@+id/action_testimonyFragment_to_homeFragment"
             app:destination="@id/homeFragment"
