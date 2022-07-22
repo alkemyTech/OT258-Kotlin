@@ -3,27 +3,27 @@
 <!-- These are the main navigation items (buttons) of mainActivity -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/nav_Inicio"
+        android:id="@+id/homeFragment"
         android:title="Inicio"
         android:icon="@drawable/ic_main_nav_home"/>
 
     <item
-        android:id="@+id/nav_Staff"
+        android:id="@+id/staffFragment"
         android:title="Staff"
         android:icon="@drawable/ic_main_nav_staff"/>
 
     <item
-        android:id="@+id/nav_News"
+        android:id="@+id/newsFragment"
         android:title="Novedades"
         android:icon="@drawable/ic_main_nav_news"/>
 
     <item
-        android:id="@+id/nav_Social"
+        android:id="@+id/testimonyFragment"
         android:title="Contribuir"
         android:icon="@drawable/ic_main_nav_social"/>
 
     <item
-        android:id="@+id/nav_Contact"
+        android:id="@+id/contactFragment"
         android:title="Contacto"
         android:icon="@drawable/ic_main_nav_contact"/>
 </menu>
