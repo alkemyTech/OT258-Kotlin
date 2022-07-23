@@ -92,7 +92,7 @@ class ViewModel @Inject constructor(
     // Recover the slides list to be used with the MutableLiveData of Slides list
     fun onCreateSlides() {
         viewModelScope.launch {
-            var result = getSlidesUseCase()
+            val result = getSlidesUseCase()
             if (result.isNotEmpty()) {
                 _slidesModel.postValue(result)
                 slidesCallFailed.postValue(false)
@@ -103,11 +103,6 @@ class ViewModel @Inject constructor(
             }
         }
     }
-
-    fun validateError(): Boolean = (testimonialStatus.value == Status.ERROR &&
-            slideStatus.value == Status.ERROR &&
-            newsStatus.value == Status.ERROR
-            )
 
     //fun to reload apiCalls
     fun refresh() {

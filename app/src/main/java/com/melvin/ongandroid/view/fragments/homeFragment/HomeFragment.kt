@@ -67,11 +67,8 @@ class HomeFragment : Fragment() {
             when (it) {
                 Status.LOADING -> {}
                 Status.SUCCESS -> {}
-                Status.ERROR -> if (!viewModel.validateError()) {
-                    onLoadError(resources.getString(R.string.on_testimonials_loading_error)) {
+                Status.ERROR -> onLoadError(resources.getString(R.string.on_testimonials_loading_error)) {
                         viewModel.onLoadTestimonials()
-                    }
-
                 }
             }
         }
