@@ -2,8 +2,10 @@ package com.melvin.ongandroid.viewmodel
 
 import androidx.lifecycle.*
 import androidx.lifecycle.ViewModel
+import com.melvin.ongandroid.businesslogic.GetActivitiesUseCase
 import com.melvin.ongandroid.businesslogic.GetTestimonialsUseCase
 import com.melvin.ongandroid.businesslogic.getSlidesUseCase
+import com.melvin.ongandroid.model.activities.ActivitiesDataModel
 import com.melvin.ongandroid.model.slides.SlidesDataModel
 import com.melvin.ongandroid.model.testimonials.DataModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,6 +19,7 @@ enum class Errors { TESTIMONIALS, NEWS, SLIDE, ALL }
 class ViewModel @Inject constructor(
     private val getTestimonialsUseCase: GetTestimonialsUseCase,
     private val getSlidesUseCase: getSlidesUseCase,
+    private val getActivitiesUseCase: GetActivitiesUseCase,
 ) :
     ViewModel() {
     private val _testimonials = MutableLiveData<List<DataModel>>()
@@ -32,11 +35,16 @@ class ViewModel @Inject constructor(
     private val _newsStatus = MutableLiveData(Status.ERROR)
     val newsStatus: LiveData<Status> = _newsStatus
 
-
     private val _slidesModel = MutableLiveData<List<SlidesDataModel>>()
     val slidesModel: LiveData<List<SlidesDataModel>> = _slidesModel
 
     val slidesCallFailed = MutableLiveData<Boolean>()
+
+    private val _activities = MutableLiveData<List<ActivitiesDataModel>>()
+    val activities: LiveData<List<ActivitiesDataModel>> = _activities
+
+    private val _activitiesStatus = MutableLiveData<Status>()
+    val activitiesStatus: LiveData<Status> = _activitiesStatus
 
     //val Mediator to observe States of apiCall response
     val apiStatus = MediatorLiveData<Errors>().apply {
@@ -101,6 +109,19 @@ class ViewModel @Inject constructor(
                 slidesCallFailed.postValue(true)
                 _slideStatus.postValue(Status.ERROR)
             }
+        }
+    }
+
+    //this function retrieves the list of activities and sets activitiesStatus
+    fun onLoadActivities() {
+        viewModelScope.launch {
+            _activitiesStatus.postValue(Status.LOADING)
+            val result = getActivitiesUseCase()
+            if (result.isNotEmpty()) {
+                _activities.postValue(result)
+                _activitiesStatus.postValue(Status.SUCCESS)
+            } else
+                _activitiesStatus.postValue(Status.ERROR)
         }
     }
 

@@ -4,8 +4,12 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil.setContentView
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI.setupWithNavController
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.melvin.ongandroid.R
 import com.melvin.ongandroid.databinding.ActivityMainBinding
@@ -13,7 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(){
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
@@ -27,34 +31,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         val navHostFragment = binding.navHostFragment.getFragment() as NavHostFragment
         navController = navHostFragment.navController
 
-        binding.bnvMainNavigation.setOnNavigationItemSelectedListener(this)
-    }
-
-    // This function show us the funcionality of the main navigation. MainActivity had to inherit BottomNavigationView class to be able to use this function.
-    // This function will be removed after deploying the fragments.
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.nav_Inicio -> {
-                Toast.makeText(this, "Inicio", Toast.LENGTH_SHORT).show()
-                return true
-            }
-            R.id.nav_Staff -> {
-                Toast.makeText(this, "Staff", Toast.LENGTH_SHORT).show()
-                return true
-            }
-            R.id.nav_News -> {
-                Toast.makeText(this, "Novedades", Toast.LENGTH_SHORT).show()
-                return true
-            }
-            R.id.nav_Social -> {
-                Toast.makeText(this, "Contribuir", Toast.LENGTH_SHORT).show()
-                return true
-            }
-            R.id.nav_Contact -> {
-                Toast.makeText(this, "Contacto", Toast.LENGTH_SHORT).show()
-                return true
-            }
-        }
-        return false
+        //  binding.bnvMainNavigation.setOnNavigationItemSelectedListener(this)
+        binding.bnvMainNavigation.setupWithNavController(navController)
     }
 }

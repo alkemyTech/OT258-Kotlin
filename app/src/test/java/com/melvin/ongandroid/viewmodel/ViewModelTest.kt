@@ -1,6 +1,7 @@
 package com.melvin.ongandroid.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.melvin.ongandroid.businesslogic.GetActivitiesUseCase
 import com.melvin.ongandroid.businesslogic.GetTestimonialsUseCase
 import com.melvin.ongandroid.businesslogic.getSlidesUseCase
 import com.melvin.ongandroid.model.slides.SlidesDataModel
@@ -27,6 +28,10 @@ class ViewModelTest {
     @MockK
     private lateinit var getSlidesUseCase: getSlidesUseCase
 
+    @MockK
+    private lateinit var getActivitiesUseCase: GetActivitiesUseCase
+
+
     private lateinit var viewModel: ViewModel
 
     @get: Rule
@@ -35,7 +40,7 @@ class ViewModelTest {
     @Before
     fun setup() {
         MockKAnnotations.init(this)
-        viewModel = ViewModel(getTestimonialsUseCase, getSlidesUseCase)
+        viewModel = ViewModel(getTestimonialsUseCase, getSlidesUseCase, getActivitiesUseCase)
         Dispatchers.setMain(Dispatchers.Unconfined)
     }
 

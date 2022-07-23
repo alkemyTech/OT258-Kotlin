@@ -10,8 +10,7 @@ class ActivitiesRepository @Inject constructor(private val activitiesService: Ac
         return if (activitiesService.getActivities().success) {
             val list = activitiesService.getActivities().data
             list.filter { it.id != null }
-        } else {
+        } else
             emptyList()
-        }
     }
 }
