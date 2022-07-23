@@ -12,4 +12,5 @@
     <string name="retryCall">Reintentar</string>
     <string name="informationError">A ocurrido un error obteniendo la información</string>
     <string name="an_error_has_occurred_obtaining_the_information">Ha ocurrido un error obteniendo la información</string>
+    <string name="activities_title">Actividades</string>
 </resources>
