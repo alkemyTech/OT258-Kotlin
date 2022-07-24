@@ -4,9 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.melvin.ongandroid.R
-import com.melvin.ongandroid.model.testimonials.DataModel
 
-class StaffAdapter(): RecyclerView.Adapter<StaffViewHolder>() {
+class StaffAdapter() : RecyclerView.Adapter<StaffViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StaffViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         return StaffViewHolder(layoutInflater.inflate(R.layout.item_staff, parent, false))
