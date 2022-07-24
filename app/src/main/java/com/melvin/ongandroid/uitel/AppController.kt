@@ -1,4 +1,4 @@
-package com.melvin.ongandroid
+package com.melvin.ongandroid.uitel
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
