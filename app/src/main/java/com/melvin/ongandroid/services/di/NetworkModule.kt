@@ -21,6 +21,7 @@ object NetworkModule {
             .baseUrl("http://ongapi.alkemy.org/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+
     }
 
     //get ApiClient

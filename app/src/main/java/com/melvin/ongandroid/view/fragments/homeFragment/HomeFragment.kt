@@ -1,10 +1,12 @@
 package com.melvin.ongandroid.view.fragments.homeFragment
 
 import android.os.Bundle
+import android.os.Handler
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -13,14 +15,23 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import com.google.android.material.snackbar.Snackbar
 import com.melvin.ongandroid.R
 import com.melvin.ongandroid.databinding.FragmentHomeBinding
+import com.melvin.ongandroid.model.news.NewsList
+import com.melvin.ongandroid.model.news.NewsRepository
 import com.melvin.ongandroid.model.slides.SlidesDataModel
 import com.melvin.ongandroid.model.testimonials.DataModel
+import com.melvin.ongandroid.services.di.NetworkModule
+import com.melvin.ongandroid.uitel.LoadingDialog
+import com.melvin.ongandroid.view.adapters.news.NewsAdapter
 import com.melvin.ongandroid.view.adapters.testimonials.TestimonialsAdapter
 import com.melvin.ongandroid.viewmodel.ViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import com.melvin.ongandroid.view.adapters.welcome.WelcomeActivitiesAdapter
 import com.melvin.ongandroid.viewmodel.Errors
+import com.melvin.ongandroid.viewmodel.NewsViewModel
 import com.melvin.ongandroid.viewmodel.Status
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -43,6 +54,8 @@ class HomeFragment : Fragment() {
             lifecycleOwner = viewLifecycleOwner
         }
         initComponent()
+
+
     }
 
     private fun initComponent() {
@@ -120,11 +133,39 @@ class HomeFragment : Fragment() {
             .show()
     }
 
+
+
 // This function allows us to set up listeners
     private fun setUpListeners() {
         binding.btnRetrySlidesCall.setOnClickListener {
             viewModel.onCreateSlides()
         }
     }
+
+                            // Error News
+
+    private fun tryNews(viewModel: NewsViewModel, binding: FragmentHomeBinding) {
+        val newsFragment = viewModel.newsList.value
+
+        if(newsFragment == null ) {
+            error()
+        } else {
+//             updateNews()
+        }
+
+    }
+
+    fun error() {
+        Toast.makeText(this, " Error!!, Ha ocurrido un error obteniendo la información...", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun updateNews(newsRepository: MutableList<NewsRepository>, newsList: List<NewsRepository>,viewModel: NewsViewModel) {
+        binding.btnReintentar.setOnClickListener(View.OnClickListener {
+            newsRepository.clear()
+            newsRepository.addAll(newsList)
+        })
+    }
+
+
 }
 

@@ -4,12 +4,16 @@ import com.melvin.ongandroid.services.ApiClient
 import com.melvin.ongandroid.services.NewsService
 import javax.inject.Inject
 
-class NewsRepository @Inject constructor (private val api: NewsService  ) {
+class NewsRepository (
+    private val api: NewsService)
+    {
 
-//    suspend fun getAllNews() : List<NewsResponse> {
-//        val response: List <NewsResponse>
-////        api.getNews()
-//        return response
+    suspend fun getAllNews() : NewsResponse {
+    val response: NewsResponse = api.getNews()
+
+        return response
     }
 
+
 }
+

@@ -1,5 +1,6 @@
 package com.melvin.ongandroid.viewmodel
 
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,12 +22,22 @@ import javax.inject.Inject
                 isLoading.postValue(true)
                 val result = getNewsUseCase()
 
-                if (!result.isNullOrEmpty()) {
-//                newsList.postValue(result[0] )
+                if (!result.success) {
+//                    newsList.postValue(result)
                     isLoading.postValue(false)
 
                 }
             }
         }
 
+
+        fun error() {
+//            Toast.makeText(this, " Error!!, Ha ocurrido un error obteniendo la información...", Toast.LENGTH_SHORT).show()
+        }
+
+
+
+
     }
+
+

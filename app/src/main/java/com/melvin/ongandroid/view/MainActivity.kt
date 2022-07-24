@@ -1,6 +1,7 @@
 package com.melvin.ongandroid.view
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -9,10 +10,11 @@ import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.melvin.ongandroid.R
 import com.melvin.ongandroid.databinding.ActivityMainBinding
+import com.melvin.ongandroid.uitel.LoadingDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 
-@AndroidEntryPoint
+//@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var binding: ActivityMainBinding
@@ -23,11 +25,24 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //   ProgressBar Spinner Loading
+        val loading = LoadingDialog(this)
+        loading.startLoading()
+        val handler = Handler()
+        handler.postDelayed(object :Runnable {
+            override fun run() {
+                loading.isDismiss()
+            }
+        }  , 5000 )
+
+
+
         // Retrieve NavController from the NavHostFragment
         val navHostFragment = binding.navHostFragment.getFragment() as NavHostFragment
         navController = navHostFragment.navController
 
         binding.bnvMainNavigation.setOnNavigationItemSelectedListener(this)
+
     }
 
     // This function show us the funcionality of the main navigation. MainActivity had to inherit BottomNavigationView class to be able to use this function.
@@ -61,4 +76,6 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
 
 
-//
+
+
+
