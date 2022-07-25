@@ -2,8 +2,10 @@ package com.melvin.ongandroid.viewmodel
 
 import androidx.lifecycle.*
 import androidx.lifecycle.ViewModel
+import com.melvin.ongandroid.businesslogic.GetNewsUseCase
 import com.melvin.ongandroid.businesslogic.GetTestimonialsUseCase
 import com.melvin.ongandroid.businesslogic.getSlidesUseCase
+import com.melvin.ongandroid.model.news.NewsModel
 import com.melvin.ongandroid.model.slides.SlidesDataModel
 import com.melvin.ongandroid.model.testimonials.DataModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,6 +19,7 @@ enum class Errors { TESTIMONIALS, NEWS, SLIDE, ALL }
 class ViewModel @Inject constructor(
     private val getTestimonialsUseCase: GetTestimonialsUseCase,
     private val getSlidesUseCase: getSlidesUseCase,
+    private val getNewsUseCase: GetNewsUseCase,
 ) :
     ViewModel() {
     private val _testimonials = MutableLiveData<List<DataModel>>()
@@ -28,13 +31,14 @@ class ViewModel @Inject constructor(
     private val _slideStatus = MutableLiveData(Status.SUCCESS)
     val slideStatus: LiveData<Status> = _slideStatus
 
-    //change to Status.SUCCESS when news is implemented
-    private val _newsStatus = MutableLiveData(Status.ERROR)
-    val newsStatus: LiveData<Status> = _newsStatus
-
-
     private val _slidesModel = MutableLiveData<List<SlidesDataModel>>()
     val slidesModel: LiveData<List<SlidesDataModel>> = _slidesModel
+
+    private val _newsStatus = MutableLiveData(Status.SUCCESS)
+    val newsStatus: LiveData<Status> = _newsStatus
+
+    private val _news = MutableLiveData<List<NewsModel>>()
+    val news: LiveData<List<NewsModel>> = _news
 
     val slidesCallFailed = MutableLiveData<Boolean>()
 
@@ -104,10 +108,28 @@ class ViewModel @Inject constructor(
         }
     }
 
+    fun onLoadNews() {
+        viewModelScope.launch {
+            _newsStatus.value = Status.LOADING
+            val result = getNewsUseCase()
+            if (result.isNotEmpty()) {
+                _news.value = result
+                _newsStatus.value = Status.SUCCESS
+            } else {
+                _newsStatus.value = Status.ERROR
+            }
+        }
+    }
+
+    fun validateError(): Boolean = (testimonialStatus.value == Status.ERROR &&
+            slideStatus.value == Status.ERROR &&
+            newsStatus.value == Status.ERROR
+            )
+
     //fun to reload apiCalls
     fun refresh() {
         onLoadTestimonials()
         onCreateSlides()
-        // onLoadNews()
+        onLoadNews()
     }
 }
