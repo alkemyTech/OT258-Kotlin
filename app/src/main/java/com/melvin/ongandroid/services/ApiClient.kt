@@ -15,8 +15,9 @@ interface ApiClient {
       //GET request testimonials from API
       @GET("testimonials")
       suspend fun getTestimonyList(): Response<TestimonialsModel>
-
+      
       //GET request members from API
+      
       @GET("members")
       suspend fun getStaffList(): Response<StaffModel>
 

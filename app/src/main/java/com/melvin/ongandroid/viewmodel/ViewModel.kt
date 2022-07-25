@@ -23,7 +23,6 @@ class ViewModel @Inject constructor(
     private val getSlidesUseCase: GetSlidesUseCase,
     private val getStaffUseCase: GetStaffUseCase,
     private val getNewsUseCase: GetNewsUseCase
-
 ) :
     ViewModel() {
 
@@ -152,7 +151,7 @@ class ViewModel @Inject constructor(
             }
         }
     }
-  
+    
     fun onLoadNews() {
         viewModelScope.launch {
             _newsStatus.value = Status.LOADING

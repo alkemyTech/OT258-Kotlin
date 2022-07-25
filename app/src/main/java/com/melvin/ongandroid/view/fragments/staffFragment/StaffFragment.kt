@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
@@ -61,6 +60,7 @@ class StaffFragment : Fragment() {
                     binding.llErrorStaffCall.visibility = View.VISIBLE
                     setUpListeners()
                 }
+
             }
         })
     }
@@ -69,6 +69,7 @@ class StaffFragment : Fragment() {
     private fun initRecyclerView(list: List<StaffDataModel>) {
         binding.rvStaff.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.rvStaff.adapter = StaffAdapter(list)
+
     }
 
     // This function allows us to set up listeners
@@ -77,4 +78,5 @@ class StaffFragment : Fragment() {
             getStaff()
         }
     }
+    
 }
