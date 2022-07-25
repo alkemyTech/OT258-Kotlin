@@ -20,8 +20,7 @@ class ViewModel @Inject constructor(
     private val getTestimonialsUseCase: GetTestimonialsUseCase,
     private val getSlidesUseCase: GetSlidesUseCase,
     private val getStaffUseCase: GetStaffUseCase
-) :
-    ViewModel() {
+) : ViewModel() {
 
     //Staff//
     private val _staff = MutableLiveData<List<StaffDataModel>>()

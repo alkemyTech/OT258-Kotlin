@@ -68,7 +68,7 @@ class StaffFragment : Fragment() {
     //This function init the recyclerView
     private fun initRecyclerView(list: List<StaffDataModel>) {
         binding.rvStaff.layoutManager = GridLayoutManager(requireContext(), 2)
-        binding.rvStaff.adapter = StaffAdapter(list)
+        binding.rvStaff.adapter = StaffAdapter(list){onItemSelected(it)}
     }
 
     // This function allows us to set up listeners
@@ -76,5 +76,9 @@ class StaffFragment : Fragment() {
         binding.btnRetryStaffCall.setOnClickListener {
             getStaff()
         }
+    }
+
+    private fun onItemSelected(staffDataModel: StaffDataModel){
+
     }
 }
