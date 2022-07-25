@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import com.melvin.ongandroid.databinding.FragmentHomeBinding
 import com.melvin.ongandroid.model.slides.SlidesDataModel
 import com.melvin.ongandroid.model.testimonials.DataModel
+import com.melvin.ongandroid.view.fragments.bottomSheetFragment.BottomFragment
 import com.melvin.ongandroid.view.adapters.testimonials.TestimonialsAdapter
 import com.melvin.ongandroid.viewmodel.ViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,7 +20,7 @@ import com.melvin.ongandroid.view.adapters.welcome.WelcomeActivitiesAdapter
 
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class HomeFragment: Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -82,9 +83,11 @@ class HomeFragment : Fragment() {
     private fun initWelcomeRecyclerView(list: List<SlidesDataModel>){
         //helper to snap cards in the center of the screen
         val snapHelper = LinearSnapHelper()
+
         if (list.isNotEmpty()){
             binding.rvWelcomeActivityView.adapter = WelcomeActivitiesAdapter(list)
-            snapHelper.attachToRecyclerView(binding.rvWelcomeActivityView)
+            if (binding.rvWelcomeActivityView.onFlingListener == null)
+                snapHelper.attachToRecyclerView(binding.rvWelcomeActivityView)
         }
     }
 

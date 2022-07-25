@@ -10,4 +10,11 @@
     <!-- HOME FRAGMENT -->
     <string name="retryCall">Reintentar</string>
     <string name="informationError">A ocurrido un error obteniendo la información</string>
+
+    <!-- BOTTOM SHEET DIALOG FRAGMENT -->
+    <string name="titleDialog">Detalle</string>
+    <string name="nameStaffDialog">*Name*</string>
+    <string name="rollStaffDialog">*Roll*</string>
+    <string name="facebookStaffDialog">*Facebook*</string>
+    <string name="linkedinStaffDialog">*Linkedin*</string>
 </resources>

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.melvin.ongandroid.R
+import com.melvin.ongandroid.view.fragments.bottomSheetFragment.BottomFragment
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -36,25 +37,22 @@ class StaffFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_staff, container, false)
+
+        assignValuesDialog()
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment StaffFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            StaffFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    private fun assignValuesDialog() {
+        var bundle = Bundle()
+
+        /* TODO: assign values
+        bundle.putString("name", "AddNombre")
+        bundle.putString("roll", "AddRoll")
+        bundle.putString("facebookLink", "AddFacebook")
+        bundle.putString("linkedin", "AddLinkedin")*/
+
+        // Creating bottomSheetDialog
+        var bottomSheetDialog = BottomFragment()
+        bottomSheetDialog.setArguments(bundle)
+        bottomSheetDialog.show(getParentFragmentManager(), bottomSheetDialog.tag)
     }
 }
