@@ -26,7 +26,6 @@ import com.melvin.ongandroid.viewmodel.Errors
 import com.melvin.ongandroid.viewmodel.Status
 
 
-
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
     @Inject
@@ -66,15 +65,16 @@ class HomeFragment : Fragment() {
     //This function start the testimonials query, an gives the response to the recyclerview
     private fun getTestimonials() {
         viewModel.onLoadTestimonials()
-        viewModel.testimonials.observe(viewLifecycleOwner, Observer {
-            initTestimonialRecyclerView(it)
-        })
-        viewModel.testimonialStatus.observe(viewLifecycleOwner) {
-            when (it) {
+        viewModel.testimonialStatus.observe(viewLifecycleOwner) { status ->
+            when (status!!) {
                 Status.LOADING -> {}
-                Status.SUCCESS -> {}
+                Status.SUCCESS -> {
+                    viewModel.testimonials.observe(viewLifecycleOwner, Observer {
+                        initTestimonialRecyclerView(it)
+                    })
+                }
                 Status.ERROR -> onLoadError(resources.getString(R.string.on_testimonials_loading_error)) {
-                        viewModel.onLoadTestimonials()
+                    viewModel.onLoadTestimonials()
                 }
             }
         }
@@ -86,11 +86,12 @@ class HomeFragment : Fragment() {
         binding.rvActivityTestimony.adapter = TestimonialsAdapter(list)
     }
 
-    private fun testimonialsArrowClick(){
-        binding.btnTestimonials.setOnClickListener{
+    private fun testimonialsArrowClick() {
+        binding.btnTestimonials.setOnClickListener {
             val bundle = Bundle()
-            bundle.putString("message","Testimonials see more was pressed")
-            firebaseAnalytics.logEvent("testimonies_see_more_pressed",bundle)
+            bundle.putString("message", "Testimonials see more was pressed")
+            firebaseAnalytics.logEvent("testimonies_see_more_pressed", bundle)
+
         }
     }
 
@@ -129,7 +130,7 @@ class HomeFragment : Fragment() {
             .show()
     }
 
-// This function allows us to set up listeners
+    // This function allows us to set up listeners
     private fun setUpListeners() {
         binding.btnRetrySlidesCall.setOnClickListener {
             viewModel.onCreateSlides()
