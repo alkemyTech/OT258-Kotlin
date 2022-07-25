@@ -8,7 +8,7 @@
         android:icon="@drawable/ic_main_nav_home"/>
 
     <item
-        android:id="@+id/nav_Staff"
+        android:id="@+id/staffFragment"
         android:title="Staff"
         android:icon="@drawable/ic_main_nav_staff"/>
 
@@ -19,7 +19,7 @@
 
     <item
         android:id="@+id/activitiesFragment"
-        android:title="Activividades"
+        android:title="@string/activities_title"
         android:icon="@drawable/ic_main_nav_social"/>
 
     <item
