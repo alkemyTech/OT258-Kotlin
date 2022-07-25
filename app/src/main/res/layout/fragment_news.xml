@@ -9,7 +9,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="16dp">
+        android:paddingStart="16dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="16dp">
 
         <!-- MainActivity Scroll View Content -->
         <ScrollView
@@ -44,19 +46,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="4dp"
-                    android:gravity="center_horizontal"
-                    android:paddingVertical="8dp">
+                    android:gravity="center_horizontal">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/news_recycler_view"
-                        android:layout_width="0dp"
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:orientation="horizontal"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:itemCount="1"
-                        tools:listitem="@layout/item_news" />
+                        android:descendantFocusability="blocksDescendants">
 
+                        <!-- Testimonials RecyclerView -->
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/news_recycler_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"                     tools:itemCount="2"
+                            tools:listitem="@layout/item_news" />
+                    </RelativeLayout>
                 </TableRow>
 
             </TableLayout>
