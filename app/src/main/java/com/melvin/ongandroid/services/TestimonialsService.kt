@@ -11,7 +11,7 @@ import javax.inject.Inject
 class TestimonialsService @Inject constructor(
     private val apiClient: ApiClient,
 ) {
-    //This function get the response from the API and get the TestimonialsModel.
+    //This function get the response from the API and get the StaffModel.
     //If this is null or the success is false it will response with an empty object
     suspend fun getTestimonials(): TestimonialsModel {
         return withContext(Dispatchers.IO) {

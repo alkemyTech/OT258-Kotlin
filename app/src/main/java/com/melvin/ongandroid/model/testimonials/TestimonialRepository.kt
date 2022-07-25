@@ -26,6 +26,5 @@ class TestimonialRepository
             firebaseAnalytics.logEvent("testimonies_retrieve_error",bundle)
             return emptyList()
         }
-
     }
 }

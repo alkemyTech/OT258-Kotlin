@@ -87,8 +87,10 @@ dependencies {
     //Navigation Library
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
-    //Mockito Library
-    testImplementation "org.mockito:mockito-all:1.10.19"
+
+    //Mockk Library
+    testImplementation "io.mockk:mockk:1.12.2"
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
 
     testImplementation "androidx.arch.core:core-testing:2.1.0"
     testImplementation 'junit:junit:4.13.2'
