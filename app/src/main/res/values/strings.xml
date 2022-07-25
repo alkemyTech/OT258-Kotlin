@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">ONGAndroid</string>
     <string name="testimonials">Testimonios</string>
+    <string name="news">Last News</string>
     <string name="name">Nombre y Apellido</string>
     <string name="role">Rol que desempeña</string>
     <string name="testimony">testimoniotestimoniotestimoniotestimoniotestimoniotestimoniotestimoniotestimoniotestimoniotestimoniotestimoniotestimoniotestimonio</string>
