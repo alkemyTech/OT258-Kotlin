@@ -8,7 +8,7 @@
         android:icon="@drawable/ic_main_nav_home"/>
 
     <item
-        android:id="@+id/nav_Staff"
+        android:id="@+id/staffFragment"
         android:title="Staff"
         android:icon="@drawable/ic_main_nav_staff"/>
 

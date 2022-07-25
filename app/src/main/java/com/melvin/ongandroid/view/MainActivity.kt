@@ -1,13 +1,19 @@
 package com.melvin.ongandroid.view
 
 import android.os.Bundle
+import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.melvin.ongandroid.R
 import com.melvin.ongandroid.databinding.ActivityMainBinding
+import com.melvin.ongandroid.view.fragments.staffFragment.StaffFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -28,4 +34,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.bnvMainNavigation.setupWithNavController(navController)
     }
+
+
+
 }

@@ -2,19 +2,21 @@
     <string name="app_name">ONGAndroid</string>
     <string name="testimonials">Testimonios</string>
     <string name="name">Nombre y Apellido</string>
+    <string name="role">Rol que desempeña</string>
     <string name="testimony">testimoniotestimoniotestimoniotestimoniotestimoniotestimoniotestimoniotestimoniotestimoniotestimoniotestimoniotestimoniotestimonio</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="welcome_title_placeholder">Hola! Bienvenidx</string>
     <string name="welcome_body_placeholder">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
-
-    <!-- HOME FRAGMENT -->
+    <string name="retry">Reintentar</string>
+    <string name="generalError">Inicio - Error general</string>
+    <string name="on_testimonials_loading_error">Something went wrong, couldn\'t load testimonials</string>
     <string name="retryCall">Reintentar</string>
     <string name="informationError">A ocurrido un error obteniendo la información</string>
-
-    <!-- BOTTOM SHEET DIALOG FRAGMENT -->
+    <string name="news_view_title">Novedades</string>
     <string name="titleDialog">Detalle</string>
     <string name="nameStaffDialog">*Name*</string>
     <string name="rollStaffDialog">*Roll*</string>
     <string name="facebookStaffDialog">*Facebook*</string>
     <string name="linkedinStaffDialog">*Linkedin*</string>
 </resources>
+
