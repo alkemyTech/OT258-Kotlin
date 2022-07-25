@@ -15,8 +15,6 @@ import com.melvin.ongandroid.view.adapters.staff.StaffAdapter
 import com.melvin.ongandroid.viewmodel.Status
 import com.melvin.ongandroid.viewmodel.ViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.lang.Boolean.FALSE
-import java.lang.Boolean.TRUE
 
 @AndroidEntryPoint
 class StaffFragment : Fragment() {
@@ -30,7 +28,6 @@ class StaffFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentStaffBinding.inflate(inflater, container, false)
-        getStaff()
         return binding.root
     }
 
@@ -38,21 +35,32 @@ class StaffFragment : Fragment() {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
         }
+        getStaff()
     }
 
-    //This function gets the Staff Data Model List
+    //This function evaluate the status value, if fails, it shows a retry button. If is successful, it shows the recyclerview.
     private fun getStaff() {
         viewModel.onCreateStaff()
-        viewModel.staff.observe(viewLifecycleOwner, Observer {
-            initRecyclerView(it)
-        })
-
-        //Here the progress bar is observing the status value.
-        viewModel.staffStatus.observe(viewLifecycleOwner, Observer {
-            if (it == Status.SUCCESS) {
-                binding.staffProgressBarId.isVisible = FALSE
-            } else {
-                binding.staffProgressBarId.isVisible = TRUE
+        viewModel.staffStatus.observe(viewLifecycleOwner, Observer { status ->
+            when (status!!) {
+                Status.LOADING -> {
+                    binding.llErrorStaffCall.visibility = View.GONE
+                    binding.staffProgressBarId.visibility = View.VISIBLE
+                }
+                Status.SUCCESS -> {
+                    binding.rvStaff.visibility = View.VISIBLE
+                    binding.llErrorStaffCall.visibility = View.GONE
+                    binding.staffProgressBarId.visibility = View.GONE
+                    viewModel.staff.observe(viewLifecycleOwner, Observer {
+                        initRecyclerView(it)
+                    })
+                }
+                Status.ERROR -> {
+                    binding.rvStaff.visibility = View.GONE
+                    binding.staffProgressBarId.visibility = View.GONE
+                    binding.llErrorStaffCall.visibility = View.VISIBLE
+                    setUpListeners()
+                }
             }
         })
     }
@@ -61,5 +69,12 @@ class StaffFragment : Fragment() {
     private fun initRecyclerView(list: List<StaffDataModel>) {
         binding.rvStaff.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.rvStaff.adapter = StaffAdapter(list)
+    }
+
+    // This function allows us to set up listeners
+    private fun setUpListeners() {
+        binding.btnRetryStaffCall.setOnClickListener {
+            getStaff()
+        }
     }
 }
