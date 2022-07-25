@@ -2,7 +2,7 @@ package com.melvin.ongandroid.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.melvin.ongandroid.businesslogic.GetTestimonialsUseCase
-import com.melvin.ongandroid.businesslogic.getSlidesUseCase
+import com.melvin.ongandroid.businesslogic.GetSlidesUseCase
 import com.melvin.ongandroid.model.slides.SlidesDataModel
 import com.melvin.ongandroid.model.testimonials.DataModel
 import io.mockk.MockKAnnotations
@@ -25,7 +25,7 @@ class ViewModelTest {
     private lateinit var getTestimonialsUseCase: GetTestimonialsUseCase
 
     @MockK
-    private lateinit var getSlidesUseCase: getSlidesUseCase
+    private lateinit var getSlidesUseCase: GetSlidesUseCase
 
     private lateinit var viewModel: ViewModel
 

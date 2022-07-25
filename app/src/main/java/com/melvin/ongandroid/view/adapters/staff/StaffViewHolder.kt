@@ -5,14 +5,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.melvin.ongandroid.R
 import com.melvin.ongandroid.databinding.ItemStaffBinding
+import com.melvin.ongandroid.model.staff.StaffDataModel
 
 
 class StaffViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     private val binding = ItemStaffBinding.bind(view)
-    fun render() {
+    fun render(member: StaffDataModel) {
+        binding.tvName.text = member.name.toString()
         Glide.with(binding.ivPhoto.context)
-            .load("https://cloudfront-us-east-1.images.arcpublishing.com/infobae/BLZJHTB27ZHUPKK3A7GXTMIEQA.jpg")
+            .load(member.image.toString())
             .placeholder(R.drawable.progress_animation)
             .error(R.drawable.progress_animation)
             .into(binding.ivPhoto)
