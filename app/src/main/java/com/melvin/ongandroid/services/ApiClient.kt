@@ -15,12 +15,13 @@ interface ApiClient {
       //GET request testimonials from API
       @GET("testimonials")
       suspend fun getTestimonyList(): Response<TestimonialsModel>
-
-      //GET request staff from API
+      
+      //GET request members from API
+      
       @GET("members")
       suspend fun getStaffList(): Response<StaffModel>
 
       //GET request news from API
-     @GET("news")
-     suspend fun getNewsList(): Response<NewsAPIResponse>
+      @GET("news")
+      suspend fun getNewsList(): Response<NewsAPIResponse>
 }

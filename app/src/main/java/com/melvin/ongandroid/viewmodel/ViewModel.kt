@@ -22,28 +22,32 @@ class ViewModel @Inject constructor(
     private val getTestimonialsUseCase: GetTestimonialsUseCase,
     private val getSlidesUseCase: GetSlidesUseCase,
     private val getStaffUseCase: GetStaffUseCase,
-    private val getNewsUseCase: GetNewsUseCase,
-
-    ) :
+    private val getNewsUseCase: GetNewsUseCase
+) :
     ViewModel() {
+
+    //Staff//
     private val _staff = MutableLiveData<List<StaffDataModel>>()
     val staff: LiveData<List<StaffDataModel>> = _staff
 
     private val _staffStatus = MutableLiveData(Status.SUCCESS)
     val staffStatus: LiveData<Status> = _staffStatus
 
+    //Testimonials//
     private val _testimonials = MutableLiveData<List<DataModel>>()
     val testimonials: LiveData<List<DataModel>> = _testimonials
 
     private val _testimonialStatus = MutableLiveData(Status.SUCCESS)
     val testimonialStatus: LiveData<Status> = _testimonialStatus
 
+    //Slides//
     private val _slideStatus = MutableLiveData(Status.SUCCESS)
     val slideStatus: LiveData<Status> = _slideStatus
 
     private val _slidesModel = MutableLiveData<List<SlidesDataModel>>()
     val slidesModel: LiveData<List<SlidesDataModel>> = _slidesModel
-
+    
+    //News//
     private val _newsStatus = MutableLiveData(Status.SUCCESS)
     val newsStatus: LiveData<Status> = _newsStatus
 
@@ -57,18 +61,19 @@ class ViewModel @Inject constructor(
         addSource(_testimonialStatus) {
             if (testimonialStatus.value == Status.ERROR &&
                 slideStatus.value == Status.ERROR &&
-                newsStatus.value == Status.ERROR
+                newsStatus.value == Status.ERROR &&
+                staffStatus.value == Status.ERROR
             ) {
                 value = Errors.ALL
             } else if (_testimonialStatus.value == Status.ERROR) {
                 value = Errors.TESTIMONIALS
             }
         }
-
         addSource(_slideStatus) {
             if (testimonialStatus.value == Status.ERROR &&
                 slideStatus.value == Status.ERROR &&
-                newsStatus.value == Status.ERROR
+                newsStatus.value == Status.ERROR &&
+                staffStatus.value == Status.ERROR
             ) {
                 value = Errors.ALL
             } else if (_slideStatus.value == Status.ERROR) {
@@ -78,10 +83,22 @@ class ViewModel @Inject constructor(
         addSource(_newsStatus) {
             if (testimonialStatus.value == Status.ERROR &&
                 slideStatus.value == Status.ERROR &&
-                newsStatus.value == Status.ERROR
+                newsStatus.value == Status.ERROR &&
+                staffStatus.value == Status.ERROR
             ) {
                 value = Errors.ALL
             } else if (_newsStatus.value == Status.ERROR) {
+                value = Errors.NEWS
+            }
+        }
+        addSource(_staffStatus) {
+            if (testimonialStatus.value == Status.ERROR &&
+                slideStatus.value == Status.ERROR &&
+                newsStatus.value == Status.ERROR &&
+                staffStatus.value == Status.ERROR
+            ) {
+                value = Errors.ALL
+            } else if (_staffStatus.value == Status.ERROR) {
                 value = Errors.NEWS
             }
         }
@@ -134,7 +151,7 @@ class ViewModel @Inject constructor(
             }
         }
     }
-
+    
     fun onLoadNews() {
         viewModelScope.launch {
             _newsStatus.value = Status.LOADING
@@ -157,6 +174,7 @@ class ViewModel @Inject constructor(
     fun refresh() {
         onLoadTestimonials()
         onCreateSlides()
+        onCreateStaff()
         onLoadNews()
     }
 }
