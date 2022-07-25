@@ -110,7 +110,8 @@ class HomeFragment : Fragment() {
         val snapHelper = LinearSnapHelper()
         if (list.isNotEmpty()) {
             binding.rvWelcomeActivityView.adapter = WelcomeActivitiesAdapter(list)
-            snapHelper.attachToRecyclerView(binding.rvWelcomeActivityView)
+            if (binding.rvWelcomeActivityView.getOnFlingListener() == null)
+                snapHelper.attachToRecyclerView(binding.rvWelcomeActivityView)
         }
     }
 
