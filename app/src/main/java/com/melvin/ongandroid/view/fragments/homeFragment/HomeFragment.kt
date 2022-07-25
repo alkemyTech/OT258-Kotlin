@@ -107,10 +107,12 @@ class HomeFragment : Fragment() {
     // Init the recyclerview with the query's response
     private fun initWelcomeRecyclerView(list: List<SlidesDataModel>) {
         //helper to snap cards in the center of the screen
-        val snapHelper = LinearSnapHelper()
         if (list.isNotEmpty()) {
             binding.rvWelcomeActivityView.adapter = WelcomeActivitiesAdapter(list)
-            snapHelper.attachToRecyclerView(binding.rvWelcomeActivityView)
+            if (binding.rvWelcomeActivityView.onFlingListener == null){
+                val snapHelper = LinearSnapHelper()
+                snapHelper.attachToRecyclerView(binding.rvWelcomeActivityView)
+            }
         }
     }
 
