@@ -37,22 +37,23 @@ class StaffFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_staff, container, false)
-
-        assignValuesDialog()
     }
 
-    private fun assignValuesDialog() {
-        var bundle = Bundle()
 
-        /* TODO: assign values
-        bundle.putString("name", "AddNombre")
-        bundle.putString("roll", "AddRoll")
-        bundle.putString("facebookLink", "AddFacebook")
-        bundle.putString("linkedin", "AddLinkedin")*/
+    /* TODO: assign values
+    var bundle = Bundle()
 
-        // Creating bottomSheetDialog
-        var bottomSheetDialog = BottomFragment()
-        bottomSheetDialog.setArguments(bundle)
-        bottomSheetDialog.show(getParentFragmentManager(), bottomSheetDialog.tag)
-    }
+    bundle.putString("name", "AddNombre")
+    bundle.putString("roll", "AddRoll")
+    bundle.putString("facebookLink", "AddFacebook")
+    bundle.putString("linkedinLink", "AddLinkedin")
+    bundle.putString("picture", "AddPicture")
+
+    / Creating bottomSheetDialog
+    var bottomSheetDialog = BottomFragment()
+    bottomSheetDialog.setArguments(bundle)
+    bottomSheetDialog.show(getParentFragmentManager(), bottomSheetDialog.tag)
+    */
+
+
 }
