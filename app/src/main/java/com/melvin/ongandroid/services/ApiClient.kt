@@ -1,6 +1,5 @@
 package com.melvin.ongandroid.services
 
-import com.melvin.ongandroid.model.news.NewsResponse
 import com.melvin.ongandroid.model.slides.SlidesModel
 import com.melvin.ongandroid.model.testimonials.TestimonialsModel
 import retrofit2.Response
@@ -15,7 +14,7 @@ interface ApiClient {
       @GET("testimonials")
       suspend fun getTestimonyList(): Response<TestimonialsModel>
 
-     //GET request news from API
+    /*  //GET request news from API
      @GET("news")
-     suspend fun getNewsList(): Response<NewsResponse>
+     suspend fun getNewsList(): Response<NewsResponse>*/
 }

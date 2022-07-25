@@ -1,8 +1,12 @@
 package com.melvin.ongandroid.businesslogic
 
-class GetNewsUseCase (private val repository: NewsRepository)
+import com.melvin.ongandroid.model.news.NewsRepository
+import com.melvin.ongandroid.model.news.NewsResponse
 
-{
-    suspend operator fun invoke() : List<NewsResponse>? = repository.getAllNews()
+
+class GetNewsUseCase (private val repository: NewsRepository) {
+
+    suspend operator fun invoke(): List<NewsResponse>? = repository.getAllNews()
+
 
 }
