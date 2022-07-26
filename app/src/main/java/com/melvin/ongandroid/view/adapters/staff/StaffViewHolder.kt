@@ -11,12 +11,13 @@ import com.melvin.ongandroid.model.staff.StaffDataModel
 class StaffViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     private val binding = ItemStaffBinding.bind(view)
-    fun render(member: StaffDataModel) {
+    fun render(member: StaffDataModel,onClickListener: (StaffDataModel)-> Unit) {
         binding.tvName.text = member.name.toString()
         Glide.with(binding.ivPhoto.context)
             .load(member.image.toString())
             .placeholder(R.drawable.progress_animation)
             .error(R.drawable.progress_animation)
             .into(binding.ivPhoto)
+        itemView.setOnClickListener{ onClickListener(member)}
     }
 }
