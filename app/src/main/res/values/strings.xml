@@ -20,5 +20,7 @@
     <string name="facebookStaffDialog"> </string>
     <string name="nameStaffDialog"> </string>
     <string name="rollStaffDialog"> </string>
+    <string name="titleDialog">Detalle</string>
+
 </resources>
 
