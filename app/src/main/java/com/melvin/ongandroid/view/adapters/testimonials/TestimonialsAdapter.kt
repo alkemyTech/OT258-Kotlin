@@ -17,5 +17,5 @@ class TestimonialsAdapter(private val list: List<DataModel>): RecyclerView.Adapt
         holder.render(item)
     }
 
-    override fun getItemCount(): Int = if (list.size<4) list.size-1 else 4
+    override fun getItemCount(): Int = list.size
 }
