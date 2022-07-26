@@ -28,9 +28,10 @@ import com.melvin.ongandroid.viewmodel.Status
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
+
     @Inject
     lateinit var firebaseAnalytics: FirebaseAnalytics
-
+    
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val viewModel: ViewModel by viewModels()
@@ -129,6 +130,7 @@ class HomeFragment : Fragment() {
     // Init the recyclerview with the query's response
     private fun initWelcomeRecyclerView(list: List<SlidesDataModel>) {
         //helper to snap cards in the center of the screen
+        val snapHelper = LinearSnapHelper()
         if (list.isNotEmpty()) {
             binding.rvWelcomeActivityView.adapter = WelcomeActivitiesAdapter(list)
             if (binding.rvWelcomeActivityView.onFlingListener == null){

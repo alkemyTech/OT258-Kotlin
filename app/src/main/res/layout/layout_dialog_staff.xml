@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Layout's details staff dialog -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bottom_sheet_background"
+        android:paddingBottom="20dp">
+
+        <TextView
+            android:id="@+id/tvTitleDetailStaff"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/titleDialog"
+            android:fontFamily="@font/poppins_medium"
+            android:textSize="22sp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_marginVertical="10dp"
+
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/cvPictureStaff" />
+
+        <View
+            android:id="@+id/vDivisor"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:background="@color/light_gray"
+            android:layout_marginHorizontal="15dp"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTitleDetailStaff"
+            app:layout_constraintBottom_toTopOf="@id/cvPictureStaff" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvPictureStaff"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="55dp"
+            android:layout_marginTop="15dp"
+
+            app:layout_constraintTop_toBottomOf="@id/vDivisor"
+            app:layout_constraintLeft_toLeftOf="parent">
+
+            <ImageView
+                android:id="@+id/ivPictureStaff"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/rodrigo_fuente"/>
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/tvNameStaff"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/nameStaffDialog"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cvPictureStaff"
+            app:layout_constraintTop_toBottomOf="@+id/vDivisor" />
+
+        <TextView
+            android:id="@+id/tvRollStaff"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/rollStaffDialog"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cvPictureStaff"
+            app:layout_constraintTop_toBottomOf="@+id/tvNameStaff" />
+
+        <ImageView
+            android:id="@+id/ivFacebook"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/icon_facebook"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="8dp"
+
+            app:layout_constraintTop_toBottomOf="@id/cvPictureStaff"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tvFacebook"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="25dp"
+            android:text="@string/facebookStaffDialog"
+            android:textSize="12sp"
+            android:textColor="@color/blue"
+
+            app:layout_constraintBottom_toTopOf="@id/tvLinkedin"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ivFacebook"
+            app:layout_constraintTop_toBottomOf="@id/cvPictureStaff" />
+
+        <ImageView
+            android:id="@+id/ivLinkedin"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/icon_linkedin"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="5dp"
+
+            app:layout_constraintTop_toBottomOf="@id/ivFacebook"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tvLinkedin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="8dp"
+            android:textSize="12sp"
+            android:text="@string/linkedinStaffDialog"
+            android:textColor="@color/blue"
+
+            app:layout_constraintTop_toBottomOf="@id/tvFacebook"
+            app:layout_constraintStart_toEndOf="@id/ivLinkedin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
