@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.text.HtmlCompat
 import com.melvin.ongandroid.R
 import com.melvin.ongandroid.view.fragments.bottomSheetFragment.BottomFragment
 import androidx.fragment.app.viewModels
@@ -86,22 +87,20 @@ class StaffFragment : Fragment() {
     }
 
     private fun onItemSelected(staffDataModel: StaffDataModel) {
+        val bundle = Bundle()
+        val description = deleteHTML(staffDataModel.description.toString())
+        bundle.putString("name", staffDataModel.name)
+        bundle.putString("roll", description)
+        bundle.putString("facebookLink", staffDataModel.facebookUrl)
+        bundle.putString("linkedinLink", staffDataModel.linkedinUrl)
+        bundle.putString("picture", staffDataModel.image)
 
+        // Creating bottomSheetDialog
+        val bottomSheetDialog = BottomFragment()
+        bottomSheetDialog.arguments = bundle
+        bottomSheetDialog.show(parentFragmentManager, bottomSheetDialog.tag)
     }
-
-    /* TODO: assign values
-    var bundle = Bundle()
-
-    bundle.putString("name", "AddNombre")
-    bundle.putString("roll", "AddRoll")
-    bundle.putString("facebookLink", "AddFacebook")
-    bundle.putString("linkedinLink", "AddLinkedin")
-    bundle.putString("picture", "AddPicture")
-
-    / Creating bottomSheetDialog
-    var bottomSheetDialog = BottomFragment()
-    bottomSheetDialog.setArguments(bundle)
-    bottomSheetDialog.show(getParentFragmentManager(), bottomSheetDialog.tag)
-    */
-
+    private fun deleteHTML (html: String): String{
+        return HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
+    }
 }
