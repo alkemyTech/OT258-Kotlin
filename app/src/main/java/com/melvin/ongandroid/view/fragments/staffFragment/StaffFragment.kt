@@ -11,6 +11,7 @@ import com.melvin.ongandroid.view.fragments.bottomSheetFragment.BottomFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.melvin.ongandroid.databinding.FragmentStaffBinding
 import com.melvin.ongandroid.model.staff.StaffDataModel
 import com.melvin.ongandroid.view.adapters.staff.StaffAdapter
@@ -19,7 +20,7 @@ import com.melvin.ongandroid.viewmodel.ViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class StaffFragment : Fragment() {
+class StaffFragment (private val firebaseAnalytics: FirebaseAnalytics) : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -88,6 +89,7 @@ class StaffFragment : Fragment() {
 
     private fun onItemSelected(staffDataModel: StaffDataModel) {
         val bundle = Bundle()
+        val bundleLog = Bundle()
         val description = deleteHTML(staffDataModel.description.toString())
         bundle.putString("name", staffDataModel.name)
         bundle.putString("roll", description)
@@ -99,6 +101,11 @@ class StaffFragment : Fragment() {
         val bottomSheetDialog = BottomFragment()
         bottomSheetDialog.arguments = bundle
         bottomSheetDialog.show(parentFragmentManager, bottomSheetDialog.tag)
+
+        // This 2 lines will log member_pressed on firebase when a member was selected to see they details >>>
+            bundleLog.putString("Member", "A member has selected")
+            firebaseAnalytics.logEvent("member_pressed", bundleLog)
+        // <<<
     }
     private fun deleteHTML (html: String): String{
         return HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
