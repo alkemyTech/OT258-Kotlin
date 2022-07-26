@@ -9,6 +9,7 @@
     android:paddingTop="16dp"
     tools:context=".view.MainActivity">
 
+    <!-- MainActivity bottom navigation -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/navHostFragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
@@ -17,8 +18,10 @@
         app:defaultNavHost="true"
         app:layout_constraintBottom_toTopOf="@id/bnvMainNavigation"
         app:layout_constraintTop_toTopOf="parent"
-        app:navGraph="@navigation/nav_graph" />
-    <!-- MainActivity bottom navigation -->
+        app:layout_constraintVertical_bias="0.224"
+        app:navGraph="@navigation/nav_graph"
+        tools:layout_editor_absoluteX="45dp" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bnvMainNavigation"
         android:layout_width="0dp"

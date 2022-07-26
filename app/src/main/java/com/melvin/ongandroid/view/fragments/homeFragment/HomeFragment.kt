@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,8 +14,10 @@ import com.google.firebase.ktx.Firebase
 import com.google.android.material.snackbar.Snackbar
 import com.melvin.ongandroid.R
 import com.melvin.ongandroid.databinding.FragmentHomeBinding
+import com.melvin.ongandroid.model.news.NewsModel
 import com.melvin.ongandroid.model.slides.SlidesDataModel
 import com.melvin.ongandroid.model.testimonials.DataModel
+import com.melvin.ongandroid.view.adapters.news.NewsAdapter
 import com.melvin.ongandroid.view.adapters.testimonials.TestimonialsAdapter
 import com.melvin.ongandroid.viewmodel.ViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,7 +32,7 @@ class HomeFragment : Fragment() {
 
     @Inject
     lateinit var firebaseAnalytics: FirebaseAnalytics
-    
+
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val viewModel: ViewModel by viewModels()
@@ -58,6 +59,7 @@ class HomeFragment : Fragment() {
         lastNewsArrowClick()
         getSlides()
         setUpListeners()
+        getNews()
         viewModel.apiStatus.observe(viewLifecycleOwner, Observer {
             if (it == Errors.ALL) {
                 onLoadError(resources.getString(R.string.generalError)) { viewModel.refresh() }
@@ -98,6 +100,7 @@ class HomeFragment : Fragment() {
 
         }
     }
+
     //This function listen the click on the last news see more button
     private fun lastNewsArrowClick() {
         binding.btnLastNews.setOnClickListener {
@@ -133,7 +136,7 @@ class HomeFragment : Fragment() {
         val snapHelper = LinearSnapHelper()
         if (list.isNotEmpty()) {
             binding.rvWelcomeActivityView.adapter = WelcomeActivitiesAdapter(list)
-            if (binding.rvWelcomeActivityView.onFlingListener == null){
+            if (binding.rvWelcomeActivityView.onFlingListener == null) {
                 val snapHelper = LinearSnapHelper()
                 snapHelper.attachToRecyclerView(binding.rvWelcomeActivityView)
             }
@@ -152,5 +155,30 @@ class HomeFragment : Fragment() {
             viewModel.onCreateSlides()
         }
     }
+
+
+    //    News
+    private fun getNews() {
+        viewModel.onLoadNews()
+        viewModel.newsStatus.observe(viewLifecycleOwner) { status ->
+            when (status!!) {
+                Status.LOADING -> {}
+                Status.SUCCESS -> {
+                    viewModel.news.observe(viewLifecycleOwner, Observer {
+                        initNewsRecyclerView(it)
+                    })
+                }
+                Status.ERROR -> onLoadError(resources.getString(R.string.informationError)) {
+                    viewModel.onLoadNews()
+                }
+            }
+        }
+    }
+
+    private fun initNewsRecyclerView(list: List<NewsModel>) {
+        binding.rvLastNews.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvLastNews.adapter = NewsAdapter(list)
+    }
+
 }
 
