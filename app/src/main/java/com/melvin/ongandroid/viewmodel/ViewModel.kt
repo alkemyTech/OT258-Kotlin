@@ -20,8 +20,8 @@ class ViewModel @Inject constructor(
     private val getTestimonialsUseCase: GetTestimonialsUseCase,
     private val getSlidesUseCase: GetSlidesUseCase,
     private val getStaffUseCase: GetStaffUseCase,
-    private val getNewsUseCase: GetNewsUseCase,
     private val getActivitiesUseCase: GetActivitiesUseCase,
+    private val getNewsUseCase: GetNewsUseCase
 ) :
     ViewModel() {
 
