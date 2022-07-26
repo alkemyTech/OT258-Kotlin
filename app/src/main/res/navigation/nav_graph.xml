@@ -20,8 +20,8 @@
             android:id="@+id/action_homeFragment_to_contactFragment"
             app:destination="@id/contactFragment" />
         <action
-            android:id="@+id/action_homeFragment_to_testimonyFragment"
-            app:destination="@id/testimonyFragment" />
+            android:id="@+id/action_homeFragment_to_activitiesFragment"
+            app:destination="@id/activitiesFragment" />
     </fragment>
     <fragment
         android:id="@+id/staffFragment"
@@ -46,12 +46,12 @@
             app:popUpTo="@id/homeFragment" />
     </fragment>
     <fragment
-        android:id="@+id/testimonyFragment"
+        android:id="@+id/activitiesFragment"
         android:name="com.melvin.ongandroid.view.fragments.activitiesFragment.ActivitiesFragment"
-        android:label="fragment_testimony"
-        tools:layout="@layout/fragment_activities" >
+        android:label="fragment_activities"
+        tools:layout="@layout/fragment_activities">
         <action
-            android:id="@+id/action_testimonyFragment_to_homeFragment"
+            android:id="@+id/action_activitiesFragment_to_homeFragment"
             app:destination="@id/homeFragment"
             app:launchSingleTop="false"
             app:popUpTo="@id/homeFragment" />

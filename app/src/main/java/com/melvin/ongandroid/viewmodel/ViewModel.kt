@@ -2,9 +2,9 @@ package com.melvin.ongandroid.viewmodel
 
 import androidx.lifecycle.*
 import androidx.lifecycle.ViewModel
-import com.melvin.ongandroid.businesslogic.GetStaffUseCase
-import com.melvin.ongandroid.businesslogic.GetTestimonialsUseCase
-import com.melvin.ongandroid.businesslogic.GetSlidesUseCase
+import com.melvin.ongandroid.businesslogic.*
+import com.melvin.ongandroid.model.activities.ActivitiesDataModel
+import com.melvin.ongandroid.model.news.NewsModel
 import com.melvin.ongandroid.model.slides.SlidesDataModel
 import com.melvin.ongandroid.model.staff.StaffDataModel
 import com.melvin.ongandroid.model.testimonials.DataModel
@@ -19,8 +19,11 @@ enum class Errors { TESTIMONIALS, NEWS, SLIDE, ALL }
 class ViewModel @Inject constructor(
     private val getTestimonialsUseCase: GetTestimonialsUseCase,
     private val getSlidesUseCase: GetSlidesUseCase,
-    private val getStaffUseCase: GetStaffUseCase
-) : ViewModel() {
+    private val getStaffUseCase: GetStaffUseCase,
+    private val getActivitiesUseCase: GetActivitiesUseCase,
+    private val getNewsUseCase: GetNewsUseCase
+) :
+    ViewModel() {
 
     //Staff//
     private val _staff = MutableLiveData<List<StaffDataModel>>()
@@ -36,19 +39,27 @@ class ViewModel @Inject constructor(
     private val _testimonialStatus = MutableLiveData(Status.SUCCESS)
     val testimonialStatus: LiveData<Status> = _testimonialStatus
 
-    //News//
-    //change to Status.SUCCESS when news is implemented
-    private val _newsStatus = MutableLiveData(Status.ERROR)
-    val newsStatus: LiveData<Status> = _newsStatus
-
     //Slides//
     private val _slideStatus = MutableLiveData(Status.SUCCESS)
     val slideStatus: LiveData<Status> = _slideStatus
 
+    //change to Status.SUCCESS when news is implemented
+    private val _newsStatus = MutableLiveData(Status.SUCCESS)
+    val newsStatus: LiveData<Status> = _newsStatus
+
     private val _slidesModel = MutableLiveData<List<SlidesDataModel>>()
     val slidesModel: LiveData<List<SlidesDataModel>> = _slidesModel
 
+    private val _news = MutableLiveData<List<NewsModel>>()
+    val news: LiveData<List<NewsModel>> = _news
+
     val slidesCallFailed = MutableLiveData<Boolean>()
+
+    private val _activities = MutableLiveData<List<ActivitiesDataModel>>()
+    val activities: LiveData<List<ActivitiesDataModel>> = _activities
+
+    private val _activitiesStatus = MutableLiveData<Status>()
+    val activitiesStatus: LiveData<Status> = _activitiesStatus
 
     //val Mediator to observe States of apiCall response
     val apiStatus = MediatorLiveData<Errors>().apply {
@@ -129,6 +140,19 @@ class ViewModel @Inject constructor(
         }
     }
 
+    //this function retrieves the list of activities and sets activitiesStatus
+    fun onLoadActivities() {
+        viewModelScope.launch {
+            _activitiesStatus.postValue(Status.LOADING)
+            val result = getActivitiesUseCase()
+            if (result.isNotEmpty()) {
+                _activities.postValue(result)
+                _activitiesStatus.postValue(Status.SUCCESS)
+            } else
+                _activitiesStatus.postValue(Status.ERROR)
+        }
+    }
+
     //This function refresh the testimonials livedata value with the use case response.
     //In case of an API exception the list does not update and the status becomes ERROR
 
@@ -145,11 +169,24 @@ class ViewModel @Inject constructor(
         }
     }
 
+    fun onLoadNews() {
+        viewModelScope.launch {
+            _newsStatus.value = Status.LOADING
+            val result = getNewsUseCase()
+            if (result.isNotEmpty()) {
+                _news.value = result
+                _newsStatus.value = Status.SUCCESS
+            } else {
+                _newsStatus.value = Status.ERROR
+            }
+        }
+    }
+
     //fun to reload apiCalls
     fun refresh() {
         onLoadTestimonials()
         onCreateSlides()
         onCreateStaff()
-        // onLoadNews()
+        onLoadNews()
     }
 }

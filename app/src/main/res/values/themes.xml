@@ -12,10 +12,23 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="bottomSheetDialogTheme">@style/AppBottomDialogTheme</item>
     </style>
 
     <style name="roundedImageViewRounded">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
+
+    <!-- This change the bottom sheet dialog background and set the corners round (but doesnt work yet, i'll fix this later) -->
+    <style name="AppBottomDialogTheme"
+        parent="Theme.MaterialComponents.BottomSheetDialog">
+        <item name="bottomAppBarStyle">@style/AppModelStyle</item>
+    </style>
+
+    <style name="AppModelStyle"
+        parent="Widget.Design.BottomSheet.Modal">
+        <item name="background">@drawable/bottom_sheet_background</item>
+    </style>
+
 </resources>

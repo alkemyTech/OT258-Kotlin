@@ -10,4 +10,6 @@
     <color name="pale_grey">#FAFAFA</color>
     <color name="red">#E2372A</color>
     <color name="red_light">#FF7F7F</color>
+    <color name="light_gray">#d3d3d3 </color>
+    <color name="blue">#0000EE </color>
 </resources>
