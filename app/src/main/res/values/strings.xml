@@ -13,5 +13,10 @@
     <string name="retryCall">Reintentar</string>
     <string name="informationError">A ocurrido un error obteniendo la información</string>
     <string name="news_view_title">Novedades</string>
+    <string name="titleDialog">Detalle</string>
+    <string name="nameStaffDialog">*Name*</string>
+    <string name="rollStaffDialog">*Roll*</string>
+    <string name="facebookStaffDialog">*Facebook*</string>
+    <string name="linkedinStaffDialog">*Linkedin*</string>
 </resources>
 

@@ -2,10 +2,7 @@ package com.melvin.ongandroid.viewmodel
 
 import androidx.lifecycle.*
 import androidx.lifecycle.ViewModel
-import com.melvin.ongandroid.businesslogic.GetStaffUseCase
-import com.melvin.ongandroid.businesslogic.GetNewsUseCase
-import com.melvin.ongandroid.businesslogic.GetTestimonialsUseCase
-import com.melvin.ongandroid.businesslogic.getSlidesUseCase
+import com.melvin.ongandroid.businesslogic.*
 import com.melvin.ongandroid.model.news.NewsModel
 import com.melvin.ongandroid.model.slides.SlidesDataModel
 import com.melvin.ongandroid.model.staff.StaffDataModel
