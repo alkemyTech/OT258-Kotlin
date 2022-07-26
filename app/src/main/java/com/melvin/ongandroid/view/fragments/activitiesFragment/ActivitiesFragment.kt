@@ -57,7 +57,9 @@ class ActivitiesFragment : Fragment() {
                 }
                 Status.ERROR -> {
                     binding.progressBarForTest.visibility = View.GONE
-                    TODO("on load error if onLoadActivitiesFail")
+                    onLoadError(getString(R.string.an_error_has_occurred_obtaining_the_information)) {
+                        viewModel.onLoadActivities()
+                    }
                 }
             }
         }
@@ -67,5 +69,12 @@ class ActivitiesFragment : Fragment() {
     private fun initActivitiesRecyclerView(list: List<ActivitiesDataModel>) {
         binding.rvActivities.layoutManager = LinearLayoutManager(requireContext())
         binding.rvActivities.adapter = ActivitiesAdapter(list)
+    }
+
+    //displays a message and a generic button that will be set when calling the function
+    private fun onLoadError(message: String, retryCB: () -> Unit) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_INDEFINITE)
+            .setAction(resources.getString(R.string.retry)) { retryCB() }
+            .show()
     }
 }
