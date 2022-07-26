@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.melvin.ongandroid.R
+import com.melvin.ongandroid.view.fragments.bottomSheetFragment.BottomFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
@@ -17,6 +19,9 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class StaffFragment : Fragment() {
+    // TODO: Rename and change types of parameters
+    private var param1: String? = null
+    private var param2: String? = null
 
     private lateinit var binding: FragmentStaffBinding
     private val viewModel: ViewModel by viewModels()
@@ -78,5 +83,20 @@ class StaffFragment : Fragment() {
             getStaff()
         }
     }
-    
+
+    /* TODO: assign values
+    var bundle = Bundle()
+
+    bundle.putString("name", "AddNombre")
+    bundle.putString("roll", "AddRoll")
+    bundle.putString("facebookLink", "AddFacebook")
+    bundle.putString("linkedinLink", "AddLinkedin")
+    bundle.putString("picture", "AddPicture")
+
+    / Creating bottomSheetDialog
+    var bottomSheetDialog = BottomFragment()
+    bottomSheetDialog.setArguments(bundle)
+    bottomSheetDialog.show(getParentFragmentManager(), bottomSheetDialog.tag)
+    */
+
 }

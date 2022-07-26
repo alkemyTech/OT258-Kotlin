@@ -8,6 +8,8 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.melvin.ongandroid.R
 import com.melvin.ongandroid.databinding.ActivityMainBinding
@@ -30,8 +32,9 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = binding.navHostFragment.getFragment() as NavHostFragment
         navController = navHostFragment.navController
 
-        //binding.bnvMainNavigation.setOnNavigationItemSelectedListener(this)
         binding.bnvMainNavigation.setupWithNavController(navController)
     }
+
+
 
 }
