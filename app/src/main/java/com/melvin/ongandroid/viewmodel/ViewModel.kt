@@ -3,6 +3,7 @@ package com.melvin.ongandroid.viewmodel
 import androidx.lifecycle.*
 import androidx.lifecycle.ViewModel
 import com.melvin.ongandroid.businesslogic.*
+import com.melvin.ongandroid.model.activities.ActivitiesDataModel
 import com.melvin.ongandroid.model.news.NewsModel
 import com.melvin.ongandroid.model.slides.SlidesDataModel
 import com.melvin.ongandroid.model.staff.StaffDataModel
@@ -19,7 +20,8 @@ class ViewModel @Inject constructor(
     private val getTestimonialsUseCase: GetTestimonialsUseCase,
     private val getSlidesUseCase: GetSlidesUseCase,
     private val getStaffUseCase: GetStaffUseCase,
-    private val getNewsUseCase: GetNewsUseCase
+    private val getNewsUseCase: GetNewsUseCase,
+    private val getActivitiesUseCase: GetActivitiesUseCase,
 ) :
     ViewModel() {
 
@@ -41,17 +43,23 @@ class ViewModel @Inject constructor(
     private val _slideStatus = MutableLiveData(Status.SUCCESS)
     val slideStatus: LiveData<Status> = _slideStatus
 
-    private val _slidesModel = MutableLiveData<List<SlidesDataModel>>()
-    val slidesModel: LiveData<List<SlidesDataModel>> = _slidesModel
-    
-    //News//
+    //change to Status.SUCCESS when news is implemented
     private val _newsStatus = MutableLiveData(Status.SUCCESS)
     val newsStatus: LiveData<Status> = _newsStatus
+
+    private val _slidesModel = MutableLiveData<List<SlidesDataModel>>()
+    val slidesModel: LiveData<List<SlidesDataModel>> = _slidesModel
 
     private val _news = MutableLiveData<List<NewsModel>>()
     val news: LiveData<List<NewsModel>> = _news
 
     val slidesCallFailed = MutableLiveData<Boolean>()
+
+    private val _activities = MutableLiveData<List<ActivitiesDataModel>>()
+    val activities: LiveData<List<ActivitiesDataModel>> = _activities
+
+    private val _activitiesStatus = MutableLiveData<Status>()
+    val activitiesStatus: LiveData<Status> = _activitiesStatus
 
     //val Mediator to observe States of apiCall response
     val apiStatus = MediatorLiveData<Errors>().apply {
@@ -132,6 +140,18 @@ class ViewModel @Inject constructor(
         }
     }
 
+    //this function retrieves the list of activities and sets activitiesStatus
+    fun onLoadActivities() {
+        viewModelScope.launch {
+            _activitiesStatus.postValue(Status.LOADING)
+            val result = getActivitiesUseCase()
+            if (result.isNotEmpty()) {
+                _activities.postValue(result)
+                _activitiesStatus.postValue(Status.SUCCESS)
+            } else
+                _activitiesStatus.postValue(Status.ERROR)
+        }
+    }
 
     //This function refresh the testimonials livedata value with the use case response.
     //In case of an API exception the list does not update and the status becomes ERROR
@@ -148,7 +168,7 @@ class ViewModel @Inject constructor(
             }
         }
     }
-    
+
     fun onLoadNews() {
         viewModelScope.launch {
             _newsStatus.value = Status.LOADING
@@ -161,11 +181,6 @@ class ViewModel @Inject constructor(
             }
         }
     }
-
-    fun validateError(): Boolean = (testimonialStatus.value == Status.ERROR &&
-            slideStatus.value == Status.ERROR &&
-            newsStatus.value == Status.ERROR
-            )
 
     //fun to reload apiCalls
     fun refresh() {
