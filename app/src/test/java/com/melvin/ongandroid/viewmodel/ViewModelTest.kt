@@ -2,10 +2,12 @@ package com.melvin.ongandroid.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.melvin.ongandroid.businesslogic.GetActivitiesUseCase
+import com.melvin.ongandroid.businesslogic.GetNewsUseCase
 import com.melvin.ongandroid.businesslogic.GetTestimonialsUseCase
 import com.melvin.ongandroid.businesslogic.GetSlidesUseCase
 import com.melvin.ongandroid.businesslogic.GetStaffUseCase
 import com.melvin.ongandroid.model.slides.SlidesDataModel
+import com.melvin.ongandroid.model.staff.StaffDataModel
 import com.melvin.ongandroid.model.testimonials.DataModel
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -35,6 +37,7 @@ class ViewModelTest {
     @MockK
     private lateinit var getActivitiesUseCase: GetActivitiesUseCase
 
+private lateinit var getNewsUserCase: GetNewsUseCase
 
     private lateinit var viewModel: ViewModel
 
@@ -44,11 +47,7 @@ class ViewModelTest {
     @Before
     fun setup() {
         MockKAnnotations.init(this)
-<<<<<<< HEAD
-        viewModel = ViewModel(getTestimonialsUseCase, getSlidesUseCase, getActivitiesUseCase)
-=======
-        viewModel = ViewModel(getTestimonialsUseCase, getSlidesUseCase,getStaffUseCase)
->>>>>>> main
+        viewModel = ViewModel(getTestimonialsUseCase, getSlidesUseCase,getStaffUseCase, getNewsUserCase, getActivitiesUseCase)
         Dispatchers.setMain(Dispatchers.Unconfined)
     }
 
@@ -191,6 +190,20 @@ class ViewModelTest {
         assert(viewModel.testimonialStatus.value == Status.ERROR)
         assert(viewModel.slideStatus.value == Status.ERROR)
         assert(viewModel.slidesCallFailed.value == true)
+    }
+
+    @Test
+    fun `when onCreateStaff recover a staff list and set on the _staff (liveData)`() = runTest{
+        //GIVEN
+            val listOfStaffDataModel = listOf(StaffDataModel(1, "Andres", "imagen", "descripcion", "facebookUrl", "linkedinUrl", null, null, null, 0))
+            coEvery { getStaffUseCase() } returns listOfStaffDataModel
+
+        //WHEN
+            viewModel.onCreateStaff()
+
+        //THEN
+            assert(viewModel.staffStatus.value == Status.SUCCESS)
+            assert(viewModel.staff.value == listOfStaffDataModel)
     }
 
     companion object {
