@@ -10,6 +10,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.ktx.Firebase
 import com.google.android.material.snackbar.Snackbar
 import com.melvin.ongandroid.R
 import com.melvin.ongandroid.databinding.FragmentHomeBinding
@@ -19,13 +21,17 @@ import com.melvin.ongandroid.view.adapters.testimonials.TestimonialsAdapter
 import com.melvin.ongandroid.viewmodel.ViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import com.melvin.ongandroid.view.adapters.welcome.WelcomeActivitiesAdapter
+import javax.inject.Inject
 import com.melvin.ongandroid.viewmodel.Errors
 import com.melvin.ongandroid.viewmodel.Status
 
 
 @AndroidEntryPoint
-class HomeFragment: Fragment() {
+class HomeFragment : Fragment() {
 
+    @Inject
+    lateinit var firebaseAnalytics: FirebaseAnalytics
+    
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val viewModel: ViewModel by viewModels()
@@ -48,6 +54,8 @@ class HomeFragment: Fragment() {
     private fun initComponent() {
         getTestimonials()
         testimonialsArrowClick()
+        //getNews()
+        lastNewsArrowClick()
         getSlides()
         setUpListeners()
         viewModel.apiStatus.observe(viewLifecycleOwner, Observer {
@@ -81,8 +89,22 @@ class HomeFragment: Fragment() {
         binding.rvActivityTestimony.adapter = TestimonialsAdapter(list)
     }
 
+    //This function listen the click on the testimonials see more button
     private fun testimonialsArrowClick() {
         binding.btnTestimonials.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString("message", "Testimonials see more was pressed")
+            firebaseAnalytics.logEvent("testimonies_see_more_pressed", bundle)
+
+        }
+    }
+    //This function listen the click on the last news see more button
+    private fun lastNewsArrowClick() {
+        binding.btnLastNews.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString("last_news", "Last News see more was pressed")
+            firebaseAnalytics.logEvent("last_news_see_more_pressed", bundle)
+
         }
     }
 

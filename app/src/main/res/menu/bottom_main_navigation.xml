@@ -18,8 +18,8 @@
         android:icon="@drawable/ic_main_nav_news"/>
 
     <item
-        android:id="@+id/nav_Social"
-        android:title="Contribuir"
+        android:id="@+id/activitiesFragment"
+        android:title="@string/activities_title"
         android:icon="@drawable/ic_main_nav_social"/>
 
     <item
