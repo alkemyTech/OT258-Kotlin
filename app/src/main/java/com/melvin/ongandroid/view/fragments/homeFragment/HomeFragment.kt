@@ -15,6 +15,7 @@ import com.melvin.ongandroid.R
 import com.melvin.ongandroid.databinding.FragmentHomeBinding
 import com.melvin.ongandroid.model.slides.SlidesDataModel
 import com.melvin.ongandroid.model.testimonials.DataModel
+import com.melvin.ongandroid.view.fragments.bottomSheetFragment.BottomFragment
 import com.melvin.ongandroid.view.adapters.testimonials.TestimonialsAdapter
 import com.melvin.ongandroid.viewmodel.ViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,7 +25,7 @@ import com.melvin.ongandroid.viewmodel.Status
 
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class HomeFragment: Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -130,4 +131,3 @@ class HomeFragment : Fragment() {
         }
     }
 }
-

@@ -3,7 +3,6 @@ package com.melvin.ongandroid.viewmodel
 import androidx.lifecycle.*
 import androidx.lifecycle.ViewModel
 import com.melvin.ongandroid.businesslogic.*
-
 import com.melvin.ongandroid.model.activities.ActivitiesDataModel
 import com.melvin.ongandroid.model.news.NewsModel
 import com.melvin.ongandroid.model.slides.SlidesDataModel
