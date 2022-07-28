@@ -5,12 +5,19 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.melvin.ongandroid.R
+import com.melvin.ongandroid.databinding.ItemWelcomeActivitiesBinding
 import com.melvin.ongandroid.model.data.WelcomeActivity
 import com.melvin.ongandroid.model.slides.SlidesDataModel
 
-class WelcomeActivitiesAdapter (var list: List<SlidesDataModel>) : RecyclerView.Adapter<WelcomeActivitiesViewHolder>() {
+class WelcomeActivitiesAdapter(
+    var list: List<SlidesDataModel>
+) : RecyclerView.Adapter<WelcomeActivitiesViewHolder>() {
+
     companion object DiffCallback : DiffUtil.ItemCallback<WelcomeActivity>() {
-        override fun areItemsTheSame(oldItem: WelcomeActivity, newItem: WelcomeActivity): Boolean {
+        override fun areItemsTheSame(
+            oldItem: WelcomeActivity,
+            newItem: WelcomeActivity
+        ): Boolean {
             return oldItem.id == newItem.id
         }
 
@@ -27,15 +34,21 @@ class WelcomeActivitiesAdapter (var list: List<SlidesDataModel>) : RecyclerView.
         viewType: Int
     ): WelcomeActivitiesViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        return WelcomeActivitiesViewHolder(
-            layoutInflater.inflate(R.layout.item_welcome_activities, parent, false)
+        val binding = ItemWelcomeActivitiesBinding.inflate(
+            layoutInflater,
+            parent,
+            false
         )
+        return WelcomeActivitiesViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: WelcomeActivitiesViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: WelcomeActivitiesViewHolder,
+        position: Int
+    ) {
         val item = list[position]
         holder.bind(item)
     }
 
-    override fun getItemCount(): Int = if (list.size<4) list.size-1 else 4
+    override fun getItemCount(): Int = if (list.size < 4) list.size - 1 else 4
 }

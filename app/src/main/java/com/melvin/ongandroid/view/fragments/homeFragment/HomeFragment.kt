@@ -26,6 +26,7 @@ import com.melvin.ongandroid.viewmodel.Errors
 import com.melvin.ongandroid.viewmodel.Status
 
 
+
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
@@ -58,11 +59,11 @@ class HomeFragment : Fragment() {
         lastNewsArrowClick()
         getSlides()
         setUpListeners()
-        viewModel.apiStatus.observe(viewLifecycleOwner, Observer {
+        viewModel.apiStatus.observe(viewLifecycleOwner) {
             if (it == Errors.ALL) {
                 onLoadError(resources.getString(R.string.generalError)) { viewModel.refresh() }
             }
-        })
+        }
     }
 
     //This function start the testimonials query, an gives the response to the recyclerview
@@ -72,9 +73,9 @@ class HomeFragment : Fragment() {
             when (status!!) {
                 Status.LOADING -> {}
                 Status.SUCCESS -> {
-                    viewModel.testimonials.observe(viewLifecycleOwner, Observer {
+                    viewModel.testimonials.observe(viewLifecycleOwner) {
                         initTestimonialRecyclerView(it)
-                    })
+                    }
                 }
                 Status.ERROR -> onLoadError(resources.getString(R.string.on_testimonials_loading_error)) {
                     viewModel.onLoadTestimonials()
@@ -112,19 +113,18 @@ class HomeFragment : Fragment() {
     // Also, hide views depending on the state of the call
     private fun getSlides() {
         viewModel.onCreateSlides()
-        viewModel.slidesCallFailed.observe(viewLifecycleOwner, Observer { failed ->
+        viewModel.slidesCallFailed.observe(viewLifecycleOwner) { failed ->
             if (failed) {
                 binding.rvWelcomeActivityView.visibility = View.GONE
                 binding.llErrorSlidesCall.visibility = View.VISIBLE
             } else {
                 binding.rvWelcomeActivityView.visibility = View.VISIBLE
                 binding.llErrorSlidesCall.visibility = View.GONE
-                viewModel.slidesModel.observe(viewLifecycleOwner, Observer {
+                viewModel.slidesModel.observe(viewLifecycleOwner) {
                     initWelcomeRecyclerView(it)
-                })
+                }
             }
         }
-        )
     }
 
     // Init the recyclerview with the query's response
