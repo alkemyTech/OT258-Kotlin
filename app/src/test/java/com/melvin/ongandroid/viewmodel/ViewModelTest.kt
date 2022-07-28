@@ -37,7 +37,8 @@ class ViewModelTest {
     @MockK
     private lateinit var getActivitiesUseCase: GetActivitiesUseCase
 
-private lateinit var getNewsUserCase: GetNewsUseCase
+    @MockK
+    private lateinit var getNewsUserCase: GetNewsUseCase
 
     private lateinit var viewModel: ViewModel
 
@@ -47,7 +48,11 @@ private lateinit var getNewsUserCase: GetNewsUseCase
     @Before
     fun setup() {
         MockKAnnotations.init(this)
-        viewModel = ViewModel(getTestimonialsUseCase, getSlidesUseCase,getStaffUseCase, getNewsUserCase, getActivitiesUseCase)
+        viewModel = ViewModel(getTestimonialsUseCase,
+            getSlidesUseCase,
+            getStaffUseCase,
+            getActivitiesUseCase,
+            getNewsUserCase,)
         Dispatchers.setMain(Dispatchers.Unconfined)
     }
 
@@ -193,30 +198,39 @@ private lateinit var getNewsUserCase: GetNewsUseCase
     }
 
     @Test
-    fun `when onCreateStaff recovers a staff list and set on the _staff (liveData)`() = runTest{
+    fun `when onCreateStaff recovers a staff list and set on the _staff (liveData)`() = runTest {
         //GIVEN
-           val listOfStaffDataModel = listOf(StaffDataModel(1, "Andres", "imagen", "descripcion", "facebookUrl", "linkedinUrl", null, null, null, 0))
-           coEvery { getStaffUseCase() } returns listOfStaffDataModel
+        val listOfStaffDataModel = listOf(StaffDataModel(1,
+            "Andres",
+            "imagen",
+            "descripcion",
+            "facebookUrl",
+            "linkedinUrl",
+            null,
+            null,
+            null,
+            0))
+        coEvery { getStaffUseCase() } returns listOfStaffDataModel
 
         //WHEN
-           viewModel.onCreateStaff()
+        viewModel.onCreateStaff()
 
         //THEN
-           assert(viewModel.staffStatus.value == Status.SUCCESS)
-           assert(viewModel.staff.value == listOfStaffDataModel)
+        assert(viewModel.staffStatus.value == Status.SUCCESS)
+        assert(viewModel.staff.value == listOfStaffDataModel)
     }
 
     @Test
-    fun `when onCreateStaff recovers a staff empty list from getStaffUseCase`() = runTest{
+    fun `when onCreateStaff recovers a staff empty list from getStaffUseCase`() = runTest {
         //GIVEN
-           val emptyListOfStaffDataModel = emptyList<StaffDataModel>()
-           coEvery { getStaffUseCase() } returns emptyListOfStaffDataModel
+        val emptyListOfStaffDataModel = emptyList<StaffDataModel>()
+        coEvery { getStaffUseCase() } returns emptyListOfStaffDataModel
 
         //WHEN
-           viewModel.onCreateStaff()
+        viewModel.onCreateStaff()
 
         //THEN
-            assert(viewModel.staffStatus.value == Status.ERROR)
+        assert(viewModel.staffStatus.value == Status.ERROR)
     }
 
     companion object {

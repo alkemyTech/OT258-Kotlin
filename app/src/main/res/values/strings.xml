@@ -21,5 +21,12 @@
     <string name="rollStaffDialog">*Roll*</string>
     <string name="facebookStaffDialog">*Facebook*</string>
     <string name="linkedinStaffDialog">*Linkedin*</string>
+    <string name="you_want_to_contribute">¿Quieres contribuir?</string>
+    <string name="donate">Donar</string>
+    <string name="contact_us">¡Contactate con nosotros!</string>
+    <string name="name_and_surname">Nombre y Apellido</string>
+    <string name="email">Email</string>
+    <string name="message">Mensaje</string>
+    <string name="send_message">Enviar mensaje</string>
 </resources>
 
