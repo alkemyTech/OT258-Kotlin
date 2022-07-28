@@ -18,16 +18,17 @@ import com.melvin.ongandroid.view.adapters.staff.StaffAdapter
 import com.melvin.ongandroid.viewmodel.Status
 import com.melvin.ongandroid.viewmodel.ViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class StaffFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    @Inject
+    lateinit var firebaseAnalytics: FirebaseAnalytics
 
     private lateinit var binding: FragmentStaffBinding
     private val viewModel: ViewModel by viewModels()
-    private lateinit var firebaseAnalytics: FirebaseAnalytics
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -91,7 +92,6 @@ class StaffFragment : Fragment() {
     private fun onItemSelected(staffDataModel: StaffDataModel) {
         val bundle = Bundle()
         val bundleLog = Bundle()
-        firebaseAnalytics = FirebaseAnalytics.getInstance(requireContext())
         val description = deleteHTML(staffDataModel.description.toString())
         bundle.putString("name", staffDataModel.name)
         bundle.putString("roll", description)
