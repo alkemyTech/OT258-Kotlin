@@ -1,5 +1,7 @@
 package com.melvin.ongandroid.view.fragments.bottomSheetFragment
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -35,6 +37,18 @@ class BottomFragment:BottomSheetDialogFragment() {
             tvFacebook.text = requireArguments().getString("facebookLink", "*Nombre*") ?: "*Facebook*"
             tvLinkedin.text = requireArguments().getString("linkedinLink", "*Nombre*") ?: "*Linkedin*"
         }
+        val facebookUrl = requireArguments().getString("facebookLink")
+        val linkedinUrl = requireArguments().getString("linkedinLink")
+        facebookUrl?.let { url ->
+            binding.tvFacebook.setOnClickListener(View.OnClickListener {
+                launchBrowser(url)
+            })
+        }
+        linkedinUrl?.let { url ->
+            binding.tvLinkedin.setOnClickListener(View.OnClickListener {
+                launchBrowser(url)
+            })
+        }
         return binding.root
     }
 
@@ -43,4 +57,13 @@ class BottomFragment:BottomSheetDialogFragment() {
             lifecycleOwner = viewLifecycleOwner
         }
     }
+
+     private fun launchBrowser(url: String) {
+         var finalURL = url
+         val browserIntent = Intent(Intent.ACTION_VIEW)
+         if (!url.startsWith("http://") && !url.startsWith("https://"))
+             finalURL = "http://$url";
+         browserIntent.data = Uri.parse(finalURL)
+         startActivity(browserIntent)
+     }
 }
