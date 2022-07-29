@@ -9,15 +9,16 @@ import com.melvin.ongandroid.databinding.ItemWelcomeActivitiesBinding
 import com.melvin.ongandroid.model.slides.SlidesDataModel
 
 
-class WelcomeActivitiesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
-    private val binding = ItemWelcomeActivitiesBinding.bind(view)
+class WelcomeActivitiesViewHolder(
+    private val binding: ItemWelcomeActivitiesBinding
+) : RecyclerView.ViewHolder(binding.root) {
 
     // Bind the slide data with the slide item view
     fun bind(slide: SlidesDataModel) {
         binding.apply {
             tvTitle.text = slide.title
-            tvDescription.text = if (slide.description.isNullOrEmpty()) "" else deleteHTML(slide.description!!)
+            tvDescription.text =
+                if (slide.description.isNullOrEmpty()) "" else deleteHTML(slide.description!!)
             Glide.with(ivCardPicture.context)
                 .load(slide.image)
                 .placeholder(R.drawable.progress_animation)
@@ -27,7 +28,10 @@ class WelcomeActivitiesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     }
 
     // Delete tags HTML from strings
-    private fun deleteHTML (html: String): String{
-        return androidx.core.text.HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
+    private fun deleteHTML(html: String): String {
+        return HtmlCompat.fromHtml(
+            html,
+            HtmlCompat.FROM_HTML_MODE_LEGACY
+        ).toString()
     }
 }

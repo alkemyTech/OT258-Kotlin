@@ -8,9 +8,13 @@ import com.melvin.ongandroid.R
 import com.melvin.ongandroid.databinding.ItemActivitiesBinding
 import com.melvin.ongandroid.model.activities.ActivitiesDataModel
 
-class ActivitiesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-    private val binding = ItemActivitiesBinding.bind(view)
-    fun bind(item: ActivitiesDataModel) {
+class ActivitiesViewHolder(
+    private val binding: ItemActivitiesBinding
+) : RecyclerView.ViewHolder(binding.root) {
+
+    fun bind(
+        item: ActivitiesDataModel
+    ) {
         binding.tvActivitiesTittle.text = item.name.toString()
         binding.tvDescriptionActivities.text =
             HtmlCompat.fromHtml(item.description ?: "", HtmlCompat.FROM_HTML_MODE_LEGACY)
