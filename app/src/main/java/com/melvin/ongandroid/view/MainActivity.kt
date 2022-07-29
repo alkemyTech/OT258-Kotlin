@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         // Retrieve NavController from the NavHostFragment
         val navHostFragment = binding.navHostFragment.getFragment() as NavHostFragment
         navController = navHostFragment.navController
-        
+
         //  binding.bnvMainNavigation.setOnNavigationItemSelectedListener(this)
         binding.bnvMainNavigation.setupWithNavController(navController)
     }
