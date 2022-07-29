@@ -173,7 +173,7 @@ class ViewModel @Inject constructor(
         viewModelScope.launch {
             _newsStatus.value = Status.LOADING
             val result = getNewsUseCase()
-            if (result.isNotEmpty()) {
+            if (result!!.isNotEmpty()) {
                 _news.value = result
                 _newsStatus.value = Status.SUCCESS
             } else {
