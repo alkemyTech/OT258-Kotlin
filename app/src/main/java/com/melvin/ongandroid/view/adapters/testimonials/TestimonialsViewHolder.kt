@@ -8,16 +8,20 @@ import com.melvin.ongandroid.databinding.ItemTestimonyBinding
 import com.melvin.ongandroid.model.testimonials.DataModel
 
 
-class TestimonialsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+class TestimonialsViewHolder(
+    private val binding: ItemTestimonyBinding
+) : RecyclerView.ViewHolder(binding.root) {
 
-    private val binding = ItemTestimonyBinding.bind(view)
     fun render(testimony: DataModel) {
-        binding.tvName.text = testimony.name.toString()
-        binding.tvTestimony.text = testimony.description.toString()
-        Glide.with(binding.ivTestimony.context)
-            .load(testimony.image.toString())
-            .placeholder(R.drawable.progress_animation)
-            .error(R.drawable.progress_animation)
-            .into(binding.ivTestimony)
+        with(binding) {
+            tvName.text = testimony.name.toString()
+            tvTestimony.text = testimony.description.toString()
+            Glide.with(ivTestimony.context)
+                .load(testimony.image.toString())
+                .placeholder(R.drawable.progress_animation)
+                .error(R.drawable.progress_animation)
+                .into(ivTestimony)
+        }
     }
+
 }

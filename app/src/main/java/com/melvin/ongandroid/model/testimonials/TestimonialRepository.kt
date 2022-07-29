@@ -15,6 +15,7 @@ class TestimonialRepository
     //If success is false it response with an empty list
     suspend fun getAllTestimonials(): List<DataModel> {
         val bundle = Bundle()
+
         if (testimonialsService.getTestimonials().success) {
             val list = testimonialsService.getTestimonials().data
             bundle.putString("Testimonials","Testimonials GET was successful")
