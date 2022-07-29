@@ -2,9 +2,9 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <a>
+    <data>
 
-    </a>
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -74,8 +74,9 @@
             android:layout_gravity="center"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:backgroundTint="@color/red"
+            android:backgroundTint="@color/btn_login"
             android:text="@string/login_button_text"
+            android:enabled="false"
             android:textAllCaps="false"
             android:textColor="#fff"
             android:textSize="18sp"
