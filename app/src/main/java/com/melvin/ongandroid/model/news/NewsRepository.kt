@@ -11,7 +11,7 @@ class NewsRepository
     private val firebaseAnalytics: FirebaseAnalytics
 ) {
     //TODO: Pass the error message along (response.message on response.success: false)
-    suspend fun getAllNews(): List<NewsModel> {
+    suspend fun getAllNews(): List<NewsModel>  {
         val bundle = Bundle()
         val response = newsService.getNews()
         return if (response.success) {
@@ -26,4 +26,4 @@ class NewsRepository
             emptyList()
         }
     }
-}
+    }

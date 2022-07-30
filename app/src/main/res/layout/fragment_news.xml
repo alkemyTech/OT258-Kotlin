@@ -58,10 +58,54 @@
                             android:id="@+id/news_recycler_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"                     tools:itemCount="2"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            tools:itemCount="2"
                             tools:listitem="@layout/item_news" />
                     </RelativeLayout>
                 </TableRow>
+
+
+
+                <LinearLayout
+                    android:id="@+id/llErrorNews"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:text="@string/informationError" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnRetryNews"
+                        android:layout_width="120dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/bg_retry"
+                        android:drawableStart="@drawable/ic_baseline_retry"
+                        android:paddingStart="4dp"
+                        android:paddingEnd="4dp"
+                        android:text="@string/retryCall" />
+                </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/NewsProgressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+                </ProgressBar>
 
             </TableLayout>
         </ScrollView>

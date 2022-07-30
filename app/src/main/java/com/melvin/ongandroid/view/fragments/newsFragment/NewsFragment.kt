@@ -6,9 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import com.melvin.ongandroid.databinding.FragmentNewsBinding
 import com.melvin.ongandroid.model.news.NewsModel
 import com.melvin.ongandroid.view.adapters.news.NewsAdapter
+import com.melvin.ongandroid.view.adapters.staff.StaffAdapter
 import com.melvin.ongandroid.viewmodel.Status
 import com.melvin.ongandroid.viewmodel.ViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -50,4 +53,49 @@ class NewsFragment : Fragment() {
     private fun refreshNewsRecyclerView(news: List<NewsModel>) {
         binding.newsRecyclerView.adapter = NewsAdapter(news)
     }
+
+
+                            //    NEWS
+
+//    This function evaluate the status value, if fails, it shows a retry button. If is successful, it shows the recyclerview.
+    private fun getNews() {
+        viewModel.onCreateStaff()
+        viewModel.newsStatus.observe(viewLifecycleOwner, Observer { status ->
+            when (status!!) {
+                Status.LOADING -> {
+                    binding.llErrorNews.visibility = View.GONE
+                    binding.NewsProgressBar.visibility = View.VISIBLE
+                }
+                Status.SUCCESS -> {
+                    binding.newsRecyclerView.visibility = View.VISIBLE
+                    binding.llErrorNews.visibility = View.GONE
+                    binding.NewsProgressBar.visibility = View.GONE
+                    viewModel.news.observe(viewLifecycleOwner, Observer {
+                        initRecyclerView(it)
+                    })
+                }
+                Status.ERROR -> {
+                    binding.newsRecyclerView.visibility = View.GONE
+                    binding.NewsProgressBar.visibility = View.GONE
+                    binding.llErrorNews.visibility = View.VISIBLE
+                    setUpListeners()
+                }
+
+            }
+        })
+    }
+
+    private fun initRecyclerView(list: List<NewsModel>) {
+        binding.newsRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+        binding.newsRecyclerView.adapter = NewsAdapter(list)
+
+    }
+
+    // This function allows us to set up listeners
+    private fun setUpListeners() {
+        binding.btnRetryNews.setOnClickListener {
+            getNews()
+        }
+    }
+
 }

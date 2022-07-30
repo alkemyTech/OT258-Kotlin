@@ -21,6 +21,11 @@
     <string name="rollStaffDialog">*Roll*</string>
     <string name="facebookStaffDialog">*Facebook*</string>
     <string name="linkedinStaffDialog">*Linkedin*</string>
+    <string name="login_email_hint">Email</string>
+    <string name="login_password_hint">Password</string>
+    <string name="login_button_text">Login</string>
+    <string name="login_signup_text">No tienes cuenta? Registrate!</string>
+    <string name="logo_content_description">Logo de Somos Mas</string>
     <string name="you_want_to_contribute">¿Quieres contribuir?</string>
     <string name="donate">Donar</string>
     <string name="contact_us">¡Contactate con nosotros!</string>
