@@ -73,8 +73,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_regular"
-                android:imeOptions="actionDone"
-                android:inputType="text"
+                android:imeOptions="flagNavigateNext|actionDone"
+                android:inputType="textCapWords"
+                android:maxLines="1"
                 android:textSize="@dimen/scaleable13" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -98,8 +99,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/poppins_regular"
-                android:imeOptions="actionDone"
+                android:imeOptions="flagNavigateNext|actionDone"
                 android:inputType="textEmailAddress"
+                android:maxLines="1"
                 android:textSize="@dimen/scaleable16" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -123,7 +125,7 @@
                 android:layout_height="match_parent"
                 android:fontFamily="@font/poppins_regular"
                 android:gravity="top"
-                android:imeOptions="actionDone"
+                android:imeOptions="flagNavigateNext|actionDone"
                 android:inputType="textMultiLine"
                 android:maxLength="500"
                 android:textSize="@dimen/scaleable13" />
@@ -137,11 +139,14 @@
             android:layout_margin="@dimen/density16"
             android:background="@color/pale_grey"
             android:backgroundTint="@color/blue"
+            android:elevation="@dimen/density16"
             android:enabled="false"
             android:text="@string/send_message"
             android:textColor="@color/white"
+            android:textSize="@dimen/scaleable16"
             app:layout_constraintStart_toStartOf="@+id/tfMessage"
             app:layout_constraintTop_toBottomOf="@+id/tfMessage" />
+
 
         <!--replace with reusable spinner-->
         <ProgressBar
