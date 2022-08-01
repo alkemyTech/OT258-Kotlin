@@ -245,10 +245,10 @@ class ViewModel @Inject constructor(
         }
     }
 
+    //fun to reset values of livedata
     private fun resetValues() {
         _contactName.value = ""
         _contactMail.value = ""
         _contactMessage.value = ""
-
     }
 }
