@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
 import com.melvin.ongandroid.databinding.FragmentLoginBinding
+import com.melvin.ongandroid.util.ValidatePassword
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,15 +31,11 @@ class LoginFragment : Fragment() {
     }
 
     private fun initComponent(){
-        binding.etEmailLogin.doOnTextChanged { text, start, before, count ->  manageButtonLogin()}
-        binding.etPasswordLogin.doOnTextChanged { text, start, before, count ->  manageButtonLogin()}
+        binding.etEmailLogin.doOnTextChanged { text, start, before, count ->  manageButtonLogin() }
+        binding.etPasswordLogin.doOnTextChanged { text, start, before, count ->  manageButtonLogin() }
     }
 
     private fun manageButtonLogin(){
-        /*if (ValidateEmail.isEmail(binding.etEmailLogin.text.toString())){
-            binding.loginBtn.isEnabled = true
-        } else {
-            binding.loginBtn.isEnabled = false
-        }
-    }*/
+        binding.loginBtn.isEnabled = ValidatePassword.isPassword(binding.etPasswordLogin.text.toString())
+    }
 }
