@@ -8,6 +8,9 @@ import com.melvin.ongandroid.model.news.NewsModel
 import com.melvin.ongandroid.model.slides.SlidesDataModel
 import com.melvin.ongandroid.model.staff.StaffDataModel
 import com.melvin.ongandroid.model.testimonials.DataModel
+import com.melvin.ongandroid.util.checkMail
+import com.melvin.ongandroid.util.checkMessage
+import com.melvin.ongandroid.util.checkName
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,7 +24,7 @@ class ViewModel @Inject constructor(
     private val getSlidesUseCase: GetSlidesUseCase,
     private val getStaffUseCase: GetStaffUseCase,
     private val getActivitiesUseCase: GetActivitiesUseCase,
-    private val getNewsUseCase: GetNewsUseCase
+    private val getNewsUseCase: GetNewsUseCase,
 ) :
     ViewModel() {
 
@@ -173,7 +176,7 @@ class ViewModel @Inject constructor(
         viewModelScope.launch {
             _newsStatus.value = Status.LOADING
             val result = getNewsUseCase()
-            if (result.isNotEmpty()) {
+            if (result!!.isNotEmpty()) {
                 _news.value = result
                 _newsStatus.value = Status.SUCCESS
             } else {
@@ -189,4 +192,35 @@ class ViewModel @Inject constructor(
         onCreateStaff()
         onLoadNews()
     }
+
+    private val _contactName = MutableLiveData<String>()
+    private val _contactMail = MutableLiveData<String>()
+    private val _contactMessage = MutableLiveData<String>()
+
+    private val _isButtonEnabled = MutableLiveData(false)
+    val isButtonEnabled: LiveData<Boolean> = _isButtonEnabled
+
+    //fun to set contact name
+    fun setContactName(name: String) {
+        _contactName.value = name
+    }
+
+    //fun to set mail
+    fun setContactMail(mail: String) {
+        _contactMail.value = mail
+    }
+
+    //fun to set message
+    fun setContactMessage(message: String) {
+        _contactMessage.value = message
+    }
+
+    //fun to validate that the fields are correctly completed
+    fun validateDataContact() {
+        var condition =
+            (_contactName.value.toString().checkName() && _contactMail.value.toString()
+                .checkMail() && _contactMessage.value.toString().checkMessage())
+        _isButtonEnabled.postValue(condition)
+    }
+
 }

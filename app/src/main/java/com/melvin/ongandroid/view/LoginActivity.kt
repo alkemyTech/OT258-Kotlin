@@ -2,16 +2,11 @@ package com.melvin.ongandroid.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.melvin.ongandroid.databinding.ActivityLoginBinding
-import dagger.hilt.android.AndroidEntryPoint
+import com.melvin.ongandroid.R
 
-@AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityLoginBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_login)
     }
 }

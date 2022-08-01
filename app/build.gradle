@@ -61,6 +61,10 @@ dependencies {
     //Firebase Auth
     implementation 'com.google.firebase:firebase-auth-ktx'
 
+
+    //Firebase Message 20.2.0
+    implementation 'com.google.firebase:firebase-messaging:23.0.6'
+
     //Activity and Fragments Libraries
     implementation "androidx.activity:activity-ktx:$activity_version"
     implementation "androidx.fragment:fragment-ktx:$fragment_version"
