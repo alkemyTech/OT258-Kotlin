@@ -5,17 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.motion.widget.TransitionBuilder.validate
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import com.google.android.material.snackbar.Snackbar
 import com.melvin.ongandroid.R
-import com.melvin.ongandroid.databinding.FragmentActivitiesBinding
 import com.melvin.ongandroid.databinding.FragmentContactBinding
 import com.melvin.ongandroid.util.checkMail
 import com.melvin.ongandroid.util.checkMessage
 import com.melvin.ongandroid.util.checkName
+import com.melvin.ongandroid.viewmodel.Status
 import com.melvin.ongandroid.viewmodel.ViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -40,6 +38,7 @@ class ContactFragment : Fragment() {
         binding.apply {
             validateData()
             activeButton()
+            sendContact()
         }
     }
 
@@ -54,7 +53,6 @@ class ContactFragment : Fragment() {
                 } else
                     tfName.isErrorEnabled = false
                 viewModel.setContactName(it.toString())
-
             }
 
             etMail.doAfterTextChanged {
@@ -77,6 +75,7 @@ class ContactFragment : Fragment() {
                 viewModel.setContactMessage(it.toString())
             }
         }
+
     }
 
     //fun to Activate and deactivate send button
@@ -86,4 +85,50 @@ class ContactFragment : Fragment() {
             binding.btnSend.isEnabled = it
         }
     }
+
+    /*
+       This function calls sendContactDate with send botton is pressed is responsible for
+       activating or deactivating the components according to the response state.*/
+    private fun sendContact() {
+        binding.btnSend.setOnClickListener {
+            viewModel.sendContactDate()
+        }
+        viewModel.sendContactStatus.observe(viewLifecycleOwner) {
+            when (it) {
+                //change progressBarForTest for spinner ticket OT258-86
+                Status.LOADING -> {
+                    binding.progressBarForTest.visibility = View.VISIBLE
+                }
+                Status.SUCCESS -> {
+                    binding.progressBarForTest.visibility = View.GONE
+                    showSnackBar(getString(R.string.successfully_contact_data_post_message))
+                    resetView()
+                }
+                Status.ERROR -> {
+                    binding.progressBarForTest.visibility = View.GONE
+                    TODO("if POST fail")
+                }
+            }
+        }
+    }
+
+    //displays a generic message
+    private fun showSnackBar(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+            .setBackgroundTint(resources.getColor(R.color.red))
+            .show()
+    }
+
+    //fun to reset values
+    private fun resetView() {
+        with(binding) {
+            etName.text?.clear()
+            etMail.text?.clear()
+            etMessage.text?.clear()
+            tfName.isErrorEnabled = false
+            tfMail.isErrorEnabled = false
+            tfMessage.isErrorEnabled = false
+        }
+    }
 }
+

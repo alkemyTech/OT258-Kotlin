@@ -36,5 +36,6 @@
     <string name="error_contact_name_warning">Debe completar su nombre solo con letras y con un minimo de 3 caracteres</string>
     <string name="error_contact_mail_warning">Por favor ingrese un mail valido</string>
     <string name="error_contact_message_warning">Por favor escriba un minimo de 10 caracteres</string>
+    <string name="successfully_contact_data_post_message">Datos enviados correctamente, pronto nos comunicaremos con usted, Gracias!!</string>
 </resources>
 
