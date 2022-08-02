@@ -14,7 +14,7 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:layout_gravity="center_horizontal"
-        tools:context=".view.fragments.staffFragment.StaffFragment">
+        tools:context=".view.home.fragments.staffFragment.StaffFragment">
 
         <ImageView
             android:id="@+id/ivPhoto"
