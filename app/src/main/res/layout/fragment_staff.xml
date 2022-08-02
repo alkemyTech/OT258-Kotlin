@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.fragments.staffFragment.StaffFragment">
+    tools:context=".view.home.fragments.staffFragment.StaffFragment">
 
     <data>
         <!-- dataBinding (delete this after using this space) -->
