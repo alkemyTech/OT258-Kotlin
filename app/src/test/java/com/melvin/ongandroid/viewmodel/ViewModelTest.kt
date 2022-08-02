@@ -1,11 +1,8 @@
 package com.melvin.ongandroid.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.melvin.ongandroid.businesslogic.GetActivitiesUseCase
-import com.melvin.ongandroid.businesslogic.GetNewsUseCase
-import com.melvin.ongandroid.businesslogic.GetTestimonialsUseCase
-import com.melvin.ongandroid.businesslogic.GetSlidesUseCase
-import com.melvin.ongandroid.businesslogic.GetStaffUseCase
+import com.melvin.ongandroid.businesslogic.*
+import com.melvin.ongandroid.model.contact.ContactDataModel
 import com.melvin.ongandroid.model.slides.SlidesDataModel
 import com.melvin.ongandroid.model.staff.StaffDataModel
 import com.melvin.ongandroid.model.testimonials.DataModel
@@ -40,6 +37,9 @@ class ViewModelTest {
     @MockK
     private lateinit var getNewsUserCase: GetNewsUseCase
 
+    @MockK
+    private lateinit var sendContactUseCase: SendContactUsesCase
+
     private lateinit var viewModel: ViewModel
 
     @get: Rule
@@ -52,7 +52,8 @@ class ViewModelTest {
             getSlidesUseCase,
             getStaffUseCase,
             getActivitiesUseCase,
-            getNewsUserCase,)
+            getNewsUserCase,
+        sendContactUseCase)
         Dispatchers.setMain(Dispatchers.Unconfined)
     }
 
@@ -295,6 +296,83 @@ class ViewModelTest {
                 null,
                 null)
         private val LIST__SLIDE_DATA_MODEL = listOf(ITEM_SLIDE_1, ITEM_SLIDE_2, ITEM_SLIDE_3)
+        private val CONTACT_FORM =
+            ContactDataModel(
+                0,
+                "personName",
+                "personName@email.com",
+                "some random message"
+            )
+    }
+    @Test
+    fun `when the body have the correct format `() = runTest {
+        //GIVEN
+        val listOfDataModel = CONTACT_FORM
+
+        //WHEN
+        viewModel.setContactName(listOfDataModel.name)
+        viewModel.setContactMail(listOfDataModel.email)
+        viewModel.setContactMessage(listOfDataModel.message)
+        viewModel.validateDataContact()
+
+        //THEN
+        assert(viewModel.isButtonEnabled.value == true)
+    }
+
+    @Test
+    fun `when the contacts name doesn't have the correct format `() = runTest {
+        //GIVEN
+        val listOfDataModel = ContactDataModel(0,"","personName@email.com", "some random message")
+        //WHEN
+        viewModel.setContactName(listOfDataModel.name)
+        viewModel.setContactMail(listOfDataModel.email)
+        viewModel.setContactMessage(listOfDataModel.message)
+        viewModel.validateDataContact()
+
+        //THEN
+        assert(viewModel.isButtonEnabled.value == false)
+    }
+    @Test
+    fun `when the contacts mail doesn't have the correct format `() = runTest {
+        //GIVEN
+        val listOfDataModel = ContactDataModel(0,"personName","", "some random message")
+        //WHEN
+        viewModel.setContactName(listOfDataModel.name)
+        viewModel.setContactMail(listOfDataModel.email)
+        viewModel.setContactMessage(listOfDataModel.message)
+        viewModel.validateDataContact()
+
+        //THEN
+        assert(viewModel.isButtonEnabled.value == false)
+    }
+    @Test
+    fun `when the contacts message doesn't have the correct format `() = runTest {
+        //GIVEN
+        val listOfDataModel = ContactDataModel(0,"personName","personName@email.com", "")
+        //WHEN
+        viewModel.setContactName(listOfDataModel.name)
+        viewModel.setContactMail(listOfDataModel.email)
+        viewModel.setContactMessage(listOfDataModel.message)
+        viewModel.validateDataContact()
+
+        //THEN
+        assert(viewModel.isButtonEnabled.value == false)
+    }
+
+    @Test
+    fun `when sendContactDAte get a success as response `() = runTest {
+        //GIVEN
+        val listOfDataModel = CONTACT_FORM
+        coEvery { sendContactUseCase(listOfDataModel) } returns true
+
+        //WHEN
+        viewModel.setContactName(listOfDataModel.name)
+        viewModel.setContactMail(listOfDataModel.email)
+        viewModel.setContactMessage(listOfDataModel.message)
+        viewModel.sendContactDate()
+
+        //THEN
+        assert(viewModel.sendContactStatus.value == Status.SUCCESS)
     }
 }
 
