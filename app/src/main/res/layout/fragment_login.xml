@@ -37,6 +37,7 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etEmailLogin"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:drawablePadding="16dp"
@@ -60,7 +61,7 @@
             app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/password"
+                android:id="@+id/etPasswordLogin"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:inputType="textPassword"
@@ -76,8 +77,9 @@
             android:layout_gravity="center"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:backgroundTint="@color/red"
+            android:backgroundTint="@color/btn_login"
             android:text="@string/login_button_text"
+            android:enabled="false"
             android:textAllCaps="false"
             android:textColor="#fff"
             android:textSize="18sp"
@@ -98,4 +100,3 @@
             app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
-
