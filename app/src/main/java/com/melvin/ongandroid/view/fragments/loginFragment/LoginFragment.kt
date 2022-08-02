@@ -6,15 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.melvin.ongandroid.databinding.FragmentLoginBinding
 import com.melvin.ongandroid.util.checkMail
 import com.melvin.ongandroid.util.checkPassword
+import com.melvin.ongandroid.viewmodel.InputTypeLogIn
+import com.melvin.ongandroid.viewmodel.ViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
+    private val viewModel: ViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,16 +34,14 @@ class LoginFragment : Fragment() {
             lifecycleOwner = viewLifecycleOwner
         }
         initComponent()
+        viewModel.statusButtonLogin.observe(viewLifecycleOwner, Observer {
+            binding.loginBtn.isEnabled = it
+        })
     }
 
     private fun initComponent(){
         // Checking whether both email input and password input meet the conditions
-        binding.etEmailLogin.doOnTextChanged { text, start, before, count ->  manageButtonLogin() } // Email
-        binding.etPasswordLogin.doOnTextChanged { text, start, before, count ->  manageButtonLogin() } // Password
-    }
-
-    // Validating email and password
-    private fun manageButtonLogin(){
-        binding.loginBtn.isEnabled =  binding.etEmailLogin.text.toString().checkMail() && binding.etPasswordLogin.text.toString().checkPassword()
+        binding.etEmailLogin.doOnTextChanged { text, start, before, count ->  viewModel.manageButtonLogin(binding.etEmailLogin.text.toString(), InputTypeLogIn.EMAIL) } // Email
+        binding.etPasswordLogin.doOnTextChanged { text, start, before, count ->  viewModel.manageButtonLogin(binding.etPasswordLogin.text.toString(), InputTypeLogIn.PASSWORD) } // Password
     }
 }
