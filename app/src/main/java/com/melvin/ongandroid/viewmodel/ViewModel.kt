@@ -9,15 +9,14 @@ import com.melvin.ongandroid.model.news.NewsModel
 import com.melvin.ongandroid.model.slides.SlidesDataModel
 import com.melvin.ongandroid.model.staff.StaffDataModel
 import com.melvin.ongandroid.model.testimonials.DataModel
-import com.melvin.ongandroid.util.checkMail
-import com.melvin.ongandroid.util.checkMessage
-import com.melvin.ongandroid.util.checkName
+import com.melvin.ongandroid.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 enum class Status { LOADING, SUCCESS, ERROR }
 enum class Errors { TESTIMONIALS, NEWS, SLIDE, ALL }
+enum class InputTypeLogIn {EMAIL, PASSWORD}
 
 @HiltViewModel
 class ViewModel @Inject constructor(
@@ -250,5 +249,18 @@ class ViewModel @Inject constructor(
         _contactName.value = ""
         _contactMail.value = ""
         _contactMessage.value = ""
+    }
+    private val _statusButtonLogin = MutableLiveData<Boolean>(false)
+    val statusButtonLogin: LiveData<Boolean> = _statusButtonLogin
+    private var emailApplied: Boolean = false
+    private var passwordApplied: Boolean = false
+
+    // Validating email and password
+    fun manageButtonLogin(input: String, type: InputTypeLogIn){
+        when (type){
+            InputTypeLogIn.EMAIL -> emailApplied = input.checkMail()
+            InputTypeLogIn.PASSWORD -> passwordApplied = input.checkPasswordLogin()
+        }
+        _statusButtonLogin.postValue(emailApplied && passwordApplied)
     }
 }
