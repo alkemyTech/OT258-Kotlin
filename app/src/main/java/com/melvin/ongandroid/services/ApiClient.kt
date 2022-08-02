@@ -38,6 +38,6 @@ interface ApiClient {
 
     //POST new contact data in API
     @Headers("Content-Type: application/json; charset=utf-8")
-    @POST("contactss")
+    @POST("contacts")
     suspend fun sendContact(@Body contact: ContactDataModel): Response<ContactResponse>
 }
