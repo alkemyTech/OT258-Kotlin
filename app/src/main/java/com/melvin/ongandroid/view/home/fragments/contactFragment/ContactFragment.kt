@@ -1,10 +1,14 @@
 package com.melvin.ongandroid.view.home.fragments.contactFragment
 
+import android.graphics.Color.green
 import android.os.Bundle
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
@@ -16,6 +20,7 @@ import com.melvin.ongandroid.util.checkName
 import com.melvin.ongandroid.viewmodel.Status
 import com.melvin.ongandroid.viewmodel.ViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.lang.Boolean.FALSE
 
 @AndroidEntryPoint
 class ContactFragment : Fragment() {
@@ -105,19 +110,7 @@ class ContactFragment : Fragment() {
                     resetView()
                 }
                 Status.ERROR -> {
-                    binding.progressBarForTest.visibility = View.GONE
-                    binding.tfName.isErrorEnabled = true
-                    binding.tfName.error =
-                        getString(R.string.something_went_wrong)
-                    binding.tfMail.isErrorEnabled = true
-                    binding.tfMail.error =
-                        getString(R.string.something_went_wrong)
-                    binding.tfMessage.isErrorEnabled = true
-                    binding.tfMessage.error =
-                        getString(R.string.something_went_wrong)
-                    onLoadError(resources.getString(R.string.on_contact_sending_error)) {
-                        viewModel.sendContactDate()
-                    }
+                    onLoadError()
                 }
             }
         }
@@ -126,7 +119,7 @@ class ContactFragment : Fragment() {
     //displays a generic message
     private fun showSnackBar(message: String) {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
-            .setBackgroundTint(resources.getColor(R.color.red))
+            .setBackgroundTint(resources.getColor(R.color.green))
             .show()
     }
 
@@ -142,10 +135,32 @@ class ContactFragment : Fragment() {
         }
     }
 
-    private fun onLoadError(message: String, retryCB: () -> Unit) {
-        Snackbar.make(binding.root, message, Snackbar.LENGTH_INDEFINITE)
-            .setAction(resources.getString(R.string.retry)) { retryCB() }
+    private fun onLoadError() {
+        Snackbar.make(binding.root, resources.getString(R.string.on_contact_sending_error), Snackbar.LENGTH_SHORT)
+            .setBackgroundTint(resources.getColor(R.color.red))
             .show()
+        binding.progressBarForTest.visibility = View.GONE
+        binding.tfName.isErrorEnabled = true
+        binding.tfName.error = getString(R.string.something_went_wrong)
+        binding.tfMail.isErrorEnabled = true
+        binding.tfMail.error = getString(R.string.something_went_wrong)
+        binding.tfMessage.isErrorEnabled = true
+        binding.tfMessage.error = getString(R.string.something_went_wrong)
+        binding.etName.doAfterTextChanged {
+            binding.tfName.isErrorEnabled = false
+            binding.tfMail.isErrorEnabled = false
+            binding.tfMessage.isErrorEnabled = false
+        }
+        binding.etMail.doAfterTextChanged {
+            binding.tfName.isErrorEnabled = false
+            binding.tfMail.isErrorEnabled = false
+            binding.tfMessage.isErrorEnabled = false
+        }
+        binding.etMessage.doAfterTextChanged {
+            binding.tfName.isErrorEnabled = false
+            binding.tfMail.isErrorEnabled = false
+            binding.tfMessage.isErrorEnabled = false
+        }
     }
 }
 

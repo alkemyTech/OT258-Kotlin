@@ -223,24 +223,27 @@ class ViewModel @Inject constructor(
     //fun to validate that the fields are correctly completed
     fun validateDataContact() {
         var condition = (_contactName.value.toString().checkName() && _contactMail.value.toString()
-                .checkMail() && _contactMessage.value.toString().checkMessage())
+            .checkMail() && _contactMessage.value.toString().checkMessage())
         _isButtonEnabled.postValue(condition)
     }
 
     //this function POST the new contact in API is POST and response success boolean
     fun sendContactDate() {
-        val contact = ContactDataModel(0,
+        val contact = ContactDataModel(
+            0,
             _contactName.value.toString(),
             _contactMail.value.toString(),
-            _contactMessage.value.toString())
+            _contactMessage.value.toString()
+        )
         viewModelScope.launch {
             _sendContactStatus.value = Status.LOADING
             val result = sendContactUsesCase(contact)
             if (result) {
                 _sendContactStatus.value = Status.SUCCESS
                 resetValues()
-            } else _sendContactStatus.value =
-                Status.ERROR
+            } else {
+                _sendContactStatus.value = Status.ERROR
+            }
         }
     }
 
