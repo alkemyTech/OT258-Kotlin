@@ -11,6 +11,7 @@
     <string name="retry">Reintentar</string>
     <string name="generalError">Inicio - Error general</string>
     <string name="on_testimonials_loading_error">Something went wrong, couldn\'t load testimonials</string>
+    <string name="on_contact_sending_error">Something went wrong, couldn\'t sent the request</string>
     <string name="retryCall">Reintentar</string>
     <string name="informationError">A ocurrido un error obteniendo la información</string>
     <string name="an_error_has_occurred_obtaining_the_information">Ha ocurrido un error obteniendo la información</string>
@@ -37,5 +38,6 @@
     <string name="error_contact_mail_warning">Por favor ingrese un mail valido</string>
     <string name="error_contact_message_warning">Por favor escriba un minimo de 10 caracteres</string>
     <string name="successfully_contact_data_post_message">Datos enviados correctamente, pronto nos comunicaremos con usted, Gracias!!</string>
+    <string name="something_went_wrong">Algo salió mal</string>
 </resources>
 

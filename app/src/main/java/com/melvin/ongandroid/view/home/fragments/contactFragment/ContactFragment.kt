@@ -106,7 +106,18 @@ class ContactFragment : Fragment() {
                 }
                 Status.ERROR -> {
                     binding.progressBarForTest.visibility = View.GONE
-                    TODO("if POST fail")
+                    binding.tfName.isErrorEnabled = true
+                    binding.tfName.error =
+                        getString(R.string.something_went_wrong)
+                    binding.tfMail.isErrorEnabled = true
+                    binding.tfMail.error =
+                        getString(R.string.something_went_wrong)
+                    binding.tfMessage.isErrorEnabled = true
+                    binding.tfMessage.error =
+                        getString(R.string.something_went_wrong)
+                    onLoadError(resources.getString(R.string.on_contact_sending_error)) {
+                        viewModel.sendContactDate()
+                    }
                 }
             }
         }
@@ -129,6 +140,12 @@ class ContactFragment : Fragment() {
             tfMail.isErrorEnabled = false
             tfMessage.isErrorEnabled = false
         }
+    }
+
+    private fun onLoadError(message: String, retryCB: () -> Unit) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_INDEFINITE)
+            .setAction(resources.getString(R.string.retry)) { retryCB() }
+            .show()
     }
 }
 

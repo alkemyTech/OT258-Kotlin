@@ -7,158 +7,163 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".view.home.fragments.contactFragment.ContactFragment">
+        android:layout_height="wrap_content">
 
-        <include
-            android:id="@+id/ivLogo"
-            layout="@layout/logo"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tvContributor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/density16"
-            android:layout_marginTop="@dimen/density16"
-            android:fontFamily="@font/poppins_regular"
-            android:text="@string/you_want_to_contribute"
-            android:textColor="@color/black"
-            android:textSize="@dimen/scaleable24"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivLogo" />
-
-        <Button
-            android:id="@+id/btnDonate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/density10"
-            android:backgroundTint="@color/red"
-            android:elevation="@dimen/density16"
-            android:text="@string/donate"
-            android:textColor="@color/white"
-            app:layout_constraintStart_toStartOf="@+id/tvContributor"
-            app:layout_constraintTop_toBottomOf="@+id/tvContributor" />
-
-        <TextView
-            android:id="@+id/tvContactTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/density30"
-            android:fontFamily="@font/poppins_regular"
-            android:text="@string/contact_us"
-            android:textColor="@color/black"
-            android:textSize="@dimen/scaleable24"
-            app:layout_constraintStart_toStartOf="@id/tvContributor"
-            app:layout_constraintTop_toBottomOf="@+id/btnDonate" />
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tfName"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/density16"
-            android:hint="@string/name_and_surname"
-            app:boxStrokeColor="@color/blue"
-            app:boxStrokeErrorColor="@color/red"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvContactTitle">
+            android:layout_height="match_parent"
+            tools:context=".view.home.fragments.contactFragment.ContactFragment">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etName"
+            <include
+                android:id="@+id/ivLogo"
+                layout="@layout/logo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvContributor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/density16"
+                android:layout_marginTop="@dimen/density16"
+                android:fontFamily="@font/poppins_regular"
+                android:text="@string/you_want_to_contribute"
+                android:textColor="@color/black"
+                android:textSize="@dimen/scaleable24"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ivLogo" />
+
+            <Button
+                android:id="@+id/btnDonate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/density10"
+                android:backgroundTint="@color/red"
+                android:elevation="@dimen/density16"
+                android:text="@string/donate"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toStartOf="@+id/tvContributor"
+                app:layout_constraintTop_toBottomOf="@+id/tvContributor" />
+
+            <TextView
+                android:id="@+id/tvContactTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/density30"
+                android:fontFamily="@font/poppins_regular"
+                android:text="@string/contact_us"
+                android:textColor="@color/black"
+                android:textSize="@dimen/scaleable24"
+                app:layout_constraintStart_toStartOf="@id/tvContributor"
+                app:layout_constraintTop_toBottomOf="@+id/btnDonate" />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tfName"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_regular"
-                android:imeOptions="flagNavigateNext|actionDone"
-                android:inputType="textCapWords"
-                android:maxLines="1"
-                android:textSize="@dimen/scaleable13" />
+                android:layout_margin="@dimen/density16"
+                android:hint="@string/name_and_surname"
+                app:boxStrokeColor="@color/blue"
+                app:boxStrokeErrorColor="@color/red"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvContactTitle">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:imeOptions="flagNavigateNext|actionDone"
+                    android:inputType="textCapWords"
+                    android:maxLines="1"
+                    android:textSize="@dimen/scaleable13" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tfMail"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/density16"
-            android:hint="@string/email"
-            app:boxStrokeColor="@color/blue"
-            app:boxStrokeErrorColor="@color/red"
-            app:layout_constraintEnd_toEndOf="@+id/tfName"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tfName">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etMail"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tfMail"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/poppins_regular"
-                android:imeOptions="flagNavigateNext|actionDone"
-                android:inputType="textEmailAddress"
-                android:maxLines="1"
-                android:textSize="@dimen/scaleable16" />
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/density16"
+                android:hint="@string/email"
+                app:boxStrokeColor="@color/blue"
+                app:boxStrokeErrorColor="@color/red"
+                app:layout_constraintEnd_toEndOf="@+id/tfName"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tfName">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etMail"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/poppins_regular"
+                    android:imeOptions="flagNavigateNext|actionDone"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:textSize="@dimen/scaleable16" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tfMessage"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/density188"
-            android:layout_margin="@dimen/density16"
-            android:hint="@string/message"
-            app:boxStrokeColor="@color/blue"
-            app:boxStrokeErrorColor="@color/red"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tfMail">
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etMessage"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tfMessage"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/poppins_regular"
-                android:gravity="top"
-                android:imeOptions="flagNavigateNext|actionDone"
-                android:inputType="textMultiLine"
-                android:maxLength="500"
-                android:textSize="@dimen/scaleable13" />
+                android:layout_height="@dimen/density188"
+                android:layout_margin="@dimen/density16"
+                android:hint="@string/message"
+                app:boxStrokeColor="@color/blue"
+                app:boxStrokeErrorColor="@color/red"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tfMail">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="top"
+                    android:imeOptions="flagNavigateNext|actionDone"
+                    android:inputType="textMultiLine"
+                    android:maxLength="500"
+                    android:textSize="@dimen/scaleable13" />
 
-        <Button
-            android:id="@+id/btnSend"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/density60"
-            android:layout_margin="@dimen/density16"
-            android:background="@color/pale_grey"
-            android:backgroundTint="@color/blue"
-            android:elevation="@dimen/density16"
-            android:enabled="false"
-            android:text="@string/send_message"
-            android:textColor="@color/white"
-            android:textSize="@dimen/scaleable16"
-            app:layout_constraintStart_toStartOf="@+id/tfMessage"
-            app:layout_constraintTop_toBottomOf="@+id/tfMessage" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/btnSend"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/density60"
+                android:layout_margin="@dimen/density16"
+                android:background="@color/pale_grey"
+                android:backgroundTint="@color/blue"
+                android:elevation="@dimen/density16"
+                android:enabled="false"
+                android:text="@string/send_message"
+                android:textColor="@color/white"
+                android:textSize="@dimen/scaleable16"
+                app:layout_constraintStart_toStartOf="@+id/tfMessage"
+                app:layout_constraintTop_toBottomOf="@+id/tfMessage" />
 
 
-        <!--replace with reusable spinner-->
-        <ProgressBar
-            android:id="@+id/progressBarForTest"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            <!--replace with reusable spinner-->
+            <ProgressBar
+                android:id="@+id/progressBarForTest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-        </ProgressBar>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            </ProgressBar>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </layout>

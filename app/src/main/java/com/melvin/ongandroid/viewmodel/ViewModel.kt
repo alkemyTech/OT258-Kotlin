@@ -222,8 +222,7 @@ class ViewModel @Inject constructor(
 
     //fun to validate that the fields are correctly completed
     fun validateDataContact() {
-        var condition =
-            (_contactName.value.toString().checkName() && _contactMail.value.toString()
+        var condition = (_contactName.value.toString().checkName() && _contactMail.value.toString()
                 .checkMail() && _contactMessage.value.toString().checkMessage())
         _isButtonEnabled.postValue(condition)
     }
