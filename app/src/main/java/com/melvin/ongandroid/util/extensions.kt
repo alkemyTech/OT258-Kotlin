@@ -15,12 +15,7 @@ fun String.checkMessage() = this.isNotEmpty() && this.length >= 10
 
 //fun to check if the login password meets the conditions (minimum of character 8)
 fun String.checkPasswordLogin(): Boolean {
-    var pat: Pattern? = null
-    var mat: Matcher? = null
-
-    pat = Pattern.compile("^{8,}$")
-    mat = pat!!.matcher(this)
-    return mat!!.find()
+    return this.length>=8
 }
 
 //fun to check if the password meets the conditions
@@ -28,7 +23,7 @@ fun String.checkPassword(): Boolean {
     var pat: Pattern? = null
     var mat: Matcher? = null
 
-    pat = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(~`!@#$%^&*()_-+={[}]\\|:;"'<,>.?/)(?=\\S+$).{8,15}$")
+    pat = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[~`!@#\$%^&*()_+={[}]-|\\:;\"'<,>.?/])(?=\\S+$).{4,15}$")
     mat = pat!!.matcher(this)
     return mat!!.find()
 }

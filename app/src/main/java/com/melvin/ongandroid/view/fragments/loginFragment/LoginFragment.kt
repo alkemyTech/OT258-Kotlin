@@ -34,6 +34,8 @@ class LoginFragment : Fragment() {
             lifecycleOwner = viewLifecycleOwner
         }
         initComponent()
+
+        // status button login changes depending on whether meets the conditions or not
         viewModel.statusButtonLogin.observe(viewLifecycleOwner, Observer {
             binding.loginBtn.isEnabled = it
         })
@@ -41,7 +43,7 @@ class LoginFragment : Fragment() {
 
     private fun initComponent(){
         // Checking whether both email input and password input meet the conditions
-        binding.etEmailLogin.doOnTextChanged { text, start, before, count ->  viewModel.manageButtonLogin(binding.etEmailLogin.text.toString(), InputTypeLogIn.EMAIL) } // Email
-        binding.etPasswordLogin.doOnTextChanged { text, start, before, count ->  viewModel.manageButtonLogin(binding.etPasswordLogin.text.toString(), InputTypeLogIn.PASSWORD) } // Password
+        binding.etEmailLogin.doOnTextChanged { text, start, before, count ->  viewModel.manageButtonLogin(binding.etEmailLogin.text.toString(), InputTypeLogIn.EMAIL) }
+        binding.etPasswordLogin.doOnTextChanged { text, start, before, count ->  viewModel.manageButtonLogin(binding.etPasswordLogin.text.toString(), InputTypeLogIn.PASSWORD) }
     }
 }
