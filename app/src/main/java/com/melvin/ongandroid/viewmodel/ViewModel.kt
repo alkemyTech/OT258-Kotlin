@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import androidx.lifecycle.ViewModel
 import com.melvin.ongandroid.businesslogic.*
 import com.melvin.ongandroid.model.activities.ActivitiesDataModel
+import com.melvin.ongandroid.model.contact.ContactDataModel
 import com.melvin.ongandroid.model.news.NewsModel
 import com.melvin.ongandroid.model.slides.SlidesDataModel
 import com.melvin.ongandroid.model.staff.StaffDataModel
@@ -24,6 +25,7 @@ class ViewModel @Inject constructor(
     private val getStaffUseCase: GetStaffUseCase,
     private val getActivitiesUseCase: GetActivitiesUseCase,
     private val getNewsUseCase: GetNewsUseCase,
+    private val sendContactUsesCase: SendContactUsesCase,
 ) :
     ViewModel() {
 
@@ -199,6 +201,9 @@ class ViewModel @Inject constructor(
     private val _isButtonEnabled = MutableLiveData(false)
     val isButtonEnabled: LiveData<Boolean> = _isButtonEnabled
 
+    private val _sendContactStatus = MutableLiveData<Status>()
+    val sendContactStatus: LiveData<Status> = _sendContactStatus
+
     //fun to set contact name
     fun setContactName(name: String) {
         _contactName.value = name
@@ -222,6 +227,29 @@ class ViewModel @Inject constructor(
         _isButtonEnabled.postValue(condition)
     }
 
+    //this function POST the new contact in API is POST and response success boolean
+    fun sendContactDate() {
+        val contact = ContactDataModel(0,
+            _contactName.value.toString(),
+            _contactMail.value.toString(),
+            _contactMessage.value.toString())
+        viewModelScope.launch {
+            _sendContactStatus.value = Status.LOADING
+            val result = sendContactUsesCase(contact)
+            if (result) {
+                _sendContactStatus.value = Status.SUCCESS
+                resetValues()
+            } else _sendContactStatus.value =
+                Status.ERROR
+        }
+    }
+
+    //fun to reset values of livedata
+    private fun resetValues() {
+        _contactName.value = ""
+        _contactMail.value = ""
+        _contactMessage.value = ""
+    }
     private val _statusButtonLogin = MutableLiveData<Boolean>(false)
     val statusButtonLogin: LiveData<Boolean> = _statusButtonLogin
     private var emailApplied: Boolean = false

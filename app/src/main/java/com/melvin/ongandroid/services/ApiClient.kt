@@ -2,12 +2,17 @@ package com.melvin.ongandroid.services
 
 
 import com.melvin.ongandroid.model.activities.ActivitiesModel
+import com.melvin.ongandroid.model.contact.ContactDataModel
+import com.melvin.ongandroid.model.contact.ContactResponse
 import com.melvin.ongandroid.model.news.NewsAPIResponse
 import com.melvin.ongandroid.model.slides.SlidesModel
 import com.melvin.ongandroid.model.staff.StaffModel
 import com.melvin.ongandroid.model.testimonials.TestimonialsModel
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Headers
+import retrofit2.http.POST
 
 interface ApiClient {
     //GET request slides from API
@@ -30,4 +35,9 @@ interface ApiClient {
     //GET request activities from API
     @GET("activities")
     suspend fun getActivitiesList(): Response<ActivitiesModel>
+
+    //POST new contact data in API
+    @Headers("Content-Type: application/json; charset=utf-8")
+    @POST("contacts")
+    suspend fun sendContact(@Body contact: ContactDataModel): Response<ContactResponse>
 }
