@@ -5,24 +5,24 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.melvin.ongandroid.databinding.ItemWelcomeActivitiesBinding
-import com.melvin.ongandroid.model.data.WelcomeActivity
 import com.melvin.ongandroid.model.slides.SlidesDataModel
+import kotlin.math.min
 
 class WelcomeActivitiesAdapter(
     var list: List<SlidesDataModel>
 ) : RecyclerView.Adapter<WelcomeActivitiesViewHolder>() {
 
-    companion object DiffCallback : DiffUtil.ItemCallback<WelcomeActivity>() {
+    companion object DiffCallback : DiffUtil.ItemCallback<SlidesDataModel>() {
         override fun areItemsTheSame(
-            oldItem: WelcomeActivity,
-            newItem: WelcomeActivity
+            oldItem: SlidesDataModel,
+            newItem: SlidesDataModel
         ): Boolean {
             return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(
-            oldItem: WelcomeActivity,
-            newItem: WelcomeActivity
+            oldItem: SlidesDataModel,
+            newItem: SlidesDataModel
         ): Boolean {
             return oldItem.title == newItem.title
         }
@@ -49,5 +49,5 @@ class WelcomeActivitiesAdapter(
         holder.bind(item)
     }
 
-    override fun getItemCount(): Int = if (list.size < 4) list.size - 1 else 4
+    override fun getItemCount(): Int = min(list.size, 4)
 }

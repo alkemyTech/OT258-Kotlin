@@ -16,21 +16,12 @@ class WelcomeActivitiesViewHolder(
     fun bind(slide: SlidesDataModel) {
         binding.apply {
             tvTitle.text = slide.title
-            tvDescription.text =
-                if (slide.description.isNullOrEmpty()) "" else deleteHTML(slide.description!!)
+            tvDescription.text = slide.description
             Glide.with(ivCardPicture.context)
                 .load(slide.image)
                 .placeholder(R.drawable.progress_animation)
                 .error(R.drawable.progress_animation)
                 .into(ivCardPicture)
         }
-    }
-
-    // Delete tags HTML from strings
-    private fun deleteHTML(html: String): String {
-        return HtmlCompat.fromHtml(
-            html,
-            HtmlCompat.FROM_HTML_MODE_LEGACY
-        ).toString()
     }
 }

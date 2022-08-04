@@ -69,7 +69,7 @@ class StaffFragment : Fragment() {
                     binding.llErrorStaffCall.visibility = View.VISIBLE
                     setUpListeners()
                 }
-
+                Status.IDLE -> { }
             }
         })
     }
@@ -91,9 +91,8 @@ class StaffFragment : Fragment() {
     private fun onItemSelected(staffDataModel: StaffDataModel) {
         val bundle = Bundle()
         val bundleLog = Bundle()
-        val description = deleteHTML(staffDataModel.description.toString())
         bundle.putString("name", staffDataModel.name)
-        bundle.putString("roll", description)
+        bundle.putString("roll", staffDataModel.description)
         bundle.putString("facebookLink", staffDataModel.facebookUrl)
         bundle.putString("linkedinLink", staffDataModel.linkedinUrl)
         bundle.putString("picture", staffDataModel.image)
@@ -107,8 +106,5 @@ class StaffFragment : Fragment() {
             bundleLog.putString("Member", "A member has selected")
             firebaseAnalytics.logEvent("member_pressed", bundleLog)
         // <<<
-    }
-    private fun deleteHTML (html: String): String{
-        return HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
     }
 }

@@ -1,14 +1,11 @@
 package com.melvin.ongandroid.view.home.fragments.contactFragment
 
-import android.graphics.Color.green
+
 import android.os.Bundle
-import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
@@ -20,7 +17,6 @@ import com.melvin.ongandroid.util.checkName
 import com.melvin.ongandroid.viewmodel.Status
 import com.melvin.ongandroid.viewmodel.ViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.lang.Boolean.FALSE
 
 @AndroidEntryPoint
 class ContactFragment : Fragment() {
@@ -35,20 +31,17 @@ class ContactFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentContactBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.apply {
-            validateData()
-            activeButton()
-            sendContact()
-        }
+    override fun onResume() {
+        setTextInputListeners()
+        setSubmitBtnListener()
+        setSubmitBtnVisibilityListener()
+        super.onResume()
     }
-
     // function to validate that the fields are correctly completed if it does not show the corresponding error message
-    private fun validateData() {
+    private fun setTextInputListeners() {
         with(binding) {
             etName.doAfterTextChanged {
                 if (!it.toString().checkName()) {
@@ -84,7 +77,7 @@ class ContactFragment : Fragment() {
     }
 
     //fun to Activate and deactivate send button
-    private fun activeButton() {
+    private fun setSubmitBtnVisibilityListener() {
         viewModel.isButtonEnabled.observe(viewLifecycleOwner) {
             viewModel.validateDataContact()
             binding.btnSend.isEnabled = it
@@ -94,7 +87,7 @@ class ContactFragment : Fragment() {
     /*
        This function calls sendContactDate with send botton is pressed is responsible for
        activating or deactivating the components according to the response state.*/
-    private fun sendContact() {
+    private fun setSubmitBtnListener() {
         binding.btnSend.setOnClickListener {
             viewModel.sendContactDate()
         }
@@ -112,6 +105,7 @@ class ContactFragment : Fragment() {
                 Status.ERROR -> {
                     onLoadError()
                 }
+                Status.IDLE -> { }//Do nothing
             }
         }
     }
