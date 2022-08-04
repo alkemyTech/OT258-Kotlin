@@ -11,7 +11,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="20dp">
+        android:padding="20dp"
+        android:background="@color/pale_grey">
 
         <ImageView
             android:id="@+id/login_logo"
@@ -34,7 +35,8 @@
             android:hint="@string/login_email_hint"
             app:layout_constraintBottom_toTopOf="@+id/login_password_label"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@color/white">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etEmailLogin"
@@ -58,7 +60,8 @@
             app:layout_constraintBottom_toTopOf="@+id/login_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:passwordToggleEnabled="true">
+            app:passwordToggleEnabled="true"
+            android:background="@color/white">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etPasswordLogin"
