@@ -1,6 +1,7 @@
 package com.melvin.ongandroid.model.activities
 
 import com.melvin.ongandroid.services.ActivitiesService
+import com.melvin.ongandroid.util.deleteHTML
 import javax.inject.Inject
 
 //This function contains the Activities list. Automatically filter the items with an null id
@@ -9,8 +10,10 @@ class ActivitiesRepository @Inject constructor(private val activitiesService: Ac
     suspend fun getAllActivities(): List<ActivitiesDataModel> {
         return if (activitiesService.getActivities().success) {
             val list = activitiesService.getActivities().data
-            list.filter { it.id != null }
-        } else
+            list.filter { it.id != null }.forEach { it.description = it.description?.deleteHTML() }
+            list
+        } else {
             emptyList()
+        }
     }
 }

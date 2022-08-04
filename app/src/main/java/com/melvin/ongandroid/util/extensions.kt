@@ -1,5 +1,6 @@
 package com.melvin.ongandroid.util
 
+import androidx.core.text.HtmlCompat
 import androidx.core.util.PatternsCompat
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -27,7 +28,12 @@ fun String.checkPassword(): Boolean {
     mat = pat!!.matcher(this)
     return mat!!.find()
 }
-
+fun String.deleteHTML(): String {
+    return HtmlCompat.fromHtml(
+        this,
+        HtmlCompat.FROM_HTML_MODE_LEGACY
+    ).toString()
+}
 /* Regex (checkPassword):
     ^                                   # start-of-string
     (?=.*[0-9])                         # a digit must occur at least once

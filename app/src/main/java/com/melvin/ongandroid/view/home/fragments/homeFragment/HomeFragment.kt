@@ -77,6 +77,7 @@ class HomeFragment : Fragment() {
                 Status.ERROR -> onLoadError(resources.getString(R.string.on_testimonials_loading_error)) {
                     viewModel.onLoadTestimonials()
                 }
+                Status.IDLE -> { }
             }
         }
     }

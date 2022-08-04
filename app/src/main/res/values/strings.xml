@@ -26,6 +26,12 @@
     <string name="login_password_hint">Password</string>
     <string name="login_button_text">Login</string>
     <string name="login_signup_text">No tienes cuenta? Registrate!</string>
+    <string name="sign_up_name_hint">Nombre y Apellido</string>
+    <string name="sign_up_email_hint">Email</string>
+    <string name="sign_up_password_hint">Contraseña</string>
+    <string name="sign_up_repeat_password_hint">Repite la contraseña</string>
+    <string name="sign_up_button_text">Registrarme</string>
+    <string name="sign_up_login_text">Ya tienes cuenta? Ingresa!</string>
     <string name="logo_content_description">Logo de Somos Mas</string>
     <string name="you_want_to_contribute">¿Quieres contribuir?</string>
     <string name="donate">Donar</string>
