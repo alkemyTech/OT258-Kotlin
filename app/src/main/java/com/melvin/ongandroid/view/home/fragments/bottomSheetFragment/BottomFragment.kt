@@ -31,10 +31,10 @@ class BottomFragment:BottomSheetDialogFragment() {
                 .placeholder(R.drawable.progress_animation)
                 .error(R.drawable.progress_animation)
                 .into(ivPictureStaff)
-            tvNameStaff.text = requireArguments().getString("name", "*Nombre*") ?: "*Nombre*"
-            tvRollStaff.text = requireArguments().getString("roll", "*Nombre*") ?: "*Roll*"
-            tvFacebook.text = requireArguments().getString("facebookLink", "*Nombre*") ?: "*Facebook*"
-            tvLinkedin.text = requireArguments().getString("linkedinLink", "*Nombre*") ?: "*Linkedin*"
+            tvNameStaff.text = requireArguments().getString("name", "*Nombre*")
+            tvRollStaff.text = requireArguments().getString("roll", "*No role*")
+            tvFacebook.text = requireArguments().getString("facebookLink", "")
+            tvLinkedin.text = requireArguments().getString("linkedinLink", "")
         }
         val facebookUrl = requireArguments().getString("facebookLink")
         val linkedinUrl = requireArguments().getString("linkedinLink")

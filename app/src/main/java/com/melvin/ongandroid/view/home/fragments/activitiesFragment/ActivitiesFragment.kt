@@ -60,6 +60,7 @@ class ActivitiesFragment : Fragment() {
                         viewModel.onLoadActivities()
                     }
                 }
+                Status.IDLE -> { }
             }
         }
     }

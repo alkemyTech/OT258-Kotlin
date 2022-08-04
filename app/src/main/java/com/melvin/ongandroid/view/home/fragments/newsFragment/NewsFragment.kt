@@ -32,15 +32,28 @@ class NewsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initNewsRecyclerView()
+        setUpListeners()
         viewModel.onLoadNews()
         viewModel.news.observe(viewLifecycleOwner) {
             refreshNewsRecyclerView(it)
         }
         viewModel.newsStatus.observe(viewLifecycleOwner) {
             when (it) {
-                Status.LOADING -> {}//TODO: show spinner and hide recyclerview
-                Status.SUCCESS -> {}//TODO: hide spinner and show recyclerview
-                Status.ERROR -> {} //TODO: show error snack bar
+                Status.LOADING -> {
+                    binding.llErrorNews.visibility = View.GONE
+                    binding.NewsProgressBar.visibility = View.VISIBLE
+                }
+                Status.SUCCESS -> {
+                    binding.newsRecyclerView.visibility = View.VISIBLE
+                    binding.llErrorNews.visibility = View.GONE
+                    binding.NewsProgressBar.visibility = View.GONE
+                }
+                Status.ERROR -> {
+                    binding.newsRecyclerView.visibility = View.GONE
+                    binding.NewsProgressBar.visibility = View.GONE
+                    binding.llErrorNews.visibility = View.VISIBLE
+                }
+                Status.IDLE -> { }
             }
         }
     }
@@ -53,47 +66,10 @@ class NewsFragment : Fragment() {
         binding.newsRecyclerView.adapter = NewsAdapter(news)
     }
 
-
-                            //    NEWS
-
-//    This function evaluate the status value, if fails, it shows a retry button. If is successful, it shows the recyclerview.
-    private fun getNews() {
-        viewModel.onCreateStaff()
-        viewModel.newsStatus.observe(viewLifecycleOwner, Observer { status ->
-            when (status!!) {
-                Status.LOADING -> {
-                    binding.llErrorNews.visibility = View.GONE
-                    binding.NewsProgressBar.visibility = View.VISIBLE
-                }
-                Status.SUCCESS -> {
-                    binding.newsRecyclerView.visibility = View.VISIBLE
-                    binding.llErrorNews.visibility = View.GONE
-                    binding.NewsProgressBar.visibility = View.GONE
-                    viewModel.news.observe(viewLifecycleOwner, Observer {
-                        initRecyclerView(it)
-                    })
-                }
-                Status.ERROR -> {
-                    binding.newsRecyclerView.visibility = View.GONE
-                    binding.NewsProgressBar.visibility = View.GONE
-                    binding.llErrorNews.visibility = View.VISIBLE
-                    setUpListeners()
-                }
-
-            }
-        })
-    }
-
-    private fun initRecyclerView(list: List<NewsModel>) {
-        binding.newsRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
-        binding.newsRecyclerView.adapter = NewsAdapter(list)
-
-    }
-
     // This function allows us to set up listeners
     private fun setUpListeners() {
         binding.btnRetryNews.setOnClickListener {
-            getNews()
+            viewModel.onLoadNews()
         }
     }
 

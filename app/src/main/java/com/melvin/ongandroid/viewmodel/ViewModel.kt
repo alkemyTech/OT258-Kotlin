@@ -14,7 +14,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-enum class Status { LOADING, SUCCESS, ERROR }
+enum class Status { LOADING, SUCCESS, ERROR, IDLE }
 enum class Errors { TESTIMONIALS, NEWS, SLIDE, ALL }
 enum class InputTypeLogIn {EMAIL, PASSWORD}
 
@@ -243,6 +243,7 @@ class ViewModel @Inject constructor(
             } else {
                 _sendContactStatus.value = Status.ERROR
             }
+            _sendContactStatus.value = Status.IDLE
         }
     }
 
