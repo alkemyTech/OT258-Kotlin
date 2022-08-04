@@ -5,6 +5,8 @@ import com.melvin.ongandroid.model.activities.ActivitiesModel
 import com.melvin.ongandroid.model.contact.ContactDataModel
 import com.melvin.ongandroid.model.contact.ContactResponse
 import com.melvin.ongandroid.model.news.NewsAPIResponse
+import com.melvin.ongandroid.model.signUpNewUser.NewUserBodyModel
+import com.melvin.ongandroid.model.signUpNewUser.NewUserResponse
 import com.melvin.ongandroid.model.slides.SlidesModel
 import com.melvin.ongandroid.model.staff.StaffModel
 import com.melvin.ongandroid.model.testimonials.TestimonialsModel
@@ -40,4 +42,9 @@ interface ApiClient {
     @Headers("Content-Type: application/json; charset=utf-8")
     @POST("contacts")
     suspend fun sendContact(@Body contact: ContactDataModel): Response<ContactResponse>
+
+    //POST new user in Data Base
+    @Headers("Content-Type: application/json; charset=utf-8")
+    @POST("newUser")
+    suspend fun sendNewUser(@Body newUser: NewUserBodyModel): Response<NewUserResponse>
 }
