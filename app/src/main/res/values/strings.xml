@@ -39,5 +39,7 @@
     <string name="error_contact_message_warning">Por favor escriba un minimo de 10 caracteres</string>
     <string name="successfully_contact_data_post_message">Datos enviados correctamente, pronto nos comunicaremos con usted, Gracias!!</string>
     <string name="something_went_wrong">Algo salió mal</string>
+    <string name="facebook_login">Facebook</string>
+    <string name="Google_login">Google</string>
 </resources>
 
