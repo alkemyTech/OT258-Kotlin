@@ -101,7 +101,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/sign_up_repeat_password_label"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:layout_constraintBottom_toTopOf="@+id/login_btn"
+            app:layout_constraintBottom_toTopOf="@+id/signUp_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:passwordToggleEnabled="true"
@@ -124,7 +124,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/login_btn"
+            android:id="@+id/signUp_btn"
             app:layout_constraintBottom_toTopOf="@+id/login_register_txt"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -134,7 +134,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:backgroundTint="@color/btn_login"
-            android:enabled="false"
+            android:enabled="true"
             android:text="@string/sign_up_button_text"
             android:textAllCaps="false"
             android:textColor="#fff"

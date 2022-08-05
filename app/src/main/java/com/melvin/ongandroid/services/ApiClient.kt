@@ -45,6 +45,6 @@ interface ApiClient {
 
     //POST new user in Data Base
     @Headers("Content-Type: application/json; charset=utf-8")
-    @POST("newUser")
+    @POST("register")
     suspend fun sendNewUser(@Body newUser: NewUserBodyModel): Response<NewUserResponse>
 }

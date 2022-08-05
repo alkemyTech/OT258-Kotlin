@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName
 
 // Response from POST(sendNewUser) - Register new user
 data class NewUserResponse(
-    @SerializedName("success") var success: Boolean
-    //@SerializedName("data") var data: List<String>,
-    //@SerializedName("message") var message: String
+    @SerializedName("success") var success: Boolean = false,
+    @SerializedName("message") var message: String = ""
 )
