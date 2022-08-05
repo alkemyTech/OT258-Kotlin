@@ -22,7 +22,7 @@ object NetworkModule {
     @Provides
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://ongapi.alkemy.org/api/")
+            .baseUrl("https://ongapi.alkemy.org/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

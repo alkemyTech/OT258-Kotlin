@@ -6,6 +6,7 @@ import com.melvin.ongandroid.businesslogic.*
 import com.melvin.ongandroid.model.activities.ActivitiesDataModel
 import com.melvin.ongandroid.model.contact.ContactDataModel
 import com.melvin.ongandroid.model.news.NewsModel
+import com.melvin.ongandroid.model.signUpNewUser.NewUserBodyModel
 import com.melvin.ongandroid.model.slides.SlidesDataModel
 import com.melvin.ongandroid.model.staff.StaffDataModel
 import com.melvin.ongandroid.model.testimonials.DataModel
@@ -26,6 +27,7 @@ class ViewModel @Inject constructor(
     private val getActivitiesUseCase: GetActivitiesUseCase,
     private val getNewsUseCase: GetNewsUseCase,
     private val sendContactUsesCase: SendContactUsesCase,
+    private val sendNewUserUseCase: SendNewUserUseCase
 ) :
     ViewModel() {
 
@@ -253,6 +255,7 @@ class ViewModel @Inject constructor(
         _contactMail.value = ""
         _contactMessage.value = ""
     }
+
     private val _statusButtonLogin = MutableLiveData<Boolean>(false)
     val statusButtonLogin: LiveData<Boolean> = _statusButtonLogin
     private var emailApplied: Boolean = false
@@ -265,5 +268,24 @@ class ViewModel @Inject constructor(
             InputTypeLogIn.PASSWORD -> passwordApplied = input.checkPasswordLogin()
         }
         _statusButtonLogin.postValue(emailApplied && passwordApplied)
+    }
+
+    private val _statusSignUpNewUser = MutableLiveData<Status>()
+    val statusSignUpNewUser: LiveData<Status> = _statusSignUpNewUser
+
+    // register new user in the data base
+    fun sendNewUser(name: String, email: String, password: String){
+        viewModelScope.launch {
+            _statusSignUpNewUser.postValue(Status.LOADING)
+
+            var success =  sendNewUserUseCase(NewUserBodyModel(name, email, password))
+
+            if (success){
+                _statusSignUpNewUser.postValue(Status.SUCCESS)
+            } else {
+                //TODO c:
+                _statusSignUpNewUser.postValue(Status.ERROR)
+            }
+        }
     }
 }
