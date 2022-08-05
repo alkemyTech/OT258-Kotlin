@@ -13,14 +13,18 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.android.material.snackbar.Snackbar
 import com.melvin.ongandroid.R
 import com.melvin.ongandroid.databinding.FragmentHomeBinding
+import com.melvin.ongandroid.model.news.NewsAPIModel
+import com.melvin.ongandroid.model.news.NewsModel
 import com.melvin.ongandroid.model.slides.SlidesDataModel
 import com.melvin.ongandroid.model.testimonials.DataModel
+import com.melvin.ongandroid.view.home.adapters.news.NewsAdapter
 import com.melvin.ongandroid.view.home.adapters.testimonials.TestimonialsAdapter
 import com.melvin.ongandroid.viewmodel.ViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import com.melvin.ongandroid.view.home.adapters.welcome.WelcomeActivitiesAdapter
 import javax.inject.Inject
 import com.melvin.ongandroid.viewmodel.Errors
+import com.melvin.ongandroid.viewmodel.NewsViewModel
 import com.melvin.ongandroid.viewmodel.Status
 
 
@@ -52,7 +56,7 @@ class HomeFragment : Fragment() {
     private fun initComponent() {
         getTestimonials()
         testimonialsArrowClick()
-        //getNews()
+//        getNews()
         lastNewsArrowClick()
         getSlides()
         setUpListeners()
@@ -61,6 +65,23 @@ class HomeFragment : Fragment() {
                 onLoadError(resources.getString(R.string.generalError)) { viewModel.refresh() }
             }
         })
+    }
+
+    private fun getNews() {
+        viewModel.onLoadNews()
+        viewModel.newsStatus.observe(viewLifecycleOwner) { status ->
+            when (status!!) {
+                Status.LOADING -> { }
+                Status.SUCCESS -> {
+                    viewModel.news.observe(viewLifecycleOwner, Observer {
+                        initNewsRecyclerView(it)
+                    })
+                }
+                Status.ERROR -> onLoadError(" ") {
+                    viewModel.onLoadNews()
+                }
+            }
+        }
     }
 
     //This function start the testimonials query, an gives the response to the recyclerview
@@ -86,6 +107,13 @@ class HomeFragment : Fragment() {
         binding.rvActivityTestimony.layoutManager = LinearLayoutManager(requireContext())
         binding.rvActivityTestimony.adapter = TestimonialsAdapter(list)
     }
+
+    private fun initNewsRecyclerView(list: List<DataModel>) {
+        binding.rvLastNews.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvLastNews.adapter = NewsAdapter(list)
+    }
+
+
 
     //This function listen the click on the testimonials see more button
     private fun testimonialsArrowClick() {

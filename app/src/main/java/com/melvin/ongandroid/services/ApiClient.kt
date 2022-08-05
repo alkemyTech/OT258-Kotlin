@@ -4,6 +4,9 @@ package com.melvin.ongandroid.services
 import com.melvin.ongandroid.model.activities.ActivitiesModel
 import com.melvin.ongandroid.model.contact.ContactDataModel
 import com.melvin.ongandroid.model.contact.ContactResponse
+import com.melvin.ongandroid.model.login.Login
+import com.melvin.ongandroid.model.login.LoginModel
+import com.melvin.ongandroid.model.login.Token
 import com.melvin.ongandroid.model.news.NewsAPIResponse
 import com.melvin.ongandroid.model.slides.SlidesModel
 import com.melvin.ongandroid.model.staff.StaffModel
@@ -35,6 +38,10 @@ interface ApiClient {
     //GET request activities from API
     @GET("activities")
     suspend fun getActivitiesList(): Response<ActivitiesModel>
+
+    //  http://ongapi.alkemy.org/api/docs#/Auth/post_login
+    @POST("login")
+    suspend fun getLogin( @Body login: Login) : Response<LoginModel<Token>>
 
     //POST new contact data in API
     @Headers("Content-Type: application/json; charset=utf-8")
