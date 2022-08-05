@@ -18,6 +18,7 @@ import javax.inject.Inject
 enum class Status { LOADING, SUCCESS, ERROR, IDLE }
 enum class Errors { TESTIMONIALS, NEWS, SLIDE, ALL }
 enum class InputTypeLogIn {EMAIL, PASSWORD}
+enum class InputTypeSignUp {NAME, EMAIL, PASSWORD, CONFIRMPASSWORD}
 
 @HiltViewModel
 class ViewModel @Inject constructor(
@@ -289,17 +290,37 @@ class ViewModel @Inject constructor(
         }
     }
 
-    private val _statusButtonSignUp= MutableLiveData<Boolean>(false)
-    val statusButtonLogin: LiveData<Boolean> = _statusButtonLogin
-    private var emailApplied: Boolean = false
-    private var passwordApplied: Boolean = false
+    // status sign up button
+    private val _statusButtonSignUp = MutableLiveData<Boolean>(false)
+    val statusButtonSignUp: LiveData<Boolean> = _statusButtonSignUp
+    // name new User
+    private var _nameSignUpApplied = MutableLiveData<Boolean>(false)
+    var nameSignUpApplied: LiveData<Boolean> = _nameSignUpApplied
+    // email newUser
+    private var _emailSignUpApplied = MutableLiveData<Boolean>(false)
+    var emailSignUpApplied: LiveData<Boolean> = _emailSignUpApplied
+    // password new User
+    private var _passwordSignUpApplied = MutableLiveData<Boolean>(false)
+    var passwordSignUpApplied: LiveData<Boolean> = _passwordSignUpApplied
+    // confirm password new User
+    private var _confirmPasswordSignUpApplied = MutableLiveData<Boolean>(false)
+    var confirmPasswordSignUpApplied: LiveData<Boolean> = _confirmPasswordSignUpApplied
+    private var password: String = ""
 
-    // Validating email and password
-    fun manageButtonSignUp(input: String, type: InputTypeLogIn){
+    // Validating name, email, password and password == confirmPassword
+    fun manageButtonSignUp(input: String, type: InputTypeSignUp){
+
+         if (type==InputTypeSignUp.PASSWORD){
+             password = input
+             _confirmPasswordSignUpApplied.postValue(false)
+         }
+
         when (type){
-            InputTypeLogIn.EMAIL -> emailApplied = input.checkMail()
-            InputTypeLogIn.PASSWORD -> passwordApplied = input.checkPasswordLogin()
+            InputTypeSignUp.NAME -> _nameSignUpApplied.postValue(input.isNotEmpty())
+            InputTypeSignUp.EMAIL -> _emailSignUpApplied.postValue(input.checkMail())
+            InputTypeSignUp.PASSWORD -> _passwordSignUpApplied.postValue(input.checkPassword())
+            InputTypeSignUp.CONFIRMPASSWORD -> _confirmPasswordSignUpApplied.postValue(password == input)
         }
-        _statusButtonLogin.postValue(emailApplied && passwordApplied)
+        _statusButtonSignUp.postValue(_nameSignUpApplied.value!! && _emailSignUpApplied.value!! && _passwordSignUpApplied.value!! && _confirmPasswordSignUpApplied.value!!)
     }
 }

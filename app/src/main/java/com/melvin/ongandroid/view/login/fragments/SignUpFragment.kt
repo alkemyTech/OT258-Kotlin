@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.doOnNextLayout
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -13,6 +14,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.encoders.ObjectEncoder
 import com.melvin.ongandroid.R
 import com.melvin.ongandroid.databinding.FragmentSignUpBinding
+import com.melvin.ongandroid.viewmodel.InputTypeSignUp
 import com.melvin.ongandroid.viewmodel.Status
 import com.melvin.ongandroid.viewmodel.ViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,10 +50,10 @@ class SignUpFragment : Fragment() {
                 binding.etEmailSignUp.text.toString(),
                 binding.etPasswordSignUp.text.toString())
         }
-        binding.etNameSignUp.doOnTextChanged()
-        binding.etEmailSignUp
-        binding.etPasswordSignUp
-        binding.etRepeatPasswordSignUp
+        binding.etNameSignUp.doOnTextChanged { text, start, before, count -> viewModel.manageButtonSignUp(binding.etNameSignUp.text.toString(), InputTypeSignUp.NAME) }
+        binding.etEmailSignUp.doOnTextChanged { text, start, before, count -> (viewModel.manageButtonSignUp(binding.etEmailSignUp.text.toString(), InputTypeSignUp.EMAIL))}
+        binding.etPasswordSignUp.doOnTextChanged { text, start, before, count -> (viewModel.manageButtonSignUp(binding.etPasswordSignUp.text.toString(), InputTypeSignUp.PASSWORD))}
+        binding.etRepeatPasswordSignUp.doOnTextChanged { text, start, before, count -> (viewModel.manageButtonSignUp(binding.etRepeatPasswordSignUp.text.toString(), InputTypeSignUp.CONFIRMPASSWORD))}
     }
 
     private fun setUpObservers(){
@@ -70,6 +72,10 @@ class SignUpFragment : Fragment() {
                 }
                 Status.IDLE -> { }//Do nothing
             }
+        })
+
+        viewModel.statusButtonSignUp.observe(viewLifecycleOwner, Observer {
+            binding.signUpBtn.isEnabled = it
         })
     }
 
