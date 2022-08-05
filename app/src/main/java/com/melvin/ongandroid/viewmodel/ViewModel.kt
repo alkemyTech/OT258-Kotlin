@@ -288,4 +288,18 @@ class ViewModel @Inject constructor(
             }
         }
     }
+
+    private val _statusButtonSignUp= MutableLiveData<Boolean>(false)
+    val statusButtonLogin: LiveData<Boolean> = _statusButtonLogin
+    private var emailApplied: Boolean = false
+    private var passwordApplied: Boolean = false
+
+    // Validating email and password
+    fun manageButtonSignUp(input: String, type: InputTypeLogIn){
+        when (type){
+            InputTypeLogIn.EMAIL -> emailApplied = input.checkMail()
+            InputTypeLogIn.PASSWORD -> passwordApplied = input.checkPasswordLogin()
+        }
+        _statusButtonLogin.postValue(emailApplied && passwordApplied)
+    }
 }

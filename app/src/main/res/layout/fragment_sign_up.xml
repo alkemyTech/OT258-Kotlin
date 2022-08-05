@@ -134,7 +134,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:backgroundTint="@color/btn_login"
-            android:enabled="true"
+            android:enabled="false"
             android:text="@string/sign_up_button_text"
             android:textAllCaps="false"
             android:textColor="#fff"
