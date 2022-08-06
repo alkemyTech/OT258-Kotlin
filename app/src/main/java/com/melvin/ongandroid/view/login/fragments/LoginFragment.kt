@@ -11,17 +11,17 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.melvin.ongandroid.databinding.FragmentLoginBinding
-import com.melvin.ongandroid.util.checkMail
-import com.melvin.ongandroid.util.checkPassword
 import com.melvin.ongandroid.viewmodel.InputTypeLogIn
 import com.melvin.ongandroid.viewmodel.ViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
+enum class Status { LOADING, SUCCESS, ERROR }
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
     private val viewModel: ViewModel by viewModels()
+//    private val loginViewModel: LoginViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,7 +30,7 @@ class LoginFragment : Fragment() {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
 
         onClickSignUp()
-
+//        onClickLogin()
         return binding.root
     }
 
@@ -57,4 +57,8 @@ class LoginFragment : Fragment() {
         binding.etEmailLogin.doOnTextChanged { text, start, before, count ->  viewModel.manageButtonLogin(binding.etEmailLogin.text.toString(), InputTypeLogIn.EMAIL) }
         binding.etPasswordLogin.doOnTextChanged { text, start, before, count ->  viewModel.manageButtonLogin(binding.etPasswordLogin.text.toString(), InputTypeLogIn.PASSWORD) }
     }
-}
+
+
+
+
+ }
