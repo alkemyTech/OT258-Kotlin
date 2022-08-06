@@ -16,7 +16,7 @@
 
         <ImageView
             android:id="@+id/sign_up_logo"
-            app:layout_constraintBottom_toTopOf="@+id/sign_up_name_label"
+            app:layout_constraintBottom_toTopOf="@+id/tfNameSignUp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -27,9 +27,9 @@
             />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/sign_up_name_label"
+            android:id="@+id/tfNameSignUp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:layout_constraintBottom_toTopOf="@+id/sign_up_email_label"
+            app:layout_constraintBottom_toTopOf="@+id/tfMailSignUp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_width="match_parent"
@@ -50,9 +50,9 @@
                 android:background="@color/white"/>
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/sign_up_email_label"
+            android:id="@+id/tfMailSignUp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:layout_constraintBottom_toTopOf="@+id/sign_up_password_label"
+            app:layout_constraintBottom_toTopOf="@+id/tfPasswordSignUp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_width="match_parent"
@@ -75,9 +75,9 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/sign_up_password_label"
+            android:id="@+id/tfPasswordSignUp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:layout_constraintBottom_toTopOf="@+id/sign_up_repeat_password_label"
+            app:layout_constraintBottom_toTopOf="@+id/tfConfirmPasswordSignUp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:passwordToggleEnabled="true"
@@ -99,7 +99,7 @@
                 android:background="@color/white"/>
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/sign_up_repeat_password_label"
+            android:id="@+id/tfConfirmPasswordSignUp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:layout_constraintBottom_toTopOf="@+id/signUp_btn"
             app:layout_constraintEnd_toEndOf="parent"

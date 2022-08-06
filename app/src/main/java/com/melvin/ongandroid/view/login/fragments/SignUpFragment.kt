@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.doOnNextLayout
+import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -50,10 +51,11 @@ class SignUpFragment : Fragment() {
                 binding.etEmailSignUp.text.toString(),
                 binding.etPasswordSignUp.text.toString())
         }
+
         binding.etNameSignUp.doOnTextChanged { text, start, before, count -> viewModel.manageButtonSignUp(binding.etNameSignUp.text.toString(), InputTypeSignUp.NAME) }
-        binding.etEmailSignUp.doOnTextChanged { text, start, before, count -> (viewModel.manageButtonSignUp(binding.etEmailSignUp.text.toString(), InputTypeSignUp.EMAIL))}
-        binding.etPasswordSignUp.doOnTextChanged { text, start, before, count -> (viewModel.manageButtonSignUp(binding.etPasswordSignUp.text.toString(), InputTypeSignUp.PASSWORD))}
-        binding.etRepeatPasswordSignUp.doOnTextChanged { text, start, before, count -> (viewModel.manageButtonSignUp(binding.etRepeatPasswordSignUp.text.toString(), InputTypeSignUp.CONFIRMPASSWORD))}
+        binding.etEmailSignUp.doOnTextChanged { text, start, before, count -> viewModel.manageButtonSignUp(binding.etEmailSignUp.text.toString(), InputTypeSignUp.EMAIL)}
+        binding.etPasswordSignUp.doOnTextChanged { text, start, before, count -> viewModel.manageButtonSignUp(binding.etPasswordSignUp.text.toString(), InputTypeSignUp.PASSWORD)}
+        binding.etRepeatPasswordSignUp.doOnTextChanged { text, start, before, count -> viewModel.manageButtonSignUp(binding.etRepeatPasswordSignUp.text.toString(), InputTypeSignUp.CONFIRMPASSWORD)}
     }
 
     private fun setUpObservers(){
@@ -62,7 +64,6 @@ class SignUpFragment : Fragment() {
             when (it){
                 Status.LOADING -> binding.signUpBtn.isEnabled = false
                 Status.SUCCESS -> {
-                    binding.signUpBtn.isEnabled = true // This line will be removed
                     Navigation.findNavController(binding.signUpBtn).navigate(R.id.action_signUpFragment_to_loginFragment)
                     showSnackBar(getString(R.string.successfully_sign_up_new_user), resources.getColor(R.color.green))
                 }
@@ -76,6 +77,46 @@ class SignUpFragment : Fragment() {
 
         viewModel.statusButtonSignUp.observe(viewLifecycleOwner, Observer {
             binding.signUpBtn.isEnabled = it
+        })
+
+        // Show error on name Input from sighUp fragment
+        viewModel.nameSignUpApplied.observe(viewLifecycleOwner, Observer {
+            if (it){
+                binding.tfNameSignUp.isErrorEnabled = false
+            } else {
+                binding.tfNameSignUp.isErrorEnabled = true
+                binding.tfNameSignUp.error = "Complete this field"
+            }
+        })
+
+        // Show error on email Input from sighUp fragment
+        viewModel.emailSignUpApplied.observe(viewLifecycleOwner, Observer {
+            if (it){
+                binding.tfMailSignUp.isErrorEnabled = false
+            } else {
+                binding.tfMailSignUp.isErrorEnabled = true
+                binding.tfMailSignUp.error = "Email doesn't meet the condition"
+            }
+        })
+
+        // Show error on password Input from sighUp fragment
+        viewModel.passwordSignUpApplied.observe(viewLifecycleOwner, Observer {
+            if (it){
+                binding.tfPasswordSignUp.isErrorEnabled = false
+            } else {
+                binding.tfPasswordSignUp.isErrorEnabled = true
+                binding.tfPasswordSignUp.error = "Password must has at least a number, a lower case letter, an upper case letter, a special character and without whitespace"
+            }
+        })
+
+        // Show error on email Input from sighUp fragment
+        viewModel.confirmPasswordSignUpApplied.observe(viewLifecycleOwner, Observer {
+            if (it){
+                binding.tfConfirmPasswordSignUp.isErrorEnabled = false
+            } else {
+                binding.tfConfirmPasswordSignUp.isErrorEnabled = true
+                binding.tfConfirmPasswordSignUp.error = "Passwords are not the same"
+            }
         })
     }
 

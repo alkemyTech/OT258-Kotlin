@@ -305,22 +305,31 @@ class ViewModel @Inject constructor(
     // confirm password new User
     private var _confirmPasswordSignUpApplied = MutableLiveData<Boolean>(false)
     var confirmPasswordSignUpApplied: LiveData<Boolean> = _confirmPasswordSignUpApplied
+
     private var password: String = ""
+    private var confirmPassword: String = ""
 
     // Validating name, email, password and password == confirmPassword
     fun manageButtonSignUp(input: String, type: InputTypeSignUp){
+         if (type==InputTypeSignUp.CONFIRMPASSWORD){
+             confirmPassword = input
+         }
 
          if (type==InputTypeSignUp.PASSWORD){
              password = input
-             _confirmPasswordSignUpApplied.postValue(false)
+             _confirmPasswordSignUpApplied.value = confirmPassword.isNotEmpty() && password == confirmPassword
          }
 
         when (type){
-            InputTypeSignUp.NAME -> _nameSignUpApplied.postValue(input.isNotEmpty())
-            InputTypeSignUp.EMAIL -> _emailSignUpApplied.postValue(input.checkMail())
-            InputTypeSignUp.PASSWORD -> _passwordSignUpApplied.postValue(input.checkPassword())
-            InputTypeSignUp.CONFIRMPASSWORD -> _confirmPasswordSignUpApplied.postValue(password == input)
+            InputTypeSignUp.NAME -> _nameSignUpApplied.value = input.isNotEmpty()
+            InputTypeSignUp.EMAIL ->_emailSignUpApplied.value = input.checkMail()
+            InputTypeSignUp.PASSWORD -> _passwordSignUpApplied.value = input.checkPassword()
+            InputTypeSignUp.CONFIRMPASSWORD -> _confirmPasswordSignUpApplied.value = password.equals(input)
         }
-        _statusButtonSignUp.postValue(_nameSignUpApplied.value!! && _emailSignUpApplied.value!! && _passwordSignUpApplied.value!! && _confirmPasswordSignUpApplied.value!!)
+        _statusButtonSignUp.postValue(
+            _nameSignUpApplied.value!!
+                && _emailSignUpApplied.value!!
+                && _passwordSignUpApplied.value!!
+                && _confirmPasswordSignUpApplied.value!!)
     }
 }
