@@ -11,6 +11,7 @@ class AppController:Application() {
 
     override fun onCreate() {
         super.onCreate()
+        FacebookSdk.sdkInitialize(applicationContext)
         AppEventsLogger.activateApp(this)
     }
 }
