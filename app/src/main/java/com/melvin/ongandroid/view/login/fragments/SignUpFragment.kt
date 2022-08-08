@@ -1,7 +1,6 @@
 package com.melvin.ongandroid.view.login.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +12,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.logEvent
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.encoders.ObjectEncoder
 import com.melvin.ongandroid.R
@@ -23,6 +24,7 @@ import com.melvin.ongandroid.viewmodel.ViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.observeOn
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SignUpFragment : Fragment() {
@@ -31,9 +33,12 @@ class SignUpFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: ViewModel by viewModels()
 
+    @Inject
+    lateinit var firebaseAnalytics: FirebaseAnalytics
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentSignUpBinding.inflate(inflater, container, false)
@@ -48,12 +53,16 @@ class SignUpFragment : Fragment() {
         setUpObservers()
     }
 
-    private fun setUpListeners(){
+    private fun setUpListeners() {
         // Register-signUp button
         binding.signUpBtn.setOnClickListener {
             viewModel.sendNewUser(binding.etNameSignUp.text.toString(),
                 binding.etEmailSignUp.text.toString(),
                 binding.etPasswordSignUp.text.toString())
+
+            firebaseAnalytics.logEvent("register_pressed") {
+                param("message", "register_pressed")
+            }
         }
 
         binding.etNameSignUp.doOnTextChanged { text, start, before, count -> viewModel.onFieldChange(text.toString(), InputTypeSignUp.NAME, binding.tfNameSignUp)}
@@ -62,20 +71,30 @@ class SignUpFragment : Fragment() {
         binding.etRepeatPasswordSignUp.doOnTextChanged { text, start, before, count -> viewModel.onFieldChange(text.toString(), InputTypeSignUp.CONFIRMPASSWORD, binding.tfConfirmPasswordSignUp)}
     }
 
-    private fun setUpObservers(){
+    private fun setUpObservers() {
         // observe API request status to add new user
         viewModel.statusSignUpNewUser.observe(viewLifecycleOwner, Observer {
-            when (it){
+            when (it) {
                 Status.LOADING -> binding.signUpBtn.isEnabled = false
                 Status.SUCCESS -> {
-                    Navigation.findNavController(binding.signUpBtn).navigate(R.id.action_signUpFragment_to_loginFragment)
-                    showSnackBar(getString(R.string.successfully_sign_up_new_user), resources.getColor(R.color.green))
+                    binding.signUpBtn.isEnabled = true // This line will be removed
+                    Navigation.findNavController(binding.signUpBtn)
+                        .navigate(R.id.action_signUpFragment_to_loginFragment)
+                    showSnackBar(getString(R.string.successfully_sign_up_new_user),
+                        resources.getColor(R.color.green))
+                    firebaseAnalytics.logEvent("sign_up_success") {
+                        param("message", "sign_up_success")
+                    }
                 }
                 Status.ERROR -> {
                     //TODO
                     showSnackBar("MAL", resources.getColor(R.color.red))
+                    firebaseAnalytics.logEvent("sign_up_error") {
+                        param("message", "sign_up_error")
+                    }
+
                 }
-                Status.IDLE -> { }//Do nothing
+                Status.IDLE -> {}//Do nothing
             }
         })
 
