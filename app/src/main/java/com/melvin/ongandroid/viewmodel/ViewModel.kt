@@ -1,7 +1,9 @@
 package com.melvin.ongandroid.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.*
 import androidx.lifecycle.ViewModel
+import com.google.android.material.textfield.TextInputLayout
 import com.melvin.ongandroid.businesslogic.*
 import com.melvin.ongandroid.model.activities.ActivitiesDataModel
 import com.melvin.ongandroid.model.contact.ContactDataModel
@@ -12,12 +14,17 @@ import com.melvin.ongandroid.model.staff.StaffDataModel
 import com.melvin.ongandroid.model.testimonials.DataModel
 import com.melvin.ongandroid.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 enum class Status { LOADING, SUCCESS, ERROR, IDLE }
 enum class Errors { TESTIMONIALS, NEWS, SLIDE, ALL }
-enum class InputTypeLogIn {EMAIL, PASSWORD}
+enum class InputTypeLogIn { EMAIL, PASSWORD }
+enum class InputTypeSignUp { NAME, EMAIL, PASSWORD, CONFIRMPASSWORD }
+data class FieldError<T>(val field: T,val isInvalid: Boolean, val message: String? = "", val inputLayout: TextInputLayout)
 
 @HiltViewModel
 class ViewModel @Inject constructor(
@@ -262,8 +269,8 @@ class ViewModel @Inject constructor(
     private var passwordApplied: Boolean = false
 
     // Validating email and password
-    fun manageButtonLogin(input: String, type: InputTypeLogIn){
-        when (type){
+    fun manageButtonLogin(input: String, type: InputTypeLogIn) {
+        when (type) {
             InputTypeLogIn.EMAIL -> emailApplied = input.checkMail()
             InputTypeLogIn.PASSWORD -> passwordApplied = input.checkPasswordLogin()
         }
@@ -274,13 +281,13 @@ class ViewModel @Inject constructor(
     val statusSignUpNewUser: LiveData<Status> = _statusSignUpNewUser
 
     // register new user in the data base
-    fun sendNewUser(name: String, email: String, password: String){
+    fun sendNewUser(name: String, email: String, password: String) {
         viewModelScope.launch {
             _statusSignUpNewUser.postValue(Status.LOADING)
 
-            var success =  sendNewUserUseCase(NewUserBodyModel(name, email, password))
+            var success = sendNewUserUseCase(NewUserBodyModel(name, email, password))
 
-            if (success){
+            if (success) {
                 _statusSignUpNewUser.postValue(Status.SUCCESS)
             } else {
                 //TODO c:
@@ -288,4 +295,73 @@ class ViewModel @Inject constructor(
             }
         }
     }
+
+    // sign up button status
+    private val _statusButtonSignUp = MutableLiveData(false)
+    val statusButtonSignUp: LiveData<Boolean> = _statusButtonSignUp
+
+    private var _nameSignUpApplied = false
+    private var _emailSignUpApplied = false
+    private var _passwordSignUpApplied = false
+    private var _confirmPasswordSignUpApplied = false
+    private var _password: String = ""
+    private var _confirmPassword: String = ""
+
+    // sign up inputs status
+    private val _signUpFormError = MutableLiveData<FieldError<InputTypeSignUp>>()
+    val signUpFormError: LiveData<FieldError<InputTypeSignUp>> = _signUpFormError
+
+    // sign up ConfirmPassword input status
+    private val _passwordsMatch = MutableLiveData<FieldError<InputTypeSignUp>>()
+    val passwordsMatch: LiveData<FieldError<InputTypeSignUp>> = _passwordsMatch
+
+    // Validating name, email, password and password == confirmPassword
+    fun onFieldChange(input: String, type: InputTypeSignUp, inputLayout: TextInputLayout) {
+        when (type) {
+            InputTypeSignUp.NAME -> {
+                val isValid = input.isNotEmpty()
+                val msg = if (isValid) "" else "Complete this field"
+                _nameSignUpApplied = isValid
+                _signUpFormError.postValue(FieldError(InputTypeSignUp.NAME,!isValid, msg, inputLayout))
+            }
+            InputTypeSignUp.EMAIL -> {
+                val isValid = input.checkMail()
+                val msg = if (isValid) "" else "Email doesn't meet the condition"
+                _emailSignUpApplied = isValid
+                _signUpFormError.postValue(FieldError(InputTypeSignUp.EMAIL,!isValid, msg, inputLayout))
+            }
+            InputTypeSignUp.PASSWORD -> {
+                _password = input
+                val isValid = input.checkPassword()
+                val msg = if (isValid) "" else "Password doesn't meet the condition"
+                _passwordSignUpApplied = isValid
+                _signUpFormError.postValue(FieldError(InputTypeSignUp.PASSWORD,!isValid, msg, inputLayout))
+
+                // check both passwords
+                if (_confirmPassword != _password){
+                    _passwordsMatch.postValue(FieldError(InputTypeSignUp.CONFIRMPASSWORD, true, "Passwords are not the same", inputLayout))
+                    _confirmPasswordSignUpApplied = false
+                } else {
+                    _passwordsMatch.postValue(FieldError(InputTypeSignUp.CONFIRMPASSWORD, false, "", inputLayout))
+                    _confirmPasswordSignUpApplied = true
+                }
+            }
+            InputTypeSignUp.CONFIRMPASSWORD -> {
+                _confirmPassword = input
+                val isValid = _password == input
+                val msg = if (isValid) "" else "Passwords are not the same"
+                _confirmPasswordSignUpApplied = isValid
+                _signUpFormError.postValue(FieldError(InputTypeSignUp.CONFIRMPASSWORD,!isValid, msg, inputLayout))
+            }
+        }
+
+        _statusButtonSignUp.postValue(
+            _nameSignUpApplied
+                    && _emailSignUpApplied
+                    && _passwordSignUpApplied
+                    && _confirmPasswordSignUpApplied
+        )
+    }
 }
+
+

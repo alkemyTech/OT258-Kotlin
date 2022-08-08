@@ -29,6 +29,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import javax.inject.Inject
 
+enum class Status { LOADING, SUCCESS, ERROR }
+
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
@@ -38,8 +40,11 @@ class LoginFragment : Fragment() {
 
     @Inject
     lateinit var facebookAuth: LoginManager
+
     @Inject
     lateinit var firebaseAuth: FirebaseAuth
+
+//    private val loginViewModel: LoginViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,8 +53,9 @@ class LoginFragment : Fragment() {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
 
         onClickSignUp()
-        facebookLogin()
 
+        facebookLogin()
+//        onClickLogin()
         return binding.root
     }
 
@@ -71,47 +77,65 @@ class LoginFragment : Fragment() {
         })
     }
 
-    private fun initComponent(){
+    private fun initComponent() {
         // Checking whether both email input and password input meet the conditions
-        binding.etEmailLogin.doOnTextChanged { text, start, before, count ->  viewModel.manageButtonLogin(binding.etEmailLogin.text.toString(), InputTypeLogIn.EMAIL) }
-        binding.etPasswordLogin.doOnTextChanged { text, start, before, count ->  viewModel.manageButtonLogin(binding.etPasswordLogin.text.toString(), InputTypeLogIn.PASSWORD) }
-    }
-    private fun facebookLogin(){
-        binding.loginButton.setOnClickListener{
-            binding.loginButton.setReadPermissions(listOf("email"))
-            facebookAuth.registerCallback(callbackManager,
-            object: FacebookCallback<LoginResult>{
-                override fun onSuccess(result: LoginResult?) {
-                    result?.let{
-                        val token = it.accessToken
-                        val credential = FacebookAuthProvider.getCredential(token.token)
-                        firebaseAuth.signInWithCredential(credential).addOnCompleteListener {
-                            onActivityResult()
-                        }
-                    }
-                }
-
-                override fun onCancel() {
-                }
-
-                override fun onError(error: FacebookException?) {
-                    showAlert()
-                }
-            })
+        binding.etEmailLogin.doOnTextChanged { text, start, before, count ->
+            viewModel.manageButtonLogin(
+                binding.etEmailLogin.text.toString(),
+                InputTypeLogIn.EMAIL
+            )
+        }
+        binding.etPasswordLogin.doOnTextChanged { text, start, before, count ->
+            viewModel.manageButtonLogin(
+                binding.etPasswordLogin.text.toString(),
+                InputTypeLogIn.PASSWORD
+            )
         }
     }
 
-    private fun showAlert(){
+    private fun facebookLogin() {
+        binding.loginButton.setOnClickListener {
+            binding.loginButton.setReadPermissions(listOf("email"))
+            facebookAuth.registerCallback(callbackManager,
+                object : FacebookCallback<LoginResult> {
+                    override fun onSuccess(result: LoginResult?) {
+                        result?.let {
+                            val token = it.accessToken
+                            val credential = FacebookAuthProvider.getCredential(token.token)
+                            firebaseAuth.signInWithCredential(credential).addOnCompleteListener {
+                                onActivityResult()
+                            }
+                        }
+                    }
+
+                    override fun onCancel() {
+                    }
+
+                    override fun onError(error: FacebookException?) {
+                        showAlert()
+                    }
+                })
+        }
+    }
+
+    private fun showAlert() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Error")
         builder.setMessage("Se ha producido un error al autentificar al usuario")
-        builder.setPositiveButton("Acepter",null)
-        val dialog: AlertDialog=builder.create()
+        builder.setPositiveButton("Acepter", null)
+        val dialog: AlertDialog = builder.create()
         dialog.show()
     }
 
-    fun onActivityResult(){
-        val intent = Intent(requireContext(),MainActivity::class.java)
+    fun onActivityResult() {
+        val intent = Intent(requireContext(), MainActivity::class.java)
         startActivity(intent)
     }
 }
+
+
+
+
+
+
+
