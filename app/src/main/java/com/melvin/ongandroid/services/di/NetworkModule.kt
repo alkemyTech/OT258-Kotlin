@@ -1,7 +1,10 @@
 package com.melvin.ongandroid.services.di
 
 import android.content.Context
+import com.facebook.login.LoginBehavior
+import com.facebook.login.LoginManager
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.melvin.ongandroid.services.ApiClient
 import dagger.Module
@@ -36,7 +39,19 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideFirebaseAnalytics(@ApplicationContext context: Context ): FirebaseAnalytics {
+    fun provideFirebaseAnalytics(@ApplicationContext context: Context): FirebaseAnalytics {
         return FirebaseAnalytics.getInstance(context)
+    }
+
+    @Singleton
+    @Provides
+    fun providerFacebookAuth(): LoginManager {
+        return LoginManager.getInstance();
+    }
+
+    @Singleton
+    @Provides
+    fun providerFirebaseAuth(): FirebaseAuth {
+        return FirebaseAuth.getInstance()
     }
 }
