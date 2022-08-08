@@ -73,7 +73,6 @@ class ContactFragment : Fragment() {
                 viewModel.setContactMessage(it.toString())
             }
         }
-
     }
 
     //fun to Activate and deactivate send button

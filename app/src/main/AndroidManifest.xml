@@ -26,7 +26,6 @@
         <activity
             android:name=".view.home.MainActivity"
             android:exported="false"/>
-
         <activity
 
             android:name=".view.login.LoginActivity"

@@ -1,5 +1,6 @@
 package com.melvin.ongandroid.util
 
+import android.text.Editable
 import androidx.core.text.HtmlCompat
 import androidx.core.util.PatternsCompat
 import java.util.regex.Matcher
