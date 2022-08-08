@@ -1,6 +1,7 @@
 package com.melvin.ongandroid.view.login.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.encoders.ObjectEncoder
 import com.melvin.ongandroid.R
 import com.melvin.ongandroid.databinding.FragmentSignUpBinding
@@ -19,6 +21,8 @@ import com.melvin.ongandroid.viewmodel.InputTypeSignUp
 import com.melvin.ongandroid.viewmodel.Status
 import com.melvin.ongandroid.viewmodel.ViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.observeOn
 
 @AndroidEntryPoint
 class SignUpFragment : Fragment() {
@@ -52,10 +56,10 @@ class SignUpFragment : Fragment() {
                 binding.etPasswordSignUp.text.toString())
         }
 
-        binding.etNameSignUp.doOnTextChanged { text, start, before, count -> viewModel.manageButtonSignUp(binding.etNameSignUp.text.toString(), InputTypeSignUp.NAME) }
-        binding.etEmailSignUp.doOnTextChanged { text, start, before, count -> viewModel.manageButtonSignUp(binding.etEmailSignUp.text.toString(), InputTypeSignUp.EMAIL)}
-        binding.etPasswordSignUp.doOnTextChanged { text, start, before, count -> viewModel.manageButtonSignUp(binding.etPasswordSignUp.text.toString(), InputTypeSignUp.PASSWORD)}
-        binding.etRepeatPasswordSignUp.doOnTextChanged { text, start, before, count -> viewModel.manageButtonSignUp(binding.etRepeatPasswordSignUp.text.toString(), InputTypeSignUp.CONFIRMPASSWORD)}
+        binding.etNameSignUp.doOnTextChanged { text, start, before, count -> viewModel.onFieldChange(text.toString(), InputTypeSignUp.NAME, binding.tfNameSignUp)}
+        binding.etEmailSignUp.doOnTextChanged { text, start, before, count -> viewModel.onFieldChange(text.toString(), InputTypeSignUp.EMAIL, binding.tfMailSignUp)}
+        binding.etPasswordSignUp.doOnTextChanged { text, start, before, count -> viewModel.onFieldChange(text.toString(), InputTypeSignUp.PASSWORD, binding.tfPasswordSignUp)}
+        binding.etRepeatPasswordSignUp.doOnTextChanged { text, start, before, count -> viewModel.onFieldChange(text.toString(), InputTypeSignUp.CONFIRMPASSWORD, binding.tfConfirmPasswordSignUp)}
     }
 
     private fun setUpObservers(){
@@ -75,52 +79,25 @@ class SignUpFragment : Fragment() {
             }
         })
 
-        viewModel.statusButtonSignUp.observe(viewLifecycleOwner, Observer {
+        // SignUp button status
+        viewModel.statusButtonSignUp.observe(viewLifecycleOwner) {
             binding.signUpBtn.isEnabled = it
-        })
+        }
 
-        // Show error on name Input from sighUp fragment
-        viewModel.nameSignUpApplied.observe(viewLifecycleOwner, Observer {
-            if (it){
-                binding.tfNameSignUp.isErrorEnabled = false
-            } else {
-                binding.tfNameSignUp.isErrorEnabled = true
-                binding.tfNameSignUp.error = "Complete this field"
-            }
-        })
+        // SignUp inputs status
+        viewModel.signUpFormError.observe(viewLifecycleOwner) {
+            it.inputLayout.isErrorEnabled = it.isInvalid
+            it.inputLayout.error = it.message
+        }
 
-        // Show error on email Input from sighUp fragment
-        viewModel.emailSignUpApplied.observe(viewLifecycleOwner, Observer {
-            if (it){
-                binding.tfMailSignUp.isErrorEnabled = false
-            } else {
-                binding.tfMailSignUp.isErrorEnabled = true
-                binding.tfMailSignUp.error = "Email doesn't meet the condition"
-            }
-        })
-
-        // Show error on password Input from sighUp fragment
-        viewModel.passwordSignUpApplied.observe(viewLifecycleOwner, Observer {
-            if (it){
-                binding.tfPasswordSignUp.isErrorEnabled = false
-            } else {
-                binding.tfPasswordSignUp.isErrorEnabled = true
-                binding.tfPasswordSignUp.error = "Password must has at least a number, a lower case letter, an upper case letter, a special character and without whitespace"
-            }
-        })
-
-        // Show error on email Input from sighUp fragment
-        viewModel.confirmPasswordSignUpApplied.observe(viewLifecycleOwner, Observer {
-            if (it){
-                binding.tfConfirmPasswordSignUp.isErrorEnabled = false
-            } else {
-                binding.tfConfirmPasswordSignUp.isErrorEnabled = true
-                binding.tfConfirmPasswordSignUp.error = "Passwords are not the same"
-            }
-        })
+        // SignUp ConfirmPassword input status
+        viewModel.passwordsMatch.observe(viewLifecycleOwner){
+            binding.tfConfirmPasswordSignUp.isErrorEnabled = it.isInvalid
+            binding.tfConfirmPasswordSignUp.error = it.message
+        }
     }
 
-    //displays a generic message
+    // displays a generic message
     private fun showSnackBar(message: String, color: Int) {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG)
             .setBackgroundTint(color)
