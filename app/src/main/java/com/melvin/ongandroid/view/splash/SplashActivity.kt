@@ -26,5 +26,7 @@ class SplashActivity : AppCompatActivity() {
             }
             Toast.makeText(this@SplashActivity, "Timer", Toast.LENGTH_LONG).show()
         }
+        startActivity(Intent(this, LoginActivity ::class.java))
+
     }
 }
