@@ -48,5 +48,12 @@
     <string name="something_went_wrong">Algo salió mal</string>
     <string name="facebook_login">Facebook</string>
     <string name="Google_login">Google</string>
+    <string name="facebook_app_id">448054383871698</string>
+    <string name="fb_login_protocol_scheme">fb448054383871698</string>
+    <string name="facebook_client_token">da04dac46dbe297f8f55c33e090998ab</string>
+    <string name="on_facebook_login_error">Something went wrong, couldn\'t login with facebook, please try again</string>
+
+
+
 </resources>
 
