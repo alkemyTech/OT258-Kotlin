@@ -61,6 +61,8 @@ dependencies {
     //Firebase Auth
     implementation 'com.google.firebase:firebase-auth-ktx'
 
+    implementation 'com.facebook.android:facebook-android-sdk:[8,9)'
+
     //Firebase Message 20.2.0
     implementation 'com.google.firebase:firebase-messaging:23.0.6'
 
