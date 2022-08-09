@@ -65,10 +65,10 @@ class SignUpFragment : Fragment() {
             }
         }
 
-        binding.etNameSignUp.doOnTextChanged { text, start, before, count -> viewModel.onFieldChange(text.toString(), InputTypeSignUp.NAME, binding.tfNameSignUp)}
-        binding.etEmailSignUp.doOnTextChanged { text, start, before, count -> viewModel.onFieldChange(text.toString(), InputTypeSignUp.EMAIL, binding.tfMailSignUp)}
-        binding.etPasswordSignUp.doOnTextChanged { text, start, before, count -> viewModel.onFieldChange(text.toString(), InputTypeSignUp.PASSWORD, binding.tfPasswordSignUp)}
-        binding.etRepeatPasswordSignUp.doOnTextChanged { text, start, before, count -> viewModel.onFieldChange(text.toString(), InputTypeSignUp.CONFIRMPASSWORD, binding.tfConfirmPasswordSignUp)}
+        binding.etNameSignUp.doOnTextChanged { text, start, before, count -> viewModel.onFieldChange(text.toString(), InputTypeSignUp.NAME)}
+        binding.etEmailSignUp.doOnTextChanged { text, start, before, count -> viewModel.onFieldChange(text.toString(), InputTypeSignUp.EMAIL)}
+        binding.etPasswordSignUp.doOnTextChanged { text, start, before, count -> viewModel.onFieldChange(text.toString(), InputTypeSignUp.PASSWORD)}
+        binding.etRepeatPasswordSignUp.doOnTextChanged { text, start, before, count -> viewModel.onFieldChange(text.toString(), InputTypeSignUp.CONFIRMPASSWORD)}
     }
 
     private fun setUpObservers() {
@@ -87,8 +87,7 @@ class SignUpFragment : Fragment() {
                     }
                 }
                 Status.ERROR -> {
-                    //TODO
-                    showSnackBar("MAL", resources.getColor(R.color.red))
+                    showSnackBar("Couldn't register the user", resources.getColor(R.color.red))
                     firebaseAnalytics.logEvent("sign_up_error") {
                         param("message", "sign_up_error")
                     }
@@ -105,8 +104,24 @@ class SignUpFragment : Fragment() {
 
         // SignUp inputs status
         viewModel.signUpFormError.observe(viewLifecycleOwner) {
-            it.inputLayout.isErrorEnabled = it.isInvalid
-            it.inputLayout.error = it.message
+            when (it.field) {
+                InputTypeSignUp.NAME -> {
+                    binding.tfNameSignUp.isErrorEnabled = it.isInvalid
+                    binding.tfNameSignUp.error = it.message
+                }
+                InputTypeSignUp.EMAIL -> {
+                    binding.tfMailSignUp.isErrorEnabled = it.isInvalid
+                    binding.tfMailSignUp.error = it.message
+                }
+                InputTypeSignUp.PASSWORD -> {
+                    binding.tfPasswordSignUp.isErrorEnabled = it.isInvalid
+                    binding.tfPasswordSignUp.error = it.message
+                }
+                InputTypeSignUp.CONFIRMPASSWORD -> {
+                    binding.tfConfirmPasswordSignUp.isErrorEnabled = it.isInvalid
+                    binding.tfConfirmPasswordSignUp.error = it.message
+                }
+            }
         }
 
         // SignUp ConfirmPassword input status

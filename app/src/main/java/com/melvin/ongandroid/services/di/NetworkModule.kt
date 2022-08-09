@@ -4,6 +4,7 @@ import android.content.Context
 import com.facebook.login.LoginBehavior
 import com.facebook.login.LoginManager
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.gson.GsonBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.melvin.ongandroid.services.ApiClient
@@ -24,9 +25,10 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideRetrofit(): Retrofit {
+        val gson = GsonBuilder().setLenient().create()
         return Retrofit.Builder()
             .baseUrl("https://ongapi.alkemy.org/api/")
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }
 
