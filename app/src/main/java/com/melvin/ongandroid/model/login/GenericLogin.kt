@@ -53,9 +53,7 @@ abstract class Result {
         try {
             val response = call()
             val body = response.body()?.data
-
-            return GenericLogin.success(body)
-
+                return GenericLogin.success(body)
         }
         catch (e: Exception) {
             return GenericLogin.error(e.message?: "Generic error")
