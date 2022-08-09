@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.*
 import androidx.lifecycle.ViewModel
-import com.google.android.material.textfield.TextInputLayout
 import com.melvin.ongandroid.businesslogic.*
 import com.melvin.ongandroid.model.activities.ActivitiesDataModel
 import com.melvin.ongandroid.model.contact.ContactDataModel
@@ -17,9 +16,8 @@ import com.melvin.ongandroid.model.testimonials.DataModel
 import com.melvin.ongandroid.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
+
+
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -28,7 +26,7 @@ enum class Status { LOADING, SUCCESS, ERROR, IDLE }
 enum class Errors { TESTIMONIALS, NEWS, SLIDE, ALL }
 enum class InputTypeLogIn { EMAIL, PASSWORD }
 enum class InputTypeSignUp { NAME, EMAIL, PASSWORD, CONFIRMPASSWORD }
-data class FieldError<T>(val field: T,val isInvalid: Boolean, val message: String? = "", val inputLayout: TextInputLayout)
+data class FieldError<T>(val field: T,val isInvalid: Boolean, val message: String? = "")
 
 @HiltViewModel
 class ViewModel @Inject constructor(
@@ -196,7 +194,7 @@ class ViewModel @Inject constructor(
         viewModelScope.launch {
             _newsStatus.value = Status.LOADING
             val result = getNewsUseCase()
-            if (result!!.isNotEmpty()) {
+            if (result.isNotEmpty()) {
                 _news.value = result
                 _newsStatus.value = Status.SUCCESS
             } else {
@@ -240,7 +238,7 @@ class ViewModel @Inject constructor(
 
     //fun to validate that the fields are correctly completed
     fun validateDataContact() {
-        var condition = (_contactName.value.toString().checkName() && _contactMail.value.toString()
+        val condition = (_contactName.value.toString().checkName() && _contactMail.value.toString()
             .checkMail() && _contactMessage.value.toString().checkMessage())
         _isButtonEnabled.postValue(condition)
     }
@@ -294,13 +292,21 @@ class ViewModel @Inject constructor(
     fun sendNewUser(name: String, email: String, password: String) {
         viewModelScope.launch {
             _statusSignUpNewUser.postValue(Status.LOADING)
-
-            var success = sendNewUserUseCase(NewUserBodyModel(name, email, password))
-
-            if (success) {
+            val response = sendNewUserUseCase(NewUserBodyModel(name, email, password))
+            if (response.success) {
                 _statusSignUpNewUser.postValue(Status.SUCCESS)
             } else {
-                //TODO c:
+                response.error?.let {
+                    it.errors.email?.let{ errors ->
+                        _signUpFormError.postValue(FieldError(InputTypeSignUp.EMAIL, true, errors.first()))
+                    }
+                    it.errors.name?.let { errors ->
+                        _signUpFormError.postValue(FieldError(InputTypeSignUp.NAME, true, errors.first()))
+                    }
+                    it.errors.password?.let { errors ->
+                        _signUpFormError.postValue(FieldError(InputTypeSignUp.PASSWORD, true, errors.first()))
+                    }
+                }
                 _statusSignUpNewUser.postValue(Status.ERROR)
             }
         }
@@ -326,33 +332,33 @@ class ViewModel @Inject constructor(
     val passwordsMatch: LiveData<FieldError<InputTypeSignUp>> = _passwordsMatch
 
     // Validating name, email, password and password == confirmPassword
-    fun onFieldChange(input: String, type: InputTypeSignUp, inputLayout: TextInputLayout) {
+    fun onFieldChange(input: String, type: InputTypeSignUp) {
         when (type) {
             InputTypeSignUp.NAME -> {
                 val isValid = input.isNotEmpty()
                 val msg = if (isValid) "" else "Complete this field"
                 _nameSignUpApplied = isValid
-                _signUpFormError.postValue(FieldError(InputTypeSignUp.NAME,!isValid, msg, inputLayout))
+                _signUpFormError.postValue(FieldError(InputTypeSignUp.NAME,!isValid, msg))
             }
             InputTypeSignUp.EMAIL -> {
                 val isValid = input.checkMail()
                 val msg = if (isValid) "" else "Email doesn't meet the condition"
                 _emailSignUpApplied = isValid
-                _signUpFormError.postValue(FieldError(InputTypeSignUp.EMAIL,!isValid, msg, inputLayout))
+                _signUpFormError.postValue(FieldError(InputTypeSignUp.EMAIL,!isValid, msg))
             }
             InputTypeSignUp.PASSWORD -> {
                 _password = input
                 val isValid = input.checkPassword()
                 val msg = if (isValid) "" else "Password doesn't meet the condition"
                 _passwordSignUpApplied = isValid
-                _signUpFormError.postValue(FieldError(InputTypeSignUp.PASSWORD,!isValid, msg, inputLayout))
+                _signUpFormError.postValue(FieldError(InputTypeSignUp.PASSWORD,!isValid, msg,))
 
                 // check both passwords
                 if (_confirmPassword != _password){
-                    _passwordsMatch.postValue(FieldError(InputTypeSignUp.CONFIRMPASSWORD, true, "Passwords are not the same", inputLayout))
+                    _passwordsMatch.postValue(FieldError(InputTypeSignUp.CONFIRMPASSWORD, true, "Passwords are not the same",))
                     _confirmPasswordSignUpApplied = false
                 } else {
-                    _passwordsMatch.postValue(FieldError(InputTypeSignUp.CONFIRMPASSWORD, false, "", inputLayout))
+                    _passwordsMatch.postValue(FieldError(InputTypeSignUp.CONFIRMPASSWORD, false, ""))
                     _confirmPasswordSignUpApplied = true
                 }
             }
@@ -361,7 +367,7 @@ class ViewModel @Inject constructor(
                 val isValid = _password == input
                 val msg = if (isValid) "" else "Passwords are not the same"
                 _confirmPasswordSignUpApplied = isValid
-                _signUpFormError.postValue(FieldError(InputTypeSignUp.CONFIRMPASSWORD,!isValid, msg, inputLayout))
+                _signUpFormError.postValue(FieldError(InputTypeSignUp.CONFIRMPASSWORD,!isValid, msg,))
             }
         }
 
