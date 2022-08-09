@@ -17,18 +17,14 @@ import com.melvin.ongandroid.R
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import com.facebook.AccessToken
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
-import com.facebook.login.LoginManager
-import com.facebook.login.LoginResult
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.melvin.ongandroid.databinding.FragmentLoginBinding
+import com.melvin.ongandroid.model.login.GenericLogin
+import com.melvin.ongandroid.model.login.Login
 import com.melvin.ongandroid.util.checkMail
 import com.melvin.ongandroid.util.checkPassword
 import com.melvin.ongandroid.view.home.MainActivity
@@ -45,12 +41,10 @@ class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
     private val viewModel: ViewModel by viewModels()
-    private val callbackManager = CallbackManager.Factory.create()
+//    private val callbackManager = CallbackManager.Factory.create()
 
     @Inject
     lateinit var firebaseAuth: FirebaseAuth
-
-//    private val loginViewModel: LoginViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,8 +54,9 @@ class LoginFragment : Fragment() {
 
         onClickSignUp()
 
-        facebookLogin()
-//        onClickLogin()
+//        facebookLogin()
+        onClickLogin()
+        loginListener()
         return binding.root
     }
 
@@ -99,51 +94,51 @@ class LoginFragment : Fragment() {
         }
     }
     // This function make the login with a facebook account
-    private fun facebookLogin() {
-        val email = "email"
-        binding.facebookLoginButton.setPermissions(email)
-        binding.facebookLoginButton.fragment = this
-        binding.facebookLoginButton.registerCallback(callbackManager,
-            object : FacebookCallback<LoginResult> {
-                override fun onSuccess(result: LoginResult) {
-                    Log.d(TAG, "facebook:onSuccess:$result")
-                    handleFacebookAccessToken(result.accessToken)
-                }
+//    private fun facebookLogin() {
+//        val email = "email"
+//        binding.facebookLoginButton.setPermissions(email)
+//        binding.facebookLoginButton.fragment = this
+//        binding.facebookLoginButton.registerCallback(callbackManager,
+//            object : FacebookCallback<LoginResult> {
+//                override fun onSuccess(result: LoginResult) {
+//                    Log.d(TAG, "facebook:onSuccess:$result")
+//                    handleFacebookAccessToken(result.accessToken)
+//                }
+//
+//                override fun onCancel() {
+//                    Log.d(TAG, "facebook: onCancel: Cancel")
+//                }
+//
+//                override fun onError(error: FacebookException?) {
+//                    Log.d(TAG, "facebook: onError: error")
+//                    onLoadError(resources.getString(R.string.on_facebook_login_error)) {
+//                        facebookLogin()
+//                    }
+//                }
+//            })
+//    }
 
-                override fun onCancel() {
-                    Log.d(TAG, "facebook: onCancel: Cancel")
-                }
-
-                override fun onError(error: FacebookException?) {
-                    Log.d(TAG, "facebook: onError: error")
-                    onLoadError(resources.getString(R.string.on_facebook_login_error)) {
-                        facebookLogin()
-                    }
-                }
-            })
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        // Pass the activity result back to the Facebook SDK
-        callbackManager.onActivityResult(requestCode, resultCode, data)
-    }
-
-    private fun handleFacebookAccessToken(token: AccessToken) {
-        Log.d(TAG, "handleFacebookAccessToken:$token")
-        val credential = FacebookAuthProvider.getCredential(token.token)
-        firebaseAuth.signInWithCredential(credential).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                // Sign in success, update UI with the signed-in user's information
-                Log.d(TAG, "signInWithCredential:success")
-                onLoginSuccess()
-            } else {
-                // If sign in fails, display a message to the user.
-                Log.w(TAG, "signInWithCredential:failure", task.exception)
-                Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        // Pass the activity result back to the Facebook SDK
+//        callbackManager.onActivityResult(requestCode, resultCode, data)
+//    }
+//
+//    private fun handleFacebookAccessToken(token: AccessToken) {
+//        Log.d(TAG, "handleFacebookAccessToken:$token")
+//        val credential = FacebookAuthProvider.getCredential(token.token)
+//        firebaseAuth.signInWithCredential(credential).addOnCompleteListener { task ->
+//            if (task.isSuccessful) {
+//                // Sign in success, update UI with the signed-in user's information
+//                Log.d(TAG, "signInWithCredential:success")
+//                onLoginSuccess()
+//            } else {
+//                // If sign in fails, display a message to the user.
+//                Log.w(TAG, "signInWithCredential:failure", task.exception)
+//                Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show()
+//            }
+//        }
+//    }
 
     private fun onLoginSuccess() {
         val intent = Intent(requireContext(), MainActivity::class.java)
@@ -155,6 +150,45 @@ class LoginFragment : Fragment() {
             .setAction(resources.getString(R.string.retry)) { retryCB() }
             .show()
     }
+
+    private fun onClickLogin() {
+        // start home activity on login button click
+        binding.loginBtn.setOnClickListener {
+            var logD = Login (
+                binding.etEmailLogin.text.toString().trim(),
+                binding.etPasswordLogin.text.toString().trim()
+            )
+            context?.let {
+                viewModel.onLoadLogin(logD, it)
+            }
+
+        }
+
+    }
+
+    private fun loginListener() {
+        onClickLogin()
+        viewModel.login.observe(viewLifecycleOwner, Observer {
+            when (it.status) {
+
+                GenericLogin.Status.LOADING -> {
+
+                }
+                GenericLogin.Status.SUCCESS-> {
+
+                    startActivity(Intent(requireContext(), MainActivity::class.java))
+
+                }
+                GenericLogin.Status.ERROR -> {
+                    binding.etEmailLogin.error = "Error"
+                    binding.etPasswordLogin.error = "Error"
+                }
+
+                else -> {}
+            }
+        })
+    }
+
 }
 
 

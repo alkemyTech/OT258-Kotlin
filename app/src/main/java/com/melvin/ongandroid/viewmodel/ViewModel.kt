@@ -1,5 +1,6 @@
 package com.melvin.ongandroid.viewmodel
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.*
 import androidx.lifecycle.ViewModel
@@ -7,6 +8,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.melvin.ongandroid.businesslogic.*
 import com.melvin.ongandroid.model.activities.ActivitiesDataModel
 import com.melvin.ongandroid.model.contact.ContactDataModel
+import com.melvin.ongandroid.model.login.*
 import com.melvin.ongandroid.model.news.NewsModel
 import com.melvin.ongandroid.model.signUpNewUser.NewUserBodyModel
 import com.melvin.ongandroid.model.slides.SlidesDataModel
@@ -14,10 +16,12 @@ import com.melvin.ongandroid.model.staff.StaffDataModel
 import com.melvin.ongandroid.model.testimonials.DataModel
 import com.melvin.ongandroid.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 enum class Status { LOADING, SUCCESS, ERROR, IDLE }
@@ -34,7 +38,9 @@ class ViewModel @Inject constructor(
     private val getActivitiesUseCase: GetActivitiesUseCase,
     private val getNewsUseCase: GetNewsUseCase,
     private val sendContactUsesCase: SendContactUsesCase,
-    private val sendNewUserUseCase: SendNewUserUseCase
+    private val sendNewUserUseCase: SendNewUserUseCase,
+    private val loginRepository: LoginRepository,
+
 ) :
     ViewModel() {
 
@@ -73,6 +79,10 @@ class ViewModel @Inject constructor(
 
     private val _activitiesStatus = MutableLiveData<Status>()
     val activitiesStatus: LiveData<Status> = _activitiesStatus
+
+    // Login
+    private val log: MutableLiveData<GenericLogin<Token>> = MutableLiveData()
+    val login: LiveData<GenericLogin<Token>> = log
 
     //val Mediator to observe States of apiCall response
     val apiStatus = MediatorLiveData<Errors>().apply {
@@ -361,6 +371,25 @@ class ViewModel @Inject constructor(
                     && _passwordSignUpApplied
                     && _confirmPasswordSignUpApplied
         )
+    }
+
+    // Login
+
+    fun onLoadLogin(login: Login, context: Context) = viewModelScope.launch(Dispatchers.Main) {
+        val result = withContext(Dispatchers.IO) {
+            loginRepository.login(
+                login.email,
+                login.password
+            )
+        }
+        if (result.isSuccessful()) {
+            val preferences = Preferences(context)
+            preferences.saveToken(" ")
+        } else {
+
+        }
+        log.value = result
+
     }
 }
 
