@@ -2,7 +2,7 @@ package com.melvin.ongandroid.services.di
 
 import android.content.Context
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.ktx.Firebase
+import com.google.gson.GsonBuilder
 import com.melvin.ongandroid.services.ApiClient
 import dagger.Module
 import dagger.Provides
@@ -21,9 +21,10 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideRetrofit(): Retrofit {
+        val gson = GsonBuilder().setLenient().create()
         return Retrofit.Builder()
             .baseUrl("https://ongapi.alkemy.org/api/")
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }
 
