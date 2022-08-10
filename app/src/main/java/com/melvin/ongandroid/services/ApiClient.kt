@@ -51,7 +51,7 @@ interface ApiClient {
     suspend fun sendContact(@Body contact: ContactDataModel): Response<ContactResponse>
 
     //POST new user in Data Base
-    @Headers("Content-Type: application/json; charset=utf-8")
+    @Headers("Content-Type: application/json; charset=utf-8", "Accept: application/json")
     @POST("register")
     suspend fun sendNewUser(@Body newUser: NewUserBodyModel): Response<NewUserResponse>
 }

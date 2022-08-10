@@ -25,6 +25,7 @@ class SplashActivity : AppCompatActivity() {
                 delay(5000L) // 5 seg.
             }
             startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
+            finish()
         }
     }
 }

@@ -126,6 +126,7 @@ class LoginFragment : Fragment() {
         callbackManager.onActivityResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
 
+        //if requestCode is 100 continue to login with a google account
         if (requestCode == 100) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
@@ -184,6 +185,7 @@ class LoginFragment : Fragment() {
             .show()
     }
 
+    // This function make the login with a google account
     private fun googleLogin() {
         binding.googleLoginButton.setOnClickListener {
             //configuration
