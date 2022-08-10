@@ -151,19 +151,10 @@
                 app:layout_constraintStart_toStartOf="@+id/tfMessage"
                 app:layout_constraintTop_toBottomOf="@+id/tfMessage" />
 
-
-            <!--replace with reusable spinner-->
-            <ProgressBar
+            <include
                 android:id="@+id/progressBarForTest"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-            </ProgressBar>
+                layout="@layout/load_spinner"
+                android:visibility="gone" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </layout>

@@ -1,9 +1,22 @@
 package com.melvin.ongandroid.viewmodel
 
+import android.app.Activity
+import android.media.tv.TvContract.Programs.Genres.NEWS
 import android.util.Log
+import androidx.core.app.ActivityCompat.startActivityForResult
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.*
 import androidx.lifecycle.ViewModel
+import com.bumptech.glide.load.engine.Resource
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
+import com.melvin.ongandroid.R
 import com.melvin.ongandroid.businesslogic.*
 import com.melvin.ongandroid.model.activities.ActivitiesDataModel
 import com.melvin.ongandroid.model.contact.ContactDataModel
@@ -14,6 +27,7 @@ import com.melvin.ongandroid.model.staff.StaffDataModel
 import com.melvin.ongandroid.model.testimonials.DataModel
 import com.melvin.ongandroid.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -24,7 +38,12 @@ enum class Status { LOADING, SUCCESS, ERROR, IDLE }
 enum class Errors { TESTIMONIALS, NEWS, SLIDE, ALL }
 enum class InputTypeLogIn { EMAIL, PASSWORD }
 enum class InputTypeSignUp { NAME, EMAIL, PASSWORD, CONFIRMPASSWORD }
-data class FieldError<T>(val field: T,val isInvalid: Boolean, val message: String? = "", val inputLayout: TextInputLayout)
+data class FieldError<T>(
+    val field: T,
+    val isInvalid: Boolean,
+    val message: String? = "",
+    val inputLayout: TextInputLayout,
+)
 
 @HiltViewModel
 class ViewModel @Inject constructor(
@@ -34,7 +53,7 @@ class ViewModel @Inject constructor(
     private val getActivitiesUseCase: GetActivitiesUseCase,
     private val getNewsUseCase: GetNewsUseCase,
     private val sendContactUsesCase: SendContactUsesCase,
-    private val sendNewUserUseCase: SendNewUserUseCase
+    private val sendNewUserUseCase: SendNewUserUseCase,
 ) :
     ViewModel() {
 
@@ -322,27 +341,42 @@ class ViewModel @Inject constructor(
                 val isValid = input.isNotEmpty()
                 val msg = if (isValid) "" else "Complete this field"
                 _nameSignUpApplied = isValid
-                _signUpFormError.postValue(FieldError(InputTypeSignUp.NAME,!isValid, msg, inputLayout))
+                _signUpFormError.postValue(FieldError(InputTypeSignUp.NAME,
+                    !isValid,
+                    msg,
+                    inputLayout))
             }
             InputTypeSignUp.EMAIL -> {
                 val isValid = input.checkMail()
                 val msg = if (isValid) "" else "Email doesn't meet the condition"
                 _emailSignUpApplied = isValid
-                _signUpFormError.postValue(FieldError(InputTypeSignUp.EMAIL,!isValid, msg, inputLayout))
+                _signUpFormError.postValue(FieldError(InputTypeSignUp.EMAIL,
+                    !isValid,
+                    msg,
+                    inputLayout))
             }
             InputTypeSignUp.PASSWORD -> {
                 _password = input
                 val isValid = input.checkPassword()
                 val msg = if (isValid) "" else "Password doesn't meet the condition"
                 _passwordSignUpApplied = isValid
-                _signUpFormError.postValue(FieldError(InputTypeSignUp.PASSWORD,!isValid, msg, inputLayout))
+                _signUpFormError.postValue(FieldError(InputTypeSignUp.PASSWORD,
+                    !isValid,
+                    msg,
+                    inputLayout))
 
                 // check both passwords
-                if (_confirmPassword != _password){
-                    _passwordsMatch.postValue(FieldError(InputTypeSignUp.CONFIRMPASSWORD, true, "Passwords are not the same", inputLayout))
+                if (_confirmPassword != _password) {
+                    _passwordsMatch.postValue(FieldError(InputTypeSignUp.CONFIRMPASSWORD,
+                        true,
+                        "Passwords are not the same",
+                        inputLayout))
                     _confirmPasswordSignUpApplied = false
                 } else {
-                    _passwordsMatch.postValue(FieldError(InputTypeSignUp.CONFIRMPASSWORD, false, "", inputLayout))
+                    _passwordsMatch.postValue(FieldError(InputTypeSignUp.CONFIRMPASSWORD,
+                        false,
+                        "",
+                        inputLayout))
                     _confirmPasswordSignUpApplied = true
                 }
             }
@@ -351,7 +385,10 @@ class ViewModel @Inject constructor(
                 val isValid = _password == input
                 val msg = if (isValid) "" else "Passwords are not the same"
                 _confirmPasswordSignUpApplied = isValid
-                _signUpFormError.postValue(FieldError(InputTypeSignUp.CONFIRMPASSWORD,!isValid, msg, inputLayout))
+                _signUpFormError.postValue(FieldError(InputTypeSignUp.CONFIRMPASSWORD,
+                    !isValid,
+                    msg,
+                    inputLayout))
             }
         }
 
@@ -362,6 +399,5 @@ class ViewModel @Inject constructor(
                     && _confirmPasswordSignUpApplied
         )
     }
+
 }
-
-

@@ -1,7 +1,5 @@
 package com.melvin.ongandroid.view.login.fragments
 
-import android.app.Activity
-import android.app.AlertDialog
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
@@ -11,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.Navigation
 import com.melvin.ongandroid.R
 import androidx.core.widget.doOnTextChanged
@@ -21,21 +18,20 @@ import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
-import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.auth.GoogleAuthProvider
 import com.melvin.ongandroid.databinding.FragmentLoginBinding
-import com.melvin.ongandroid.util.checkMail
-import com.melvin.ongandroid.util.checkPassword
 import com.melvin.ongandroid.view.home.MainActivity
 import com.melvin.ongandroid.viewmodel.InputTypeLogIn
 import com.melvin.ongandroid.viewmodel.ViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
 import javax.inject.Inject
 
 enum class Status { LOADING, SUCCESS, ERROR }
@@ -50,6 +46,10 @@ class LoginFragment : Fragment() {
     @Inject
     lateinit var firebaseAuth: FirebaseAuth
 
+    @Inject
+    lateinit var firebaseAnalytics: FirebaseAnalytics
+
+
 //    private val loginViewModel: LoginViewModel by viewModels()
 
     override fun onCreateView(
@@ -57,11 +57,8 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
-
         onClickSignUp()
-
         facebookLogin()
-//        onClickLogin()
         return binding.root
     }
 
@@ -76,7 +73,7 @@ class LoginFragment : Fragment() {
             lifecycleOwner = viewLifecycleOwner
         }
         initComponent()
-
+        googleLogin()
         // status button login changes depending on whether meets the conditions or not
         viewModel.statusButtonLogin.observe(viewLifecycleOwner, Observer {
             binding.loginBtn.isEnabled = it
@@ -98,6 +95,7 @@ class LoginFragment : Fragment() {
             )
         }
     }
+
     // This function make the login with a facebook account
     private fun facebookLogin() {
         val email = "email"
@@ -124,9 +122,39 @@ class LoginFragment : Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
         // Pass the activity result back to the Facebook SDK
         callbackManager.onActivityResult(requestCode, resultCode, data)
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 100) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val account = task.getResult(ApiException::class.java)
+                if (account != null) {
+                    val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+                    FirebaseAuth.getInstance().signInWithCredential(credential)
+                        .addOnCompleteListener {
+                            if (it.isSuccessful) {
+                                Log.d(TAG, "signInWithCredential:success")
+                                onLoginSuccess()
+                                requireActivity().finish()
+                            } else
+                            // If sign in fails, display a message to the user.
+                                Log.w(TAG, "signInWithCredential:failure")
+                            Snackbar.make(binding.root,
+                                "Authentication failed.",
+                                Snackbar.LENGTH_LONG)
+                                .show()
+                        }
+                }
+            } catch (e: ApiException) {
+                Log.w(TAG, "signInWithCredential:failure")
+                Snackbar.make(binding.root,
+                    "Authentication failed.",
+                    Snackbar.LENGTH_LONG)
+                    .show()
+            }
+        }
     }
 
     private fun handleFacebookAccessToken(token: AccessToken) {
@@ -155,10 +183,22 @@ class LoginFragment : Fragment() {
             .setAction(resources.getString(R.string.retry)) { retryCB() }
             .show()
     }
+
+    private fun googleLogin() {
+        binding.googleLoginButton.setOnClickListener {
+            //configuration
+            val googleConf = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build()
+
+            val googleClient = GoogleSignIn.getClient(requireContext(), googleConf)
+
+            googleClient.signOut()
+            startActivityForResult(googleClient.signInIntent, 100)
+        }
+    }
 }
-
-
-
 
 
 

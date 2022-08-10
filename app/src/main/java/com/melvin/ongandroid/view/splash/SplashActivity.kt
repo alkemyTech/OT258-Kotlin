@@ -25,6 +25,7 @@ class SplashActivity : AppCompatActivity() {
                 delay(5000L) // 5 seg.
             }
             Toast.makeText(this@SplashActivity, "Timer", Toast.LENGTH_LONG).show()
+            startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
         }
     }
 }
