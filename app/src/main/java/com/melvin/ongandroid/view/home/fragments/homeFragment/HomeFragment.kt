@@ -56,7 +56,7 @@ class HomeFragment : Fragment() {
     private fun initComponent() {
         getTestimonials()
         testimonialsArrowClick()
-//        getNews()
+        getNews()
         lastNewsArrowClick()
         getSlides()
         setUpListeners()
@@ -67,22 +67,23 @@ class HomeFragment : Fragment() {
         })
     }
 
-//    private fun getNews() {
-//        viewModel.onLoadNews()
-//        viewModel.newsStatus.observe(viewLifecycleOwner) { status ->
-//            when (status!!) {
-//                Status.LOADING -> { }
-//                Status.SUCCESS -> {
-//                    viewModel.news.observe(viewLifecycleOwner, Observer {
-//                        initNewsRecyclerView(it)
-//                    })
-//                }
-//                Status.ERROR -> onLoadError(" ") {
-//                    viewModel.onLoadNews()
-//                }
-//            }
-//        }
-//    }
+    private fun getNews() {
+        viewModel.onLoadNews()
+        viewModel.newsStatus.observe(viewLifecycleOwner) { status ->
+            when (status!!) {
+                Status.LOADING -> { }
+                Status.SUCCESS -> {
+                    viewModel.news.observe(viewLifecycleOwner, Observer {
+                        initNewsRecyclerView(it)
+                    })
+                }
+                Status.ERROR -> onLoadError(" ") {
+                    viewModel.onLoadNews()
+                }
+                else -> { }
+            }
+        }
+    }
 
     //This function start the testimonials query, an gives the response to the recyclerview
     private fun getTestimonials() {
@@ -109,10 +110,10 @@ class HomeFragment : Fragment() {
         binding.rvActivityTestimony.adapter = TestimonialsAdapter(list)
     }
 
-//    private fun initNewsRecyclerView(list: List<DataModel>) {
-//        binding.rvLastNews.layoutManager = LinearLayoutManager(requireContext())
-//        binding.rvLastNews.adapter = NewsAdapter(list)
-//    }
+    private fun initNewsRecyclerView(list: List<NewsModel>) {
+        binding.rvLastNews.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvLastNews.adapter = NewsAdapter(list)
+    }
 
 
 

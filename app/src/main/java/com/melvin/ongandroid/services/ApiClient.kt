@@ -42,8 +42,8 @@ interface ApiClient {
     suspend fun getActivitiesList(): Response<ActivitiesModel>
 
     //  http://ongapi.alkemy.org/api/docs#/Auth/post_login
-//    @POST("login")
-//    suspend fun getLogin( @Body login: Login) : Response<LoginModel<Token>>
+    @POST("login")
+    suspend fun getLogin( @Body login: Login) : Response<LoginModel<Token>>
 
     //POST new contact data in API
     @Headers("Content-Type: application/json; charset=utf-8")

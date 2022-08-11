@@ -29,6 +29,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.melvin.ongandroid.databinding.FragmentLoginBinding
+import com.melvin.ongandroid.model.login.GenericLogin
+import com.melvin.ongandroid.model.login.Login
 import com.melvin.ongandroid.util.checkMail
 import com.melvin.ongandroid.util.checkPassword
 import com.melvin.ongandroid.view.home.MainActivity
@@ -50,7 +52,6 @@ class LoginFragment : Fragment() {
     @Inject
     lateinit var firebaseAuth: FirebaseAuth
 
-//    private val loginViewModel: LoginViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,9 +60,9 @@ class LoginFragment : Fragment() {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
 
         onClickSignUp()
-
         facebookLogin()
-//        onClickLogin()
+        onClickLogin()
+        loginListener()
         return binding.root
     }
 
@@ -154,6 +155,45 @@ class LoginFragment : Fragment() {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_INDEFINITE)
             .setAction(resources.getString(R.string.retry)) { retryCB() }
             .show()
+    }
+
+    // Login
+
+    private fun onClickLogin() {
+        // start home activity on login button click
+        binding.loginBtn.setOnClickListener {
+            var logD = Login (
+                binding.etEmailLogin.text.toString().trim(),
+                binding.etPasswordLogin.text.toString().trim()
+            )
+            context?.let {
+                viewModel.onLoadLogin(logD, it)
+            }
+
+        }
+
+    }
+
+    private fun loginListener() {
+        onClickLogin()
+        viewModel.login.observe(viewLifecycleOwner, Observer {
+            when (it.status) {
+                GenericLogin.Status.LOADING -> {
+
+                }
+                GenericLogin.Status.SUCCESS-> {
+
+                    startActivity(Intent(requireContext(), MainActivity::class.java))
+
+                }
+                GenericLogin.Status.ERROR -> {
+                    binding.etEmailLogin.error = "Error"
+                    binding.etPasswordLogin.error = "Error"
+                }
+
+                else -> {}
+            }
+        })
     }
 }
 
