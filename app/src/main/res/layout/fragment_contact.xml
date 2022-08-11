@@ -13,7 +13,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             tools:context=".view.home.fragments.contactFragment.ContactFragment">
 
             <include
@@ -140,7 +140,7 @@
                 android:id="@+id/btnSend"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/density60"
-                android:layout_margin="@dimen/density16"
+                android:layout_marginTop="@dimen/density16"
                 android:background="@color/pale_grey"
                 android:backgroundTint="@color/blue"
                 android:elevation="@dimen/density16"
@@ -151,19 +151,10 @@
                 app:layout_constraintStart_toStartOf="@+id/tfMessage"
                 app:layout_constraintTop_toBottomOf="@+id/tfMessage" />
 
-
-            <!--replace with reusable spinner-->
-            <ProgressBar
+            <include
                 android:id="@+id/progressBarForTest"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-            </ProgressBar>
+                layout="@layout/load_spinner"
+                android:visibility="gone" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </layout>
