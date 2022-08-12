@@ -8,25 +8,30 @@
         <!-- dataBinding (delete this after using this space) -->
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingTop="16dp"
-        android:paddingEnd="16dp">
+        android:fillViewport="true">
 
-        <!-- MainActivity Scroll View Content -->
-        <ScrollView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="16dp">
 
+            <!-- MainActivity Scroll View Content -->
             <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
+
+                <include
+                    android:id="@+id/iv_logo"
+                    layout="@layout/logo" />
+
                 <!-- Welcome Table Row -->
+
                 <TableRow
                     android:id="@+id/tlRowBienvenidx"
                     android:layout_width="match_parent"
@@ -155,10 +160,9 @@
                     <!-- Last News RecyclerView -->
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvLastNews"
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        />
+                        android:orientation="horizontal" />
 
                 </TableRow>
 
@@ -176,6 +180,6 @@
                 </TableRow>
 
             </TableLayout>
-        </ScrollView>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </layout>
