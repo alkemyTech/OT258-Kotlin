@@ -28,6 +28,10 @@ import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.melvin.ongandroid.databinding.FragmentLoginBinding
+import com.melvin.ongandroid.model.login.GenericLogin
+import com.melvin.ongandroid.model.login.Login
+import com.melvin.ongandroid.util.checkMail
+import com.melvin.ongandroid.util.checkPassword
 import com.melvin.ongandroid.view.home.MainActivity
 import com.melvin.ongandroid.viewmodel.InputTypeLogIn
 import com.melvin.ongandroid.viewmodel.ViewModel
@@ -59,6 +63,8 @@ class LoginFragment : Fragment() {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         onClickSignUp()
         facebookLogin()
+        onClickLogin()
+        loginListener()
         return binding.root
     }
 
@@ -184,7 +190,45 @@ class LoginFragment : Fragment() {
             .setAction(resources.getString(R.string.retry)) { retryCB() }
             .show()
     }
+    // Login
 
+    private fun onClickLogin() {
+        // start home activity on login button click
+        binding.loginBtn.setOnClickListener {
+            var logD = Login (
+                binding.etEmailLogin.text.toString().trim(),
+                binding.etPasswordLogin.text.toString().trim()
+            )
+            context?.let {
+                viewModel.onLoadLogin(logD, it)
+            }
+
+        }
+
+    }
+
+    private fun loginListener() {
+        onClickLogin()
+        viewModel.login.observe(viewLifecycleOwner, Observer {
+            when (it.status) {
+                GenericLogin.Status.LOADING -> {
+
+                }
+                GenericLogin.Status.SUCCESS-> {
+
+                    startActivity(Intent(requireContext(), MainActivity::class.java))
+
+                }
+                GenericLogin.Status.ERROR -> {
+                    binding.etEmailLogin.error = "Error"
+                    binding.etPasswordLogin.error = "Error"
+                }
+
+                else -> {}
+            }
+        })
+    }
+}
     // This function make the login with a google account
     private fun googleLogin() {
         binding.googleLoginButton.setOnClickListener {

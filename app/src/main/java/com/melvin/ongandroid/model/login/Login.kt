@@ -13,5 +13,4 @@ data class Login (
 data class Token (
     @SerializedName("token")
     var token: String
-
     )

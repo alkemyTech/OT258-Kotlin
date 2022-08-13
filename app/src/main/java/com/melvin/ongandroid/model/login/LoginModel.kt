@@ -6,7 +6,7 @@ data class LoginModel<T>(
     @SerializedName("success")
     var success: Boolean,
     @SerializedName("data")
-    var data: List<Login>,
+    var data: T,
     @SerializedName("message")
     var message: String?
         )
