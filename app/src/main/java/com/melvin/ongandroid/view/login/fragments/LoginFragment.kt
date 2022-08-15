@@ -24,6 +24,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
@@ -71,6 +72,10 @@ class LoginFragment : Fragment() {
     private fun onClickSignUp() {
         binding.loginRegisterTxt.setOnClickListener {
             Navigation.findNavController(it).navigate(R.id.action_loginFragment_to_signUpFragment)
+            //Log event
+            firebaseAnalytics.logEvent("sign_up_pressed"){
+                param("message", "sign_up_pressed")
+            }
         }
     }
 
@@ -145,13 +150,19 @@ class LoginFragment : Fragment() {
                                 Log.d(TAG, "signInWithCredential:success")
                                 onLoginSuccess()
                                 requireActivity().finish()
-                            } else
+                            } else {
                             // If sign in fails, display a message to the user.
                                 Log.w(TAG, "signInWithCredential:failure")
                             Snackbar.make(binding.root,
                                 "Authentication failed.",
                                 Snackbar.LENGTH_LONG)
                                 .show()
+
+                                // Log event
+                                firebaseAnalytics.logEvent("log_in_error"){
+                                    param("message", "log_in_error")
+                                }
+                            }
                         }
                 }
             } catch (e: ApiException) {
@@ -161,6 +172,10 @@ class LoginFragment : Fragment() {
                     Snackbar.LENGTH_LONG)
                     .show()
             }
+        }
+        // Log event
+        firebaseAnalytics.logEvent("facebook_pressed"){
+            param("message","facebook_pressed")
         }
     }
 
@@ -176,6 +191,11 @@ class LoginFragment : Fragment() {
                 // If sign in fails, display a message to the user.
                 Log.w(TAG, "signInWithCredential:failure", task.exception)
                 Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show()
+
+                // Log event
+                firebaseAnalytics.logEvent("log_in_error"){
+                    param("message", "log_in_error")
+                }
             }
         }
     }
@@ -183,6 +203,10 @@ class LoginFragment : Fragment() {
     private fun onLoginSuccess() {
         val intent = Intent(requireContext(), MainActivity::class.java)
         startActivity(intent)
+        // Log event
+        firebaseAnalytics.logEvent("log_in_success"){
+            param("message", "log_in_success")
+        }
     }
 
     private fun onLoadError(message: String, retryCB: () -> Unit) {
@@ -202,9 +226,11 @@ class LoginFragment : Fragment() {
             context?.let {
                 viewModel.onLoadLogin(logD, it)
             }
-
+        // Log event
+            firebaseAnalytics.logEvent("log_in_pressed"){
+                param("message", "log_in_pressed")
+            }
         }
-
     }
 
     private fun loginListener() {
@@ -218,10 +244,19 @@ class LoginFragment : Fragment() {
 
                     startActivity(Intent(requireContext(), MainActivity::class.java))
 
+                    // Log event
+                    firebaseAnalytics.logEvent("log_in_success"){
+                        param("message", "log_in_success")
+                    }
                 }
                 GenericLogin.Status.ERROR -> {
                     binding.etEmailLogin.error = "Error"
                     binding.etPasswordLogin.error = "Error"
+
+                    // Log event
+                    firebaseAnalytics.logEvent("log_in_error"){
+                        param("message", "log_in_error")
+                    }
                 }
 
                 else -> {}
@@ -242,6 +277,11 @@ class LoginFragment : Fragment() {
 
             googleClient.signOut()
             startActivityForResult(googleClient.signInIntent, 100)
+
+            // Log event
+            firebaseAnalytics.logEvent("gmail_pressed"){
+                param("message", "gmail_pressed")
+            }
         }
     }
 }
