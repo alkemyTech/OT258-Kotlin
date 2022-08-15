@@ -2,8 +2,9 @@ package com.melvin.ongandroid.model.login
 
 import android.content.Context
 import javax.inject.Inject
+import javax.inject.Singleton
 
-
+@Singleton
 class Preferences  @Inject constructor(val context: Context) {
 
     val keyToken = "user_token"
@@ -14,7 +15,7 @@ class Preferences  @Inject constructor(val context: Context) {
     }
 
     fun getToken(): String {
-        return storage.getString(this.keyToken, " ")!!
+        return storage.getString(this.keyToken, "")!!
     }
 
 
