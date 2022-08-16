@@ -3,6 +3,8 @@ package com.melvin.ongandroid.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.melvin.ongandroid.businesslogic.*
 import com.melvin.ongandroid.model.contact.ContactDataModel
+import com.melvin.ongandroid.model.login.LoginRepository
+import com.melvin.ongandroid.model.signUpNewUser.*
 import com.melvin.ongandroid.model.slides.SlidesDataModel
 import com.melvin.ongandroid.model.staff.StaffDataModel
 import com.melvin.ongandroid.model.testimonials.DataModel
@@ -40,6 +42,15 @@ class ViewModelTest {
     @MockK
     private lateinit var sendContactUseCase: SendContactUsesCase
 
+    @MockK
+    private lateinit var loginRepository: LoginRepository
+
+    @MockK
+    private lateinit var sendNewUserUseCase: SendNewUserUseCase
+
+    @MockK
+    private lateinit var newUserRepository: NewUserRepository
+
     private lateinit var viewModel: ViewModel
 
     @get: Rule
@@ -53,7 +64,8 @@ class ViewModelTest {
             getStaffUseCase,
             getActivitiesUseCase,
             getNewsUserCase,
-        sendContactUseCase)
+            sendContactUseCase,
+        )
         Dispatchers.setMain(Dispatchers.Unconfined)
     }
 

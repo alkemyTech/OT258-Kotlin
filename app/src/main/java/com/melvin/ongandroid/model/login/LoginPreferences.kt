@@ -13,7 +13,12 @@ class LoginPreferences  @Inject constructor(val context: Context) {
         storage.edit().putString(this.keyToken, token).apply()
     }
 
-    fun getToken(): String {
-        return storage.getString(this.keyToken, " ")!!
+    fun getToken(): String? {
+        return storage.getString(this.keyToken, null)
     }
+
+    fun clear() {
+        storage.edit().clear().apply()
+    }
+
 }

@@ -25,6 +25,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
@@ -66,6 +67,10 @@ class LoginFragment : Fragment() {
     private fun onClickSignUp() {
         binding.loginRegisterTxt.setOnClickListener {
             Navigation.findNavController(it).navigate(R.id.action_loginFragment_to_signUpFragment)
+            //Log event
+            firebaseAnalytics.logEvent("sign_up_pressed"){
+                param("message", "sign_up_pressed")
+            }
         }
     }
 
@@ -140,13 +145,19 @@ class LoginFragment : Fragment() {
                                 Log.d(TAG, "signInWithCredential:success")
                                 onLoginSuccess()
                                 requireActivity().finish()
-                            } else
+                            } else {
                             // If sign in fails, display a message to the user.
                                 Log.w(TAG, "signInWithCredential:failure")
                             Snackbar.make(binding.root,
                                 "Authentication failed.",
                                 Snackbar.LENGTH_LONG)
                                 .show()
+
+                                // Log event
+                                firebaseAnalytics.logEvent("log_in_error"){
+                                    param("message", "log_in_error")
+                                }
+                            }
                         }
                 }
             } catch (e: ApiException) {
@@ -156,6 +167,10 @@ class LoginFragment : Fragment() {
                     Snackbar.LENGTH_LONG)
                     .show()
             }
+        }
+        // Log event
+        firebaseAnalytics.logEvent("facebook_pressed"){
+            param("message","facebook_pressed")
         }
     }
 
@@ -171,11 +186,19 @@ class LoginFragment : Fragment() {
                 // If sign in fails, display a message to the user.
                 Log.w(TAG, "signInWithCredential:failure", task.exception)
                 Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show()
+
+                // Log event
+                firebaseAnalytics.logEvent("log_in_error"){
+                    param("message", "log_in_error")
+                }
             }
         }
     }
 
     private fun onLoginSuccess() {
+        firebaseAnalytics.logEvent("log_in_success") {
+            param("message", "log_in_success")
+        }
         val intent = Intent(requireContext(), MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_TASK_ON_HOME
         startActivity(intent)
@@ -197,10 +220,14 @@ class LoginFragment : Fragment() {
     private fun onClickLogin() {
         // start home activity on login button click
         binding.loginBtn.setOnClickListener {
-                val email = binding.etEmailLogin.text.toString().trim()
-                val password = binding.etPasswordLogin.text.toString().trim()
+            val email = binding.etEmailLogin.text.toString().trim()
+            val password = binding.etPasswordLogin.text.toString().trim()
             context?.let {
                 viewModel.onUserLogin(email, password, it)
+            }
+        // Log event
+            firebaseAnalytics.logEvent("log_in_pressed"){
+                param("message", "log_in_pressed")
             }
         }
     }
@@ -213,6 +240,11 @@ class LoginFragment : Fragment() {
                 }
                 Status.SUCCESS -> {
                     onLoginSuccess()
+
+                    // Log event
+                    firebaseAnalytics.logEvent("log_in_success") {
+                        param("message", "log_in_success")
+                    }
                 }
                 Status.ERROR -> {
                     Snackbar.make(binding.root,
@@ -221,6 +253,10 @@ class LoginFragment : Fragment() {
                         .setBackgroundTint(ContextCompat.getColor(requireContext(),R.color.red))
                         .show()
                     clearLoginFields()
+                    // Log event
+                    firebaseAnalytics.logEvent("log_in_error"){
+                        param("message", "log_in_error")
+                    }
                 }
                 Status.IDLE -> {}
                 else -> {}
@@ -241,6 +277,11 @@ class LoginFragment : Fragment() {
 
             googleClient.signOut()
             startActivityForResult(googleClient.signInIntent, 100)
+
+            // Log event
+            firebaseAnalytics.logEvent("gmail_pressed"){
+                param("message", "gmail_pressed")
+            }
         }
     }
 }
