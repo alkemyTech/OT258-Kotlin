@@ -35,8 +35,9 @@ class ViewModel @Inject constructor(
     private val getNewsUseCase: GetNewsUseCase,
     private val sendContactUsesCase: SendContactUsesCase,
     private val sendNewUserUseCase: SendNewUserUseCase,
-    private val loginRepository: LoginRepository
-) :
+    private val loginRepository: LoginRepository,
+
+    ) :
     ViewModel() {
 
     //Staff//
@@ -394,6 +395,7 @@ class ViewModel @Inject constructor(
         log.value = result
 
     }
+
 }
 
 

@@ -17,5 +17,8 @@ class Preferences  @Inject constructor(val context: Context) {
         return storage.getString(this.keyToken, " ")!!
     }
 
+    fun clear() {
+        storage.edit().clear().apply()
+    }
 
 }

@@ -228,7 +228,7 @@ class LoginFragment : Fragment() {
             }
         })
     }
-}
+
     // This function make the login with a google account
     private fun googleLogin() {
         binding.googleLoginButton.setOnClickListener {
