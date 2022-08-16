@@ -14,7 +14,7 @@ class Preferences  @Inject constructor(val context: Context) {
     }
 
     fun getToken(): String {
-        return storage.getString(this.keyToken, " ")!!
+        return storage.getString(this.keyToken, null)!!
     }
 
     fun clear() {
