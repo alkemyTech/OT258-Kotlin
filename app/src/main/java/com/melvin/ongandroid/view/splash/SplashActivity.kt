@@ -34,7 +34,7 @@ class SplashActivity : AppCompatActivity() {
             // Check whether user is already logged in o not
             val token = preferences.getToken()
 
-            if (token.isNullOrEmpty()) {
+            if (token.isNullOrEmpty() || token == " ") {
                 // User hasn't logged in yet
                 startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
             } else {
