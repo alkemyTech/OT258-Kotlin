@@ -13,7 +13,6 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.android.material.snackbar.Snackbar
 import com.melvin.ongandroid.R
 import com.melvin.ongandroid.databinding.FragmentHomeBinding
-import com.melvin.ongandroid.model.news.NewsAPIModel
 import com.melvin.ongandroid.model.news.NewsModel
 import com.melvin.ongandroid.model.slides.SlidesDataModel
 import com.melvin.ongandroid.model.testimonials.DataModel
@@ -24,7 +23,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import com.melvin.ongandroid.view.home.adapters.welcome.WelcomeActivitiesAdapter
 import javax.inject.Inject
 import com.melvin.ongandroid.viewmodel.Errors
-import com.melvin.ongandroid.viewmodel.NewsViewModel
 import com.melvin.ongandroid.viewmodel.Status
 
 
@@ -112,7 +110,7 @@ class HomeFragment : Fragment() {
 
     private fun initNewsRecyclerView(list: List<NewsModel>) {
         binding.rvLastNews.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvLastNews.adapter = NewsAdapter(list)
+        binding.rvLastNews.adapter = NewsAdapter(list.subList(0,5))
     }
 
 
@@ -158,7 +156,6 @@ class HomeFragment : Fragment() {
     // Init the recyclerview with the query's response
     private fun initWelcomeRecyclerView(list: List<SlidesDataModel>) {
         //helper to snap cards in the center of the screen
-        val snapHelper = LinearSnapHelper()
         if (list.isNotEmpty()) {
             binding.rvWelcomeActivityView.adapter = WelcomeActivitiesAdapter(list)
             if (binding.rvWelcomeActivityView.onFlingListener == null){
