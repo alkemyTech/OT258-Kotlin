@@ -10,5 +10,6 @@ import javax.inject.Inject
 class SendNewUserUseCase @Inject constructor(private val newUserRepository: NewUserRepository) {
     suspend operator fun invoke(newUser: NewUserBodyModel): APIResponse<NewUserResponse, NewUserResponseError>{
         return newUserRepository.sendNewUser(newUser)
+
     }
 }
