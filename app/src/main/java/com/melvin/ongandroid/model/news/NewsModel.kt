@@ -1,7 +1,5 @@
 package com.melvin.ongandroid.model.news
 
-import java.util.*
-
  class NewsModel (
          var id: Int,
          var name: String,

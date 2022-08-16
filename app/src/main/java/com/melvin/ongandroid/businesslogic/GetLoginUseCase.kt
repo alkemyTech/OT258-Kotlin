@@ -1,15 +1,12 @@
 package com.melvin.ongandroid.businesslogic
 
-import com.melvin.ongandroid.model.login.Login
-import com.melvin.ongandroid.services.ApiClient
-import com.melvin.ongandroid.model.login.Result
+import com.melvin.ongandroid.model.APIResponse
+import com.melvin.ongandroid.model.login.LoginRepository
+import com.melvin.ongandroid.model.login.LoginResponse
 import javax.inject.Inject
 
-class GetLoginUseCase @Inject constructor(
-    private val apiClient: ApiClient
-) : Result()
-
-{
-    suspend fun login(email: String, password: String) = getResult { apiClient.getLogin(Login(email, password))}
-
+class GetLoginUseCase @Inject constructor(private val loginRepository: LoginRepository) {
+    suspend operator fun invoke(email: String, password: String): APIResponse<LoginResponse, Unit> {
+        return loginRepository.login(email, password)
+    }
 }

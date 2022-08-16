@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.navigation.Navigation
 import com.melvin.ongandroid.R
 import androidx.core.widget.doOnTextChanged
@@ -28,23 +29,19 @@ import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.melvin.ongandroid.databinding.FragmentLoginBinding
-import com.melvin.ongandroid.model.login.GenericLogin
-import com.melvin.ongandroid.model.login.Login
-import com.melvin.ongandroid.util.checkMail
-import com.melvin.ongandroid.util.checkPassword
 import com.melvin.ongandroid.view.home.MainActivity
 import com.melvin.ongandroid.viewmodel.InputTypeLogIn
-import com.melvin.ongandroid.viewmodel.ViewModel
+import com.melvin.ongandroid.viewmodel.AuthViewModel
+import com.melvin.ongandroid.viewmodel.Status
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-enum class Status { LOADING, SUCCESS, ERROR }
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: ViewModel by viewModels()
+    private val viewModel: AuthViewModel by viewModels()
     private val callbackManager = CallbackManager.Factory.create()
 
     @Inject
@@ -53,8 +50,6 @@ class LoginFragment : Fragment() {
     @Inject
     lateinit var firebaseAnalytics: FirebaseAnalytics
 
-
-//    private val loginViewModel: LoginViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -120,7 +115,7 @@ class LoginFragment : Fragment() {
 
                 override fun onError(error: FacebookException?) {
                     Log.d(TAG, "facebook: onError: error")
-                    onLoadError(resources.getString(R.string.on_facebook_login_error)) {
+                    onFacebookLoginError(resources.getString(R.string.on_facebook_login_error)) {
                         facebookLogin()
                     }
                 }
@@ -182,53 +177,57 @@ class LoginFragment : Fragment() {
 
     private fun onLoginSuccess() {
         val intent = Intent(requireContext(), MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_TASK_ON_HOME
         startActivity(intent)
+        requireActivity().finish()
     }
 
-    private fun onLoadError(message: String, retryCB: () -> Unit) {
+    private fun onFacebookLoginError(message: String, retryCB: () -> Unit) {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_INDEFINITE)
             .setAction(resources.getString(R.string.retry)) { retryCB() }
             .show()
     }
-    // Login
+
+    private fun clearLoginFields() {
+        binding.etEmailLogin.setText("")
+        binding.etPasswordLogin.setText("")
+        binding.etEmailLogin.requestFocus()
+    }
 
     private fun onClickLogin() {
         // start home activity on login button click
         binding.loginBtn.setOnClickListener {
-            var logD = Login (
-                binding.etEmailLogin.text.toString().trim(),
-                binding.etPasswordLogin.text.toString().trim()
-            )
+                val email = binding.etEmailLogin.text.toString().trim()
+                val password = binding.etPasswordLogin.text.toString().trim()
             context?.let {
-                viewModel.onLoadLogin(logD, it)
+                viewModel.onUserLogin(email, password, it)
             }
-
         }
-
     }
 
     private fun loginListener() {
-        onClickLogin()
-        viewModel.login.observe(viewLifecycleOwner, Observer {
-            when (it.status) {
-                GenericLogin.Status.LOADING -> {
-
+        viewModel.loginStatus.observe(viewLifecycleOwner) {
+            when (it) {
+                Status.LOADING -> {
+                    //TODO:Show spinner
                 }
-                GenericLogin.Status.SUCCESS-> {
-
-                    startActivity(Intent(requireContext(), MainActivity::class.java))
-
+                Status.SUCCESS -> {
+                    onLoginSuccess()
                 }
-                GenericLogin.Status.ERROR -> {
-                    binding.etEmailLogin.error = "Error"
-                    binding.etPasswordLogin.error = "Error"
+                Status.ERROR -> {
+                    Snackbar.make(binding.root,
+                        "El email/contraseña ingresado es incorrecto",
+                        Snackbar.LENGTH_LONG)
+                        .setBackgroundTint(ContextCompat.getColor(requireContext(),R.color.red))
+                        .show()
+                    clearLoginFields()
                 }
-
+                Status.IDLE -> {}
                 else -> {}
             }
-        })
+        }
     }
-}
+
     // This function make the login with a google account
     private fun googleLogin() {
         binding.googleLoginButton.setOnClickListener {
