@@ -388,7 +388,7 @@ class ViewModel @Inject constructor(
         }
         if (result.isSuccessful()) {
             val preferences = Preferences(context)
-            preferences.saveToken(" ")
+            preferences.saveToken("")
         } else {
 
         }
