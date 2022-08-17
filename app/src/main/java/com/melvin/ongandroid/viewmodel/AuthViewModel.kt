@@ -1,7 +1,6 @@
 package com.melvin.ongandroid.viewmodel
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,21 +17,46 @@ import javax.inject.Inject
 
 enum class InputTypeLogIn { EMAIL, PASSWORD }
 enum class InputTypeSignUp { NAME, EMAIL, PASSWORD, CONFIRM_PASSWORD }
-data class FieldError<T>(val field: T,val isInvalid: Boolean, val message: String? = "")
+data class FieldError<T>(val field: T, val isInvalid: Boolean, val message: String? = "")
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val sendNewUserUseCase: SendNewUserUseCase,
     private val loginUseCase: GetLoginUseCase,
+    private val getMeUseCase: GetMeUseCase,
+    private val loginPreferences: LoginPreferences
 ) :
     ViewModel() {
     // Login
+    private var _sessionStatus = MutableLiveData(Status.IDLE)
+    val sessionStatus: LiveData<Status> = _sessionStatus
     private val _loginStatus = MutableLiveData(Status.IDLE)
-    val loginStatus : LiveData<Status> = _loginStatus
+    val loginStatus: LiveData<Status> = _loginStatus
     private val _statusButtonLogin = MutableLiveData(false)
     val statusButtonLogin: LiveData<Boolean> = _statusButtonLogin
     private var emailApplied: Boolean = false
     private var passwordApplied: Boolean = false
+
+    fun checkSessionStatus() {
+        //We check if there's a token and we validate it
+        viewModelScope.launch {
+            val token = loginPreferences.getToken()
+            if (token.isNullOrEmpty()) {
+                //There's no session
+                _sessionStatus.value = Status.ERROR
+            } else {
+                val getMeResponse = getMeUseCase(token)
+                val isTokenValid = getMeResponse.success
+                if (isTokenValid) {
+                    _sessionStatus.value = Status.SUCCESS
+                } else {
+                    //The token expired so we clear the outdated data
+                    _sessionStatus.value = Status.ERROR
+                    loginPreferences.clear()
+                }
+            }
+        }
+    }
 
     // Validating email and password
     fun manageButtonLogin(input: String, type: InputTypeLogIn) {
@@ -181,7 +205,7 @@ class AuthViewModel @Inject constructor(
             val loginResponse = loginUseCase(email, password)
             if (loginResponse.success) {
                 val loginPreferences = LoginPreferences(context)
-                val token = loginResponse.data?.data?.token?: ""
+                val token = loginResponse.data?.data?.token ?: ""
                 loginPreferences.saveToken(token)
                 _loginStatus.value = Status.SUCCESS
 
