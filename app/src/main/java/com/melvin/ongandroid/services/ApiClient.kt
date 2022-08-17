@@ -13,10 +13,7 @@ import com.melvin.ongandroid.model.slides.SlidesModel
 import com.melvin.ongandroid.model.staff.StaffModel
 import com.melvin.ongandroid.model.testimonials.TestimonialsModel
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Headers
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface ApiClient {
     //GET request slides from API
@@ -53,4 +50,7 @@ interface ApiClient {
     @Headers("Content-Type: application/json; charset=utf-8", "Accept: application/json")
     @POST("register")
     suspend fun sendNewUser(@Body newUser: NewUserBodyModel): Response<NewUserResponse>
+
+    @GET("auth/me")
+    suspend fun getMe(@Header("Authorization") token: String): Response<LoginResponse>
 }

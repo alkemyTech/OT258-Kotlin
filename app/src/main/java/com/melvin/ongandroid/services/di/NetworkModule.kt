@@ -1,12 +1,11 @@
 package com.melvin.ongandroid.services.di
 
 import android.content.Context
-import com.facebook.login.LoginBehavior
 import com.facebook.login.LoginManager
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.gson.GsonBuilder
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.ktx.Firebase
+import com.melvin.ongandroid.model.login.LoginPreferences
 import com.melvin.ongandroid.services.ApiClient
 import dagger.Module
 import dagger.Provides
@@ -55,5 +54,11 @@ object NetworkModule {
     @Provides
     fun providerFirebaseAuth(): FirebaseAuth {
         return FirebaseAuth.getInstance()
+    }
+
+    @Singleton
+    @Provides
+    fun provideLoginPreferences(@ApplicationContext context: Context): LoginPreferences {
+        return LoginPreferences(context)
     }
 }
