@@ -58,6 +58,10 @@ class SignUpFragment : Fragment() {
                 param("message", "register_pressed")
             }
         }
+        //Login navigation button
+        binding.loginRegisterTxt.setOnClickListener {
+            Navigation.findNavController(it).navigate(R.id.action_signUpFragment_to_loginFragment)
+        }
 
         binding.etNameSignUp.doOnTextChanged { text, start, before, count -> viewModel.onFieldChange(text.toString(), InputTypeSignUp.NAME)}
         binding.etEmailSignUp.doOnTextChanged { text, start, before, count -> viewModel.onFieldChange(text.toString(), InputTypeSignUp.EMAIL)}
