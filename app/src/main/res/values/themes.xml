@@ -12,23 +12,33 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-        <item name="bottomSheetDialogTheme">@style/AppBottomDialogTheme</item>
+
+        <!-- Buttom sheet dialog -->
+        <item name="bottomSheetDialogTheme">@style/CustomBottomSheetDialog</item>
+    </style>
+
+    <!-- This change the bottom sheet dialog background and set the corners round  -->
+    <style name="CustomBottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/CustomBottomSheet</item>
+        <item name="behavior_draggable">false</item>
+    </style>
+
+    <style name="CustomBottomSheet" parent="Widget.MaterialComponents.BottomSheet">
+        <item name="shapeAppearanceOverlay">@style/CustomShapeAppearanceBottomSheetDialog</item>
+        <item name="behavior_peekHeight">500dp</item>
+    </style>
+
+    <style name="CustomShapeAppearanceBottomSheetDialog" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">20dp</item>
+        <item name="cornerSizeTopLeft">20dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
     </style>
 
     <style name="roundedImageViewRounded">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
-    </style>
-
-    <!-- This change the bottom sheet dialog background and set the corners round (but doesnt work yet, i'll fix this later) -->
-    <style name="AppBottomDialogTheme"
-        parent="Theme.MaterialComponents.BottomSheetDialog">
-        <item name="bottomAppBarStyle">@style/AppModelStyle</item>
-    </style>
-
-    <style name="AppModelStyle"
-        parent="Widget.Design.BottomSheet.Modal">
-        <item name="background">@drawable/bottom_sheet_background</item>
     </style>
 
     <style name="SplashTheme" parent="Theme.AppCompat.DayNight.NoActionBar">

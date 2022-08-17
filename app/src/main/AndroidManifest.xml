@@ -22,16 +22,12 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
     </activity>
-
-
         <activity
             android:name=".view.home.MainActivity"
             android:exported="false" />
         <activity
             android:name=".view.login.LoginActivity"
             android:exported="true" />
-
-
         <service
             android:name=".MyFirebaseMessagingService"
             android:exported="false">

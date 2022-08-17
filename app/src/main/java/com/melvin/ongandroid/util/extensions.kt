@@ -25,7 +25,7 @@ fun String.checkPassword(): Boolean {
     var pat: Pattern? = null
     var mat: Matcher? = null
 
-    pat = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[~`!@#\$%^&*()_+={[}]-|\\:;\"'<,>.?/])(?=\\S+$).{4,15}$")
+    pat = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[~`!@#\$%^&*()_+={[}]-|\\:;\"'<,>.?/])(?=\\S+$).{8,15}$")
     mat = pat!!.matcher(this)
     return mat!!.find()
 }
@@ -42,6 +42,6 @@ fun String.deleteHTML(): String {
     (?=.*[A-Z])                         # an upper case letter must occur at least once
     (~`!@#$%^&*()_-+={[}]|\:;"'<,>.?/)  # a special character must occur at least once you can replace with your special characters
     (?=\\S+$)                           # no whitespace allowed in the entire string
-    .{4,15}                             # between 4-15 characters
+    .{8,15}                             # between 8-15 characters
     $                                   # end-of-string
 */
