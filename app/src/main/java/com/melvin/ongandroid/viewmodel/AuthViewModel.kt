@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
 import com.melvin.ongandroid.businesslogic.*
 import com.melvin.ongandroid.model.login.LoginPreferences
 import com.melvin.ongandroid.model.signUpNewUser.NewUserBodyModel
@@ -24,7 +25,8 @@ class AuthViewModel @Inject constructor(
     private val sendNewUserUseCase: SendNewUserUseCase,
     private val loginUseCase: GetLoginUseCase,
     private val getMeUseCase: GetMeUseCase,
-    private val loginPreferences: LoginPreferences
+    private val loginPreferences: LoginPreferences,
+    private val firebaseAuth: FirebaseAuth
 ) :
     ViewModel() {
     // Login
@@ -40,6 +42,10 @@ class AuthViewModel @Inject constructor(
     fun checkSessionStatus() {
         //We check if there's a token and we validate it
         viewModelScope.launch {
+            if (firebaseAuth.currentUser !== null) {
+                _sessionStatus.value = Status.SUCCESS
+                return@launch
+            }
             val token = loginPreferences.getToken()
             if (token.isNullOrEmpty()) {
                 //There's no session

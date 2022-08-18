@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.melvin.ongandroid.view.login.fragments
 
 import android.content.ContentValues.TAG
@@ -14,15 +16,14 @@ import androidx.navigation.Navigation
 import com.melvin.ongandroid.R
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.tasks.RuntimeExecutionException
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
@@ -47,9 +48,10 @@ class LoginFragment : Fragment() {
 
     @Inject
     lateinit var firebaseAuth: FirebaseAuth
-
     @Inject
     lateinit var firebaseAnalytics: FirebaseAnalytics
+    @Inject
+    lateinit var googleSignInClient: GoogleSignInClient
 
 
     override fun onCreateView(
@@ -80,25 +82,25 @@ class LoginFragment : Fragment() {
         }
         initComponent()
         googleLogin()
-        // status button login changes depending on whether meets the conditions or not
-        viewModel.statusButtonLogin.observe(viewLifecycleOwner, Observer {
-            binding.loginBtn.isEnabled = it
-        })
     }
 
     private fun initComponent() {
         // Checking whether both email input and password input meet the conditions
-        binding.etEmailLogin.doOnTextChanged { text, start, before, count ->
+        binding.etEmailLogin.doOnTextChanged { _, _, _, _ ->
             viewModel.manageButtonLogin(
                 binding.etEmailLogin.text.toString(),
                 InputTypeLogIn.EMAIL
             )
         }
-        binding.etPasswordLogin.doOnTextChanged { text, start, before, count ->
+        binding.etPasswordLogin.doOnTextChanged { _, _, _, _ ->
             viewModel.manageButtonLogin(
                 binding.etPasswordLogin.text.toString(),
                 InputTypeLogIn.PASSWORD
             )
+        }
+        // status button login changes depending on whether meets the conditions or not
+        viewModel.statusButtonLogin.observe(viewLifecycleOwner) {
+            binding.loginBtn.isEnabled = it
         }
     }
 
@@ -136,15 +138,14 @@ class LoginFragment : Fragment() {
         if (requestCode == 100) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
-                val account = task.getResult(ApiException::class.java)
+                val account = task.result
                 if (account != null) {
                     val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-                    FirebaseAuth.getInstance().signInWithCredential(credential)
+                    firebaseAuth.signInWithCredential(credential)
                         .addOnCompleteListener {
                             if (it.isSuccessful) {
                                 Log.d(TAG, "signInWithCredential:success")
                                 onLoginSuccess()
-                                requireActivity().finish()
                             } else {
                             // If sign in fails, display a message to the user.
                                 Log.w(TAG, "signInWithCredential:failure")
@@ -160,7 +161,7 @@ class LoginFragment : Fragment() {
                             }
                         }
                 }
-            } catch (e: ApiException) {
+            } catch (e: RuntimeExecutionException) {
                 Log.w(TAG, "signInWithCredential:failure")
                 Snackbar.make(binding.root,
                     "Authentication failed.",
@@ -248,7 +249,7 @@ class LoginFragment : Fragment() {
                 }
                 Status.ERROR -> {
                     Snackbar.make(binding.root,
-                        "El email/contraseña ingresado es incorrecto",
+                        getString(R.string.login_general_error_msg),
                         Snackbar.LENGTH_LONG)
                         .setBackgroundTint(ContextCompat.getColor(requireContext(),R.color.red))
                         .show()
@@ -267,17 +268,9 @@ class LoginFragment : Fragment() {
     // This function make the login with a google account
     private fun googleLogin() {
         binding.googleLoginButton.setOnClickListener {
-            //configuration
-            val googleConf = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build()
-
-            val googleClient = GoogleSignIn.getClient(requireContext(), googleConf)
-
-            googleClient.signOut()
-            startActivityForResult(googleClient.signInIntent, 100)
-
+            googleSignInClient.signOut()
+            val intent = googleSignInClient.signInIntent
+            startActivityForResult(intent, 100)
             // Log event
             firebaseAnalytics.logEvent("gmail_pressed"){
                 param("message", "gmail_pressed")
