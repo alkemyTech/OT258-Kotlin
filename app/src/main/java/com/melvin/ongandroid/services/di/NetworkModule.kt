@@ -2,9 +2,13 @@ package com.melvin.ongandroid.services.di
 
 import android.content.Context
 import com.facebook.login.LoginManager
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.gson.GsonBuilder
 import com.google.firebase.auth.FirebaseAuth
+import com.melvin.ongandroid.R
 import com.melvin.ongandroid.model.login.LoginPreferences
 import com.melvin.ongandroid.services.ApiClient
 import dagger.Module
@@ -46,8 +50,17 @@ object NetworkModule {
 
     @Singleton
     @Provides
+    fun provideGoogleSignInClient(@ApplicationContext context: Context): GoogleSignInClient {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(context.getString(R.string.default_web_client_id))
+            .build()
+        return GoogleSignIn.getClient(context, gso)
+    }
+
+    @Singleton
+    @Provides
     fun providerFacebookAuth(): LoginManager {
-        return LoginManager.getInstance();
+        return LoginManager.getInstance()
     }
 
     @Singleton

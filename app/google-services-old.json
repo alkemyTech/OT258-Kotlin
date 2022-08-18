@@ -14,22 +14,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "695288172319-bno0f9ph3rdvqufvftbigk54mc49o4rq.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.melvin.ongandroid",
-            "certificate_hash": "50fe87e13e2fa42e371d503fae18b9bd8565165f"
-          }
-        },
-        {
-          "client_id": "695288172319-drl5447pm9tmcu8obuh3pt3d9pkhggmb.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.melvin.ongandroid",
-            "certificate_hash": "4837c0d9e8c12c02119d3952e499ee636dc3e3ec"
-          }
-        },
-        {
           "client_id": "695288172319-rsdvuso4h0s5rcedti5j2tgi0naluh2m.apps.googleusercontent.com",
           "client_type": 3
         }

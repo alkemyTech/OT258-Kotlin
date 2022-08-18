@@ -52,6 +52,7 @@
     <string name="fb_login_protocol_scheme">fb448054383871698</string>
     <string name="facebook_client_token">da04dac46dbe297f8f55c33e090998ab</string>
     <string name="on_facebook_login_error">Something went wrong, couldn\'t login with facebook, please try again</string>
+    <string name="login_general_error_msg">El email/contraseña ingresado es incorrecto</string>
 
 </resources>
 

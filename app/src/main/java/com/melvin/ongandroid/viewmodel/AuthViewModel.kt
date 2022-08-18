@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
 import com.melvin.ongandroid.businesslogic.*
 import com.melvin.ongandroid.model.login.LoginPreferences
 import com.melvin.ongandroid.model.signUpNewUser.NewUserBodyModel
@@ -24,7 +25,8 @@ class AuthViewModel @Inject constructor(
     private val sendNewUserUseCase: SendNewUserUseCase,
     private val loginUseCase: GetLoginUseCase,
     private val getMeUseCase: GetMeUseCase,
-    private val loginPreferences: LoginPreferences
+    private val loginPreferences: LoginPreferences,
+    private val firebaseAuth: FirebaseAuth
 ) :
     ViewModel() {
     // Login
@@ -36,10 +38,35 @@ class AuthViewModel @Inject constructor(
     val statusButtonLogin: LiveData<Boolean> = _statusButtonLogin
     private var emailApplied: Boolean = false
     private var passwordApplied: Boolean = false
+    private val _loginFormError = MutableLiveData<FieldError<InputTypeLogIn>>()
+    val loginFormError: LiveData<FieldError<InputTypeLogIn>> = _loginFormError
+
+    // sign up button status
+    private val _statusButtonSignUp = MutableLiveData(false)
+    val statusButtonSignUp: LiveData<Boolean> = _statusButtonSignUp
+    //Correct fields flags
+    private var _nameSignUpApplied = false
+    private var _emailSignUpApplied = false
+    private var _passwordSignUpApplied = false
+    private var _confirmPasswordSignUpApplied = false
+    private var _password: String = ""
+    private var _confirmPassword: String = ""
+    // sign up inputs status
+    private val _signUpFormError = MutableLiveData<FieldError<InputTypeSignUp>>()
+    val signUpFormError: LiveData<FieldError<InputTypeSignUp>> = _signUpFormError
+    // sign up ConfirmPassword input status
+    private val _passwordsMatch = MutableLiveData<FieldError<InputTypeSignUp>>()
+    val passwordsMatch: LiveData<FieldError<InputTypeSignUp>> = _passwordsMatch
+    private val _statusSignUpNewUser = MutableLiveData<Status>()
+    val statusSignUpNewUser: LiveData<Status> = _statusSignUpNewUser
 
     fun checkSessionStatus() {
         //We check if there's a token and we validate it
         viewModelScope.launch {
+            if (firebaseAuth.currentUser !== null) {
+                _sessionStatus.value = Status.SUCCESS
+                return@launch
+            }
             val token = loginPreferences.getToken()
             if (token.isNullOrEmpty()) {
                 //There's no session
@@ -58,17 +85,58 @@ class AuthViewModel @Inject constructor(
         }
     }
 
+
+
+    fun onUserLogin(email: String, password: String, context: Context) {
+        viewModelScope.launch {
+            _loginStatus.value = Status.LOADING
+            val loginResponse = loginUseCase(email, password)
+            if (loginResponse.success) {
+                val loginPreferences = LoginPreferences(context)
+                val token = loginResponse.data?.data?.token ?: ""
+                loginPreferences.saveToken(token)
+                _loginStatus.value = Status.SUCCESS
+
+            } else {
+                val msg = "El email/contraseña es incorrecto"
+                _loginFormError.postValue(FieldError(InputTypeLogIn.PASSWORD,true, msg))
+                _loginStatus.value = Status.ERROR
+            }
+            _loginStatus.value = Status.IDLE
+        }
+    }
+
     // Validating email and password
-    fun manageButtonLogin(input: String, type: InputTypeLogIn) {
-        when (type) {
-            InputTypeLogIn.EMAIL -> emailApplied = input.checkMail()
-            InputTypeLogIn.PASSWORD -> passwordApplied = input.checkPasswordLogin()
+    fun onLoginFieldChange(input: String, fieldType: InputTypeLogIn) {
+        when (fieldType) {
+            InputTypeLogIn.EMAIL -> {
+                val isValid = input.checkMail()
+                val isBlank = input.isBlank()
+                val msg = if (isValid || isBlank) "" else "Email doesn't meet the condition"
+                emailApplied = isValid
+                _loginFormError.postValue(FieldError(
+                    InputTypeLogIn.EMAIL,
+                    !isValid && !isBlank,
+                    msg,
+                ))
+            }
+            InputTypeLogIn.PASSWORD -> {
+                _password = input
+                val isValid = input.checkPassword()
+                val isBlank = input.isBlank()
+                val msg = if (isValid || isBlank) "" else "Password doesn't meet the condition"
+                passwordApplied = isValid
+                _loginFormError.postValue(FieldError(
+                    InputTypeLogIn.PASSWORD,
+                    !isValid && !isBlank,
+                    msg,
+                ))
+            }
         }
         _statusButtonLogin.postValue(emailApplied && passwordApplied)
     }
 
-    private val _statusSignUpNewUser = MutableLiveData<Status>()
-    val statusSignUpNewUser: LiveData<Status> = _statusSignUpNewUser
+
 
     // register new user in the data base
     fun sendNewUser(name: String, email: String, password: String) {
@@ -112,27 +180,8 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    // sign up button status
-    private val _statusButtonSignUp = MutableLiveData(false)
-    val statusButtonSignUp: LiveData<Boolean> = _statusButtonSignUp
-
-    private var _nameSignUpApplied = false
-    private var _emailSignUpApplied = false
-    private var _passwordSignUpApplied = false
-    private var _confirmPasswordSignUpApplied = false
-    private var _password: String = ""
-    private var _confirmPassword: String = ""
-
-    // sign up inputs status
-    private val _signUpFormError = MutableLiveData<FieldError<InputTypeSignUp>>()
-    val signUpFormError: LiveData<FieldError<InputTypeSignUp>> = _signUpFormError
-
-    // sign up ConfirmPassword input status
-    private val _passwordsMatch = MutableLiveData<FieldError<InputTypeSignUp>>()
-    val passwordsMatch: LiveData<FieldError<InputTypeSignUp>> = _passwordsMatch
-
     // Validating name, email, password and password == confirmPassword
-    fun onFieldChange(input: String, type: InputTypeSignUp) {
+    fun onSignupFieldChange(input: String, type: InputTypeSignUp) {
         when (type) {
             InputTypeSignUp.NAME -> {
                 val isValid = input.isNotEmpty()
@@ -199,21 +248,6 @@ class AuthViewModel @Inject constructor(
 
     // Login
 
-    fun onUserLogin(email: String, password: String, context: Context) {
-        viewModelScope.launch {
-            _loginStatus.value = Status.LOADING
-            val loginResponse = loginUseCase(email, password)
-            if (loginResponse.success) {
-                val loginPreferences = LoginPreferences(context)
-                val token = loginResponse.data?.data?.token ?: ""
-                loginPreferences.saveToken(token)
-                _loginStatus.value = Status.SUCCESS
 
-            } else {
-                _loginStatus.value = Status.ERROR
-            }
-            _loginStatus.value = Status.IDLE
-        }
-    }
 
 }
