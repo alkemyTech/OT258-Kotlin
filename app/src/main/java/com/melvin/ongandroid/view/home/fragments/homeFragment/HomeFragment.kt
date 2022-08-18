@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
+import bolts.AppLinkNavigation.navigate
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.android.material.snackbar.Snackbar
 import com.melvin.ongandroid.R
@@ -58,6 +60,7 @@ class HomeFragment : Fragment() {
         lastNewsArrowClick()
         getSlides()
         setUpListeners()
+        goToContact()
         viewModel.apiStatus.observe(viewLifecycleOwner, Observer {
             if (it == Errors.ALL) {
                 onLoadError(resources.getString(R.string.generalError)) { viewModel.refresh() }
@@ -175,6 +178,13 @@ class HomeFragment : Fragment() {
     private fun setUpListeners() {
         binding.btnRetrySlidesCall.setOnClickListener {
             viewModel.onCreateSlides()
+        }
+    }
+
+    //This function go to Contact Fragment
+    private fun goToContact(){
+        binding.btnContact.setOnClickListener {
+                Navigation.findNavController(binding.btnContact).navigate(R.id.action_homeFragment_to_contactFragment)
         }
     }
 }
