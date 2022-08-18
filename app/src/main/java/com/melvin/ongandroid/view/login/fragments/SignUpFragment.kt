@@ -63,10 +63,10 @@ class SignUpFragment : Fragment() {
             Navigation.findNavController(it).navigate(R.id.action_signUpFragment_to_loginFragment)
         }
 
-        binding.etNameSignUp.doOnTextChanged { text, start, before, count -> viewModel.onFieldChange(text.toString(), InputTypeSignUp.NAME)}
-        binding.etEmailSignUp.doOnTextChanged { text, start, before, count -> viewModel.onFieldChange(text.toString(), InputTypeSignUp.EMAIL)}
-        binding.etPasswordSignUp.doOnTextChanged { text, start, before, count -> viewModel.onFieldChange(text.toString(), InputTypeSignUp.PASSWORD)}
-        binding.etRepeatPasswordSignUp.doOnTextChanged { text, start, before, count -> viewModel.onFieldChange(text.toString(), InputTypeSignUp.CONFIRM_PASSWORD)}
+        binding.etNameSignUp.doOnTextChanged { text, _, _, _ -> viewModel.onSignupFieldChange(text.toString(), InputTypeSignUp.NAME)}
+        binding.etEmailSignUp.doOnTextChanged { text, _, _, _ -> viewModel.onSignupFieldChange(text.toString(), InputTypeSignUp.EMAIL)}
+        binding.etPasswordSignUp.doOnTextChanged { text, _, _, _ -> viewModel.onSignupFieldChange(text.toString(), InputTypeSignUp.PASSWORD)}
+        binding.etRepeatPasswordSignUp.doOnTextChanged { text, _, _, _ -> viewModel.onSignupFieldChange(text.toString(), InputTypeSignUp.CONFIRM_PASSWORD)}
     }
 
     private fun setUpObservers() {

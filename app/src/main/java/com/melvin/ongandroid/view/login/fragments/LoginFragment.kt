@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package com.melvin.ongandroid.view.login.fragments
 
 import android.content.ContentValues.TAG
@@ -86,17 +84,29 @@ class LoginFragment : Fragment() {
 
     private fun initComponent() {
         // Checking whether both email input and password input meet the conditions
-        binding.etEmailLogin.doOnTextChanged { _, _, _, _ ->
-            viewModel.manageButtonLogin(
-                binding.etEmailLogin.text.toString(),
+        binding.etEmailLogin.doOnTextChanged { text, _, _, _ ->
+            viewModel.onLoginFieldChange(
+                text.toString(),
                 InputTypeLogIn.EMAIL
             )
         }
-        binding.etPasswordLogin.doOnTextChanged { _, _, _, _ ->
-            viewModel.manageButtonLogin(
-                binding.etPasswordLogin.text.toString(),
+        binding.etPasswordLogin.doOnTextChanged { text, _, _, _->
+            viewModel.onLoginFieldChange(
+                text.toString(),
                 InputTypeLogIn.PASSWORD
             )
+        }
+        viewModel.loginFormError.observe(viewLifecycleOwner) {
+            when (it.field) {
+                InputTypeLogIn.EMAIL -> {
+                    binding.loginEmailLabel.isErrorEnabled = it.isInvalid
+                    binding.loginEmailLabel.error = it.message
+                }
+                InputTypeLogIn.PASSWORD -> {
+                    binding.loginPasswordLabel.isErrorEnabled = it.isInvalid
+                    binding.loginPasswordLabel.error = it.message
+                }
+            }
         }
         // status button login changes depending on whether meets the conditions or not
         viewModel.statusButtonLogin.observe(viewLifecycleOwner) {
@@ -212,17 +222,13 @@ class LoginFragment : Fragment() {
             .show()
     }
 
-    private fun clearLoginFields() {
-        binding.etEmailLogin.setText("")
-        binding.etPasswordLogin.setText("")
-        binding.etEmailLogin.requestFocus()
-    }
-
     private fun onClickLogin() {
         // start home activity on login button click
         binding.loginBtn.setOnClickListener {
             val email = binding.etEmailLogin.text.toString().trim()
             val password = binding.etPasswordLogin.text.toString().trim()
+            binding.etPasswordLogin.setText("")
+            binding.etEmailLogin.requestFocus()
             context?.let {
                 viewModel.onUserLogin(email, password, it)
             }
@@ -253,7 +259,6 @@ class LoginFragment : Fragment() {
                         Snackbar.LENGTH_LONG)
                         .setBackgroundTint(ContextCompat.getColor(requireContext(),R.color.red))
                         .show()
-                    clearLoginFields()
                     // Log event
                     firebaseAnalytics.logEvent("log_in_error"){
                         param("message", "log_in_error")
