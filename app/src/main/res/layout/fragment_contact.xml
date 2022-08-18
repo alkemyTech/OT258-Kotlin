@@ -22,7 +22,7 @@
 
             <include
                 android:id="@+id/ivLogo"
-                layout="@layout/logo"/>
+                layout="@layout/logo" />
 
             <TextView
                 android:id="@+id/tvContributor"
@@ -45,6 +45,7 @@
                 android:backgroundTint="@color/red"
                 android:elevation="@dimen/density16"
                 android:text="@string/donate"
+                android:textAllCaps="false"
                 android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="@+id/tvContributor"
                 app:layout_constraintTop_toBottomOf="@+id/tvContributor" />
@@ -143,11 +144,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/density60"
                 android:layout_marginTop="@dimen/density16"
-                android:background="@color/pale_grey"
                 android:backgroundTint="@color/blue"
                 android:elevation="@dimen/density16"
                 android:enabled="false"
                 android:text="@string/send_message"
+                android:background="@drawable/corner_button"
+                android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="@dimen/scaleable16"
                 app:layout_constraintStart_toStartOf="@+id/tfMessage"
