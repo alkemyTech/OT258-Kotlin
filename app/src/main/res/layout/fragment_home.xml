@@ -22,164 +22,137 @@
             android:paddingEnd="16dp">
 
             <!-- MainActivity Scroll View Content -->
-            <TableLayout
+            <include
+                android:id="@+id/iv_logo"
+                layout="@layout/logo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Welcome -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvWelcomeActivityView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_logo"
+                tools:listitem="@layout/item_welcome_activities" />
+
+            <!-- This layout comes up when the slides apis call failed -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/llErrorSlidesCall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rvWelcomeActivityView">
+
+                <TextView
+                    android:id="@+id/tvError"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:text="@string/informationError"
+                    app:layout_constraintStart_toStartOf="@id/llErrorSlidesCall"
+                    app:layout_constraintTop_toTopOf="@id/llErrorSlidesCall" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnRetrySlidesCall"
+                    android:layout_width="120dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_retry"
+                    android:drawableStart="@drawable/ic_baseline_retry"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
+                    android:text="@string/retryCall"
+                    app:layout_constraintStart_toStartOf="@id/tvError"
+                    app:layout_constraintTop_toBottomOf="@id/tvError" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <!-- Our Staff -->
+            <TextView
+                android:id="@+id/textView3"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/llErrorSlidesCall" />
 
-                <include
-                    android:id="@+id/iv_logo"
-                    layout="@layout/logo" />
-
-                <!-- Welcome Table Row -->
-
-                <TableRow
-                    android:id="@+id/tlRowBienvenidx"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="4dp"
-                    android:gravity="center_horizontal"
-                    android:paddingVertical="8dp">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvWelcomeActivityView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:orientation="horizontal"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/item_welcome_activities" />
-
-                    <!-- This layout comes up when the slides apis call failed -->
-                    <LinearLayout
-                        android:id="@+id/llErrorSlidesCall"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:visibility="gone">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_margin="10dp"
-                            android:text="@string/informationError" />
-
-                        <androidx.appcompat.widget.AppCompatButton
-                            android:id="@+id/btnRetrySlidesCall"
-                            android:layout_width="120dp"
-                            android:layout_height="40dp"
-                            android:layout_gravity="center"
-                            android:background="@drawable/bg_retry"
-                            android:drawableStart="@drawable/ic_baseline_retry"
-                            android:paddingStart="4dp"
-                            android:paddingEnd="4dp"
-                            android:text="@string/retryCall" />
-                    </LinearLayout>
-
-                </TableRow>
-                <!-- Our Staff Table Row -->
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="4dp"
-                    android:gravity="center_horizontal"
-                    android:paddingVertical="8dp">
-
-                    <TextView
-                        android:id="@+id/textView3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="Agregar aqui nuestro staff" />
-                </TableRow>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintTestimonials"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:gravity="center_horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textView3">
                 <!-- Testimonials Tables Row -->
-                <TableRow
+                <TextView
+                    android:id="@+id/textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="4dp"
-                    android:gravity="center_horizontal">
+                    android:gravity="center_horizontal"
+                    android:text="@string/testimonials"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:id="@+id/textView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="@string/testimonials"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
-                </TableRow>
-
-                <TableRow
+                <!-- Testimonials RecyclerView -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvActivityTestimony"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:paddingVertical="8dp">
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textView" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <!-- Testimonials RecyclerView -->
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvActivityTestimony"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-                </TableRow>
-
-                <TableRow
+                <ImageView
                     android:id="@+id/btnTestimonials"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/constraintTestimonials"
+                    app:srcCompat="@drawable/ic_baseline_keyboard_arrow_down_24" />
+
+            <!-- Last News  -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLastNews"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:gravity="center_horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnTestimonials">
+
+                <TextView
+                    android:id="@+id/tvLastNews"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_baseline_keyboard_arrow_down_24" />
-
-                </TableRow>
-                <!-- Last News Tables Row -->
-                <TableRow
+                    android:gravity="center_horizontal"
+                    android:text="@string/news"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <!-- Last News RecyclerView -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvLastNews"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="4dp"
-                    android:gravity="center_horizontal">
-
-                    <TextView
-                        android:id="@+id/tvLastNews"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="@string/news"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:paddingVertical="8dp">
-
-                    <!-- Last News RecyclerView -->
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvLastNews"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal" />
-
-                </TableRow>
-
-                <TableRow
-                    android:id="@+id/btnLastNews"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_baseline_keyboard_arrow_down_24" />
-
-                </TableRow>
-
-            </TableLayout>
+                    android:layout_height="250dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvLastNews" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+                android:id="@+id/btnLastNews"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/constraintLastNews"
+                app:srcCompat="@drawable/ic_baseline_keyboard_arrow_down_24" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </layout>

@@ -22,6 +22,7 @@
                 android:layout_height="210dp"
                 android:elevation="10dp"
                 app:cardCornerRadius="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -37,26 +38,28 @@
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvTitle"
                 style="@style/TextAppearance.MaterialComponents.Headline5"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:singleLine="true"
                 android:fontFamily="@font/poppins_medium"
+                android:singleLine="true"
                 android:text="@string/welcome_title_placeholder"
                 android:textAlignment="textStart"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/cvImage"
-                tools:text="@string/welcome_title_placeholder" />
+                app:layout_constraintEnd_toEndOf="@id/cvImage"
+                app:layout_constraintStart_toStartOf="@id/cvImage"
+                app:layout_constraintTop_toBottomOf="@id/cvImage" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvDescription"
                 style="@style/TextAppearance.MaterialComponents.Body2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="15dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
                 android:fontFamily="@font/poppins_light"
-                android:text="@string/welcome_body_placeholder"
                 android:textAlignment="textStart"
+                app:layout_constraintEnd_toEndOf="@id/cvImage"
+                app:layout_constraintStart_toStartOf="@id/cvImage"
                 app:layout_constraintTop_toBottomOf="@id/tvTitle"
                 tools:text="@string/welcome_body_placeholder" />
         </androidx.constraintlayout.widget.ConstraintLayout>
