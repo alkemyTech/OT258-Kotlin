@@ -10,6 +10,8 @@ import com.melvin.ongandroid.view.home.fragments.bottomSheetFragment.BottomFragm
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.melvin.ongandroid.databinding.FragmentStaffBinding
 import com.melvin.ongandroid.model.staff.StaffDataModel
