@@ -30,6 +30,14 @@
           }
         },
         {
+          "client_id": "695288172319-n3mmlblmifc0vi10u50fu9uq340s4iim.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.melvin.ongandroid",
+            "certificate_hash": "1011fd0fd9f763e557cf9362f07418e1de7dcfee"
+          }
+        },
+        {
           "client_id": "695288172319-rsdvuso4h0s5rcedti5j2tgi0naluh2m.apps.googleusercontent.com",
           "client_type": 3
         }
