@@ -111,7 +111,7 @@ class ContactFragment : Fragment() {
 
     //displays a generic message
     private fun showSnackBar(message: String) {
-        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG)
             .setBackgroundTint(resources.getColor(R.color.green))
             .show()
     }

@@ -139,12 +139,12 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnSend"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/density60"
                 android:layout_marginTop="@dimen/density16"
-                android:backgroundTint="@color/blue"
+                android:backgroundTint="@color/btn_login"
                 android:elevation="@dimen/density16"
                 android:enabled="false"
                 android:text="@string/send_message"
@@ -152,7 +152,8 @@
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="@dimen/scaleable16"
-                app:layout_constraintStart_toStartOf="@+id/tfMessage"
+                android:paddingHorizontal="8dp"
+                app:layout_constraintEnd_toEndOf="@+id/tfMessage"
                 app:layout_constraintTop_toBottomOf="@+id/tfMessage" />
 
             <include
